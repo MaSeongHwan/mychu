@@ -1,0 +1,107 @@
+/* login.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.logo {
+    width: 167px;
+    margin-bottom: 30px;
+}
+
+.login-content {
+    background: #000;
+    padding: 60px 68px;
+    margin-bottom: 90px;
+}
+
+h1 {
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 28px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #8c8c8c;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+    background: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 24px 0;
+    cursor: pointer;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #b3b3b3;
+    font-size: 13px;
+}
+
+.help-link {
+    color: #b3b3b3;
+    text-decoration: none;
+}
+
+.signup-section {
+    color: #737373;
+    margin-top: 60px;
+}
+
+.signup-section p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.signup-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.signup-section small {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.signup-section small a {
+    color: #0071eb;
+}

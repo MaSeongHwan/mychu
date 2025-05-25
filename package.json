@@ -1,0 +1,24 @@
+{
+  "name": "webpage",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "your-start-command-here",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.3",
+    "live-server": "^1.2.2",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  }
+}

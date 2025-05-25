@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+
+# 환경 파일
+.env
+*.env
+
+# 가상환경
+venv/
+env/
+
+# VSCode
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Storeserver/data/my_warehouse.duckdb
+
+git rm --cached server/data/my_warehouse.duckdb
+
+server/data/my_warehouse.duckdb
