@@ -1,4 +1,5 @@
 /* login.css */
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
@@ -15,6 +16,7 @@ body {
     align-items: flex-start;
 }
 
+/* Container styles */
 .container {
     width: 100%;
     max-width: 450px;
@@ -33,14 +35,17 @@ body {
     margin-bottom: 90px;
 }
 
+/* Typography */
 h1 {
     color: #fff;
     font-size: 32px;
     margin-bottom: 28px;
 }
 
+/* Form elements */
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="tel"] {
     width: 100%;
     height: 50px;
     margin-bottom: 16px;
@@ -67,8 +72,14 @@ button {
     font-weight: 500;
     margin: 24px 0;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
+button:hover {
+    background: #f40612;
+}
+
+/* Form options */
 .form-options {
     display: flex;
     justify-content: space-between;
@@ -80,8 +91,89 @@ button {
 .help-link {
     color: #b3b3b3;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
+.help-link:hover {
+    color: #fff;
+}
+
+/* Phone form specific styles */
+#phoneForm {
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+#phoneForm input[type="tel"] {
+    background: #333;
+    color: #fff;
+}
+
+#phoneForm button {
+    background: #0071eb;
+}
+
+#phoneForm button:hover {
+    background: #0063d1;
+}
+
+/* reCAPTCHA container */
+#recaptcha-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Verification section */
+.verification-info {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.verification-info p {
+    margin: 5px 0;
+}
+
+.phone-number-display {
+    color: #0071eb;
+    font-weight: bold;
+}
+
+.verification-input {
+    margin-top: 20px;
+}
+
+.verification-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.verification-buttons button {
+    margin: 0;
+    flex: 1;
+}
+
+#verifyButton {
+    background: #0071eb;
+}
+
+#verifyButton:hover {
+    background: #0063d1;
+}
+
+#resendButton {
+    background: #333;
+}
+
+#resendButton:hover {
+    background: #444;
+}
+
+/* Signup section */
 .signup-section {
     color: #737373;
     margin-top: 60px;
@@ -95,6 +187,11 @@ button {
 .signup-section a {
     color: #fff;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-section a:hover {
+    color: #b3b3b3;
 }
 
 .signup-section small {
@@ -104,4 +201,35 @@ button {
 
 .signup-section small a {
     color: #0071eb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+    .container {
+        padding: 10px;
+    }
+
+    .login-content {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="tel"] {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    button {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .verification-buttons {
+        flex-direction: column;
+    }
 }

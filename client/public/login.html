@@ -11,11 +11,38 @@
         <img src="../src/assets/netflix.png" alt="Netflix" class="logo">
         <div class="login-content">
             <h1>Sign In</h1>
-            <form>
-                <input type="text" placeholder="Email or phone number">
-                <input type="password" placeholder="Password">
-                <button type="submit">Sign In</button>
-                
+            <form id="emailForm">
+                <input type="text" id='SignUpEmail' placeholder="Email or phone number">
+                <input type="password" id='SignUpPassword' placeholder="Password">
+                <button type="submit" id='SignUpButton'>회원가입</button>
+            </form>
+
+            <form id="phoneForm">
+                <div id="phoneInputSection">
+                    <input type="tel" id='phoneNumber' placeholder="전화번호 (예: +821012345678)" pattern="[+][0-9]{10,}">
+                    <div id="recaptcha-container"></div>
+                    <button type="submit" id='phoneSignUpButton'>인증번호 받기</button>
+                </div>
+                <div id="verificationSection" style="display: none;">
+                    <div class="verification-info">
+                        <p>인증번호가 전송되었습니다.</p>
+                        <p class="phone-number-display"></p>
+                    </div>
+                    <div class="verification-input">
+                        <input type="text" id='verificationCode' placeholder="SMS로 전송된 인증번호 6자리" maxlength="6">
+                        <div class="verification-buttons">
+                            <button type="button" id='verifyButton'>인증하기</button>
+                            <button type="button" id='resendButton'>인증번호 재전송</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form id="signInForm">
+                <input type="text" id='SignInEmail' placeholder="Email or phone number">
+                <input type="password" id='SignInPassword' placeholder="Password">
+                <button type="submit" id='SignInButton'>로그인</button>
+
                 <div class="form-options">
                     <label>
                         <input type="checkbox"> Remember me
@@ -23,7 +50,161 @@
                     <a href="#" class="help-link">Need help?</a>
                 </div>
             </form>
-            
+
+            <script type="module">
+            import {
+                signUpWithEmail,
+                signUpWithPhone,
+                confirmPhoneSignUp,
+                signInWithEmail,
+                linkPhoneNumberToEmailUser,
+                confirmPhoneLink,
+                linkEmailToPhoneUser,
+                checkEmailExists,
+                getCurrentUser
+            } from '../src/firebase/auth.js';
+
+            import { 
+                RecaptchaVerifier,
+                PhoneAuthProvider,
+                getAuth
+            } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+
+            const auth = getAuth(); // auth 객체 가져오기
+
+            let currentVerificationId = null;
+            let recaptchaVerifier = null;
+
+            // reCAPTCHA 초기화
+            function initializeRecaptcha() {
+                if (recaptchaVerifier) {
+                    recaptchaVerifier.clear();
+                }
+                
+                // Firebase 문서에 따라 auth 객체의 settings에 appVerificationDisabledForTesting 설정
+                // 테스트 시에만 사용하며, 실제 배포 시에는 제거하거나 false로 설정해야 합니다.
+                auth.settings.appVerificationDisabledForTesting = true;
+
+                recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    'size': 'normal',
+                    'callback': (response) => {
+                        console.log("reCAPTCHA verified");
+                    },
+                    'expired-callback': () => {
+                        console.log("reCAPTCHA expired");
+                        initializeRecaptcha();
+                    }
+                });
+            }
+
+            // 페이지 로드 시 reCAPTCHA 초기화
+            window.addEventListener('load', () => {
+                initializeRecaptcha();
+            });
+
+            // 이메일 회원가입
+            document.getElementById('emailForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const email = document.getElementById('SignUpEmail').value;
+                const password = document.getElementById('SignUpPassword').value;
+
+                try {
+                    const user = await signUpWithEmail(email, password);
+                    alert("회원가입이 완료되었습니다!");
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+
+            // 전화번호 회원가입 - 인증번호 요청
+            document.getElementById('phoneForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const phoneNumber = document.getElementById('phoneNumber').value;
+
+                try {
+                    // 전화번호 형식 검증
+                    if (!phoneNumber.match(/^\+[0-9]{10,}$/)) {
+                        alert("올바른 전화번호 형식이 아닙니다. (예: +821012345678)");
+                        return;
+                    }
+
+                    // reCAPTCHA가 초기화되지 않았다면 다시 초기화
+                    if (!recaptchaVerifier) {
+                        initializeRecaptcha();
+                    }
+
+                    // verifyPhoneNumber 호출 전에 reCAPTCHA가 렌더링되고 확인될 때까지 기다립니다.
+                    // 테스트 환경에서는 appVerificationDisabledForTesting = true 덕분에 자동으로 확인됩니다.
+                    await recaptchaVerifier.verify();
+
+                    currentVerificationId = await signUpWithPhone(phoneNumber, recaptchaVerifier);
+                    console.log("인증번호 전송 성공:", currentVerificationId);
+                    
+                    // 인증번호 입력 섹션 표시
+                    document.getElementById('phoneInputSection').style.display = 'none';
+                    document.getElementById('verificationSection').style.display = 'block';
+                    
+                    // 전화번호 표시 업데이트
+                    document.querySelector('.phone-number-display').textContent = phoneNumber;
+                } catch (error) {
+                    console.error("인증번호 전송 실패:", error);
+                    alert(error.message);
+                    // 에러 발생 시 reCAPTCHA 재초기화
+                    initializeRecaptcha();
+                }
+            });
+
+            // 인증번호 확인
+            document.getElementById('verifyButton').addEventListener('click', async () => {
+                const verificationCode = document.getElementById('verificationCode').value;
+                
+                if (!verificationCode) {
+                    alert("인증번호를 입력해주세요.");
+                    return;
+                }
+
+                try {
+                    const user = await confirmPhoneSignUp(currentVerificationId, verificationCode);
+                    alert("회원가입이 완료되었습니다!");
+                    window.location.href = '/client/public/index.html';
+                } catch (error) {
+                    console.error("인증번호 확인 실패:", error);
+                    alert(error.message);
+                }
+            });
+
+            // 인증번호 재전송
+            document.getElementById('resendButton').addEventListener('click', async () => {
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                
+                try {
+                    // reCAPTCHA 재초기화
+                    initializeRecaptcha();
+                    
+                    currentVerificationId = await signUpWithPhone(phoneNumber, recaptchaVerifier);
+                    alert("인증번호가 재전송되었습니다. SMS를 확인해주세요.");
+                } catch (error) {
+                    console.error("인증번호 재전송 실패:", error);
+                    alert(error.message);
+                }
+            });
+
+            // 로그인
+            document.getElementById('signInForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const email = document.getElementById('SignInEmail').value;
+                const password = document.getElementById('SignInPassword').value;
+
+                try {
+                    const user = await signInWithEmail(email, password);
+                    alert("로그인되었습니다!");
+                    window.location.href = '/client/public/index.html';
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+            </script>            
+
             <div class="signup-section">
                 <p>New to Netflix? <a href="#">Sign up now</a></p>
                 <small>
