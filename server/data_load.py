@@ -18,5 +18,6 @@ def load_dataframes():
     df_users = pd.read_sql_table('users', engine)
     df_assets = pd.read_sql_table('asset', engine)
     df_logs = pd.read_sql_table('log', engine)
-    
-    return df_users, df_assets, df_logs
+    df_images = pd.read_sql_table('imagedb', engine)
+
+    return df_users, df_assets, df_logs, df_images
