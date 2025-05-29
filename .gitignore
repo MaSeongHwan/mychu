@@ -1,28 +1,30 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.sqlite3
-*.db
+VITE_FIREBASE_API_KEY=AIzaSyBiLAswitPi5YrSXa4pr8EkTSwFwcnYoCQ
+VITE_FIREBASE_AUTH_DOMAIN=bootcamp-19343.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=bootcamp-19343
+VITE_FIREBASE_STORAGE_BUCKET=bootcamp-19343.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=606944113151
+VITE_FIREBASE_APP_ID=1:606944113151:web:acf320de523e2f24f9f7ca
+VITE_FIREBASE_MEASUREMENT_ID=G-HPFYGZLYX3
 
-# 환경 파일
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
 .env
-*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# 가상환경
-venv/
-env/
-
-# VSCode
-.vscode/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# macOS
-.DS_Storeserver/data/my_warehouse.duckdb
-
-git rm --cached server/data/my_warehouse.duckdb
-
-server/data/my_warehouse.duckdb
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

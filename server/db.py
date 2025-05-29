@@ -1,10 +1,18 @@
-import duckdb
-from pathlib import Path
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-def get_connection():
-    """DuckDB 연결 생성 (기존 DB 유지)"""
-    db_path = Path("./server/data/my_warehouse.duckdb").resolve()
-    print(f"📌 DuckDB 연결 경로: {db_path}")
-    
-    # 연결만 시도 (파일 수정하지 않음)
-    return duckdb.connect(str(db_path), read_only=False)
+# .env 파일 로드
+load_dotenv()
+
+# 환경 변수에서 데이터베이스 설정 가져오기
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
+
+DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+# ...existing code...

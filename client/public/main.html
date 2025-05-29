@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix UI Clone</title>
+  <link rel="stylesheet" href="../src/styles/main.css">
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+    <nav>
+      <span>Home</span>
+      <span>TV Shows</span>
+      <span>Movies</span>
+      <span>New & Popular</span>
+      <span>My List</span>
+      <span>Browse by Languages</span>
+    </nav>
+  </header>
+
+  <div class="hero"></div>
+
+  <div class="section">
+    <h2>오늘의 인기작 Top10</h2>
+    <div class="slider" id="asset-slider"></div>
+  </div>
+  
+  <script>
+    fetch('http://127.0.0.1:8000/assets')
+      .then(res => res.json())
+      .then(data => {
+        const slider = document.getElementById('asset-slider');
+        slider.innerHTML = ''; // 기존 카드 제거
+  
+        data.slice(0, 10).forEach(asset => {
+          const card = document.createElement('div');
+          card.className = 'card';
+  
+          card.innerHTML = `
+            <strong>${asset.asset_nm || '제목 없음'}</strong><br>
+            <span>${asset.genre || '장르 미상'}</span><br>
+            <span>${asset.actr_disp || '출연자 정보 없음'}</span>
+          `;
+  
+          slider.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('에셋 불러오기 실패:', error);
+      });
+  </script>
+  
+
+
+  <div class="section">
+    <h2>감정 기반 콘텐츠 추천</h2>
+    <div class="slider">
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>최근 시청 콘텐츠</h2>
+    <div class="slider">
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>비슷한 연령대가 시청중인 콘텐츠</h2>
+    <div class="slider">
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Inspiring Movies</h2>
+    <div class="slider">
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+      <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div> <div class="card"></div>
+    </div>
+  </div>
+</body>
+</html>
