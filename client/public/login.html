@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix</title>
-    <link rel="stylesheet" href="../src/styles/login.css">
+    <link rel="stylesheet" href="/static/login.css">
 </head>
 <body>
     <div class="container">
-        <img src="../src/assets/netflix.png" alt="Netflix" class="logo">
+        <img src="/assets/netflix.png" alt="Netflix" class="logo">
         <div class="login-content">
             <h1>Sign In</h1>
             <form id="emailForm">
@@ -62,7 +62,7 @@
                 linkEmailToPhoneUser,
                 checkEmailExists,
                 getCurrentUser
-            } from '../src/firebase/auth.js';
+            } from '/firebase/auth.js';
 
             import { 
                 RecaptchaVerifier,
@@ -189,7 +189,7 @@
                 }
             });
 
-            // 로그인
+            // 로그인 이벤트 리스너 부분 수정
             document.getElementById('signInForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const email = document.getElementById('SignInEmail').value;
@@ -197,9 +197,15 @@
 
                 try {
                     const user = await signInWithEmail(email, password);
-                    alert("로그인되었습니다!");
-                    window.location.href = '/client/public/index.html';
+                    if (user) {
+                        alert("로그인되었습니다!");
+                        // 절대 경로로 리디렉션 수정
+                        window.location.href = 'http://127.0.0.1:8000/main';
+                        // 또는
+                        // window.location.replace('/main');
+                    }
                 } catch (error) {
+                    console.error("로그인 실패:", error);
                     alert(error.message);
                 }
             });
