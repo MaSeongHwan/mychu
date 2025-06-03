@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>콘텐츠 상세</title>
-  <link rel="stylesheet" href="/static/main.css" />
+  <link rel="stylesheet" href="../src/styles/main.css" />
 </head>
 <body>
     <header>
-        <div class="logo"></div>
+       <a href="main.html" class="logo"></a>
         <nav>
           <a href="/pages/main.html">홈</a>
           <a href="/pages/tv.html">TV 쇼</a>
@@ -17,38 +17,55 @@
           <a href="/pages/mylist.html">내가 찜한 리스트</a>
           <a href="/pages/contents.html">content</a>
         </nav>
-        </div>
-        <div class="header-right">
-        <input type="search" placeholder="검색" aria-label="검색" />
-        <button class="icon-button notification" aria-label="알림">
-            🔔<span class="badge">7</span>
-        </button>
+
         
-        </div>
+        <div class="header-right">
+          <button class="icon-button">
+            <img src="images/search_img.png" alt="검색">
+          </button>
+
+          <div class="mypage-wrapper">
+            <button class="icon-button" onclick="location.href='mylist.html'">
+              <img src="images/mypage_img.png" alt="마이페이지">
+            </button>
+
+            <div class="dropdown-menu" id="mypageMenu">
+              <a href="mylist.html">내가 찜한 리스트</a>
+              <a href="#">설정</a>
+              <a href="#">로그아웃</a>
+            </div>
+          </div>
+        <div>
+
+        
+        
+    
       </header>
+
+      <div class="hero"></div>
     
     
     
-     <div class="content-detail">
-        <div class="text-area">
-        <h2 class="subtitle">과학 수사대</h2>
-        <h1 class="title">스모킹 건</h1>
-        <p class="meta">시즌 1개 •  15세 • 시사교양</p>
-        <div class="buttons">
-            <button class="btn login">로그인</button>
-            <button class="btn like">♡ 관심</button>
-            <button class="btn share">↗ 공유</button>
-        </div>
-        <p class="description">
-            96. 할머니 나 정말 잘했어? - 세모자 성폭행 조작 사건<br />
-            2014년 10월 29일, 마스크와 모자로 얼굴을 가린 채 기자회견장에 모습을 드러낸 세 모자.
-            어머니 이정희 씨(44, 가명)가 밝힌 내용은 충격적이었다. “10년 가까이 남편과 시아버지로부터 혼음을 강요당했고,
-            수차례 성폭행을 당했...”<br /><a href="#">더보기</a>
-        </p>
-        </div>
-        <div class="poster-area">
-        <img src="https://image.tmdb.org/t/p/w500/2P0h35fDWe3d9sGeB8nd8VM2ZOK.jpg" alt="스모킹 건 포스터" />
-        </div>
+      <div class="content-detail">
+          <div class="text-area">
+          <h2 class="subtitle">과학 수사대</h2>
+          <h1 class="title">스모킹 건</h1>
+          <p class="meta">시즌 1개 •  15세 • 시사교양</p>
+          <div class="buttons">
+              <button class="btn login">로그인</button>
+              <button class="btn like">♡ 관심</button>
+              <button class="btn share">↗ 공유</button>
+          </div>
+          <p class="description">
+              96. 할머니 나 정말 잘했어? - 세모자 성폭행 조작 사건<br />
+              2014년 10월 29일, 마스크와 모자로 얼굴을 가린 채 기자회견장에 모습을 드러낸 세 모자.
+              어머니 이정희 씨(44, 가명)가 밝힌 내용은 충격적이었다. “10년 가까이 남편과 시아버지로부터 혼음을 강요당했고,
+              수차례 성폭행을 당했...”<br /><a href="#">더보기</a>
+          </p>
+          </div>
+          <div class="poster-area">
+          <img src="https://image.tmdb.org/t/p/w500/2P0h35fDWe3d9sGeB8nd8VM2ZOK.jpg" alt="스모킹 건 포스터" />
+          </div>
     </div>
 </body>
 </html>

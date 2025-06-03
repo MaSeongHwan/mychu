@@ -29,9 +29,11 @@ body {
     }
   /* 오른쪽 영역 (검색 + 알림 + 프로필) */
     .header-right {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 20px;
+        padding-right: 100px;
     }
   
   /* 검색창 */
@@ -49,6 +51,11 @@ body {
         color: #999;
     }
 
+    .header-right img {
+      width: 45px;    /* 아이콘 크기 조절 */
+      height: 45px;   /* 아이콘 크기 조절 */
+      object-fit: contain;  /* 비율 유지하면서 자르지 않기 */
+    }
     main {
         margin-top: 60px; /* 헤더 높이만큼 공간 확보 */
       }
@@ -611,3 +618,40 @@ body {
       font-weight: 500;
       color: #FFFFFF;
   }
+
+  /* 공통 버튼 스타일 */
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu  {
+  display: none; /* 기본은 숨김 */
+  position: fixed;
+  top: 60px; /* header 아래로 배치 */
+  right: 20px; /* header-right 위치에 맞게 조절 */
+  background-color: #141414;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+/* 드롭다운 메뉴 링크 */
+.dropdown-menu a {
+  display: block;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #333;
+}
+
+.mypage-wrapper:hover .dropdown-menu {
+  display: block;
+}

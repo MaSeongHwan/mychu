@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mychu</title>
-  <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="../src/styles/main.css">
 </head>
 <body>
   <header>
-    <a href="login.html" class="logo"></a>
+    <a href="main.html" class="logo"></a>
     <nav>
       <a href="/pages/index.html">홈</a>
       <a href="/pages/tv.html">TV 쇼</a>
@@ -17,13 +17,23 @@
       <a href="/pages/mylist.html">내가 찜한 리스트</a>
       <a href="/pages/contents.html">content</a>
     </nav>
-    </div>
-    <div class="header-right">
-    <input type="search" placeholder="검색" aria-label="검색" />
-    <button class="icon-button notification" aria-label="알림">
-        🔔<span class="badge">7</span>
-    </button>
     
+    <div class="header-right">
+      <button class="icon-button">
+        <img src="images/search_img.png" alt="검색">
+      </button>
+
+      <!-- 마이페이지 버튼 -->
+      <div class="mypage-wrapper">
+        <button class="icon-button" id="mypageButton">
+            <img src="images/mypage_img.png" alt="마이페이지">
+        </button>
+        <div class="dropdown-menu" id="mypageMenu">
+            <a href="mylist.html">내가 찜한 리스트</a>
+            <a href="#">설정</a>
+            <a href="login.html">로그아웃</a>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -86,4 +96,5 @@
     });
 </script>
 </body>
+<script src="../src/main.js"></script>
 </html>

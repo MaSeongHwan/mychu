@@ -141,12 +141,48 @@ body {
     margin-bottom: 20px;
 }
 
+/* 입력 필드와 버튼을 감싸는 div */
 .email-input-button {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  /* 이메일 입력창 */
+  .email-input-button input[type="email"] {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    color: white;
+    font-size: 16px;
+    width: 360px;
+    box-sizing: border-box;
+    outline: none;
+    text-align: left;
+  }
+  
+  .email-input-button input[type="email"]::placeholder {
+    color: #999;
+  }
+  
+  /* 버튼 */
+  .email-input-button .get-started-btn {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .email-input-button .get-started-btn:hover {
+    background-color: #f6121d;
+  }
 .input-field {
     width: 368px;
     height: 56px;

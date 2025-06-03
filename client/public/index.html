@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Clone</title>
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="../src/styles/index.css">
 </head>
 <body>
     <div class="landing-page">
@@ -12,27 +12,27 @@
             <div class="frame-48">
                 <div class="hero-image"></div>
                 <div class="hero-image-shadow"></div>
-                <button class="btn sign-in-btn">Sign In</button>
+                
             </div>
             <header class="header">
                 <div class="logo"></div>
                 <div class="combo-2">
-                    <div class="translate-button"> 로그인 </div>
-                    <button class="btn sign-in-btn-header"> 회원가입 </button>
+                    
+                    <button class="btn sign-in-btn-header"  onclick="location.href='login.html'"> 로그인 </button>
                 </div>
             </header>
             <div class="home-preview">
                 <div class="frame-16">
-                    <h1 class="hero-title">Unlimited movies, TV shows, and more</h1>
+                    <h1 class="hero-title">지금 바로 회원가입하고, 새로운 VOD 경험을 누려보세요!</h1>
                     <p class="hero-subtitle">Watch anywhere. Cancel anytime.</p>
                 </div>
                 <div class="email-signup">
                     <p class="signup-text">Ready to watch? Enter your email to create or restart your membership.</p>
                     <div class="email-input-button">
                         <div class="input-field">
-                            <span>Email address</span>
+                            <input type="email" placeholder="이메일을 입력하세요" />
                         </div>
-                        <button class="btn get-started-btn">Get Started</button>
+                        <button class="btn get-started-btn">시작하기</button>
                     </div>
                 </div>
             </div>
