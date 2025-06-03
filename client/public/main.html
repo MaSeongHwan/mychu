@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mychu</title>
+  <link rel="stylesheet" href="../src/styles/main.css">
+</head>
+<body>
+  <header>
+    <a href="main.html" class="logo"></a>
+    <nav>
+      <a href="/pages/index.html">홈</a>
+      <a href="/pages/tv.html">TV 쇼</a>
+      <a href="/pages/movie.html">영화</a>
+      <a href="/pages/trending.html">요즘 대세 콘텐츠</a>
+      <a href="/pages/mylist.html">내가 찜한 리스트</a>
+      <a href="/pages/contents.html">content</a>
+    </nav>
+    
+    <div class="header-right">
+      <button class="icon-button">
+        <img src="images/search_img.png" alt="검색">
+      </button>
+
+      <!-- 마이페이지 버튼 -->
+      <div class="mypage-wrapper">
+        <button class="icon-button" id="mypageButton">
+            <img src="images/mypage_img.png" alt="마이페이지">
+        </button>
+        <div class="dropdown-menu" id="mypageMenu">
+            <a href="mylist.html">내가 찜한 리스트</a>
+            <a href="#">설정</a>
+            <a href="login.html">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero"></div>
+
+<div class="section">
+  <h2>오늘의 인기작 Top 10</h2>
+  <div class="slider-container" id="top10-slider">  <!-- id 추가 -->
+    <div class="slider"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>소금님, 오늘은 따듯한 힐링 영화가 어울려요</h2>
+  <div class="slider-container" id="emotion-slider">  <!-- id 추가 -->
+    <div class="slider"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>최근 시청 콘텐츠</h2>
+  <div class="slider-container" id="recent-slider">  <!-- id 추가 -->
+    <div class="slider"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>비슷한 연령대가 시청중인 콘텐츠</h2>
+  <div class="slider-container" id="age-slider">  <!-- id 추가 -->
+    <div class="slider"></div>
+  </div>
+</div>
+
+<script>
+    async function loadRecommendations(type, elementId) {
+        try {
+            // URL을 /recommendations/random으로 수정
+            const response = await fetch(`http://127.0.0.1:8000/recommendations/random?type=${type}&count=10`);
+            const data = await response.json();
+            
+            const slider = document.querySelector(`#${elementId} .slider`);
+            slider.innerHTML = data.items.map(item => `
+                <div class="content-item">
+                    <img src="${item.poster_path || '#'}" alt="${item.asset_nm}">
+                    <h3>${item.asset_nm}</h3>
+                    <p>${item.genre || ''}</p>
+                    ${item.actr_disp ? `<p class="actors">${item.actr_disp}</p>` : ''}
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadRecommendations('movie', 'top10-slider');
+        loadRecommendations('drama', 'emotion-slider');
+        loadRecommendations(null, 'recent-slider');
+        loadRecommendations(null, 'age-slider');
+    });
+</script>
+</body>
+<script src="../src/main.js"></script>
+</html>

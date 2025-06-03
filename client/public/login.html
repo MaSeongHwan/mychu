@@ -8,46 +8,21 @@
 </head>
 <body>
     <div class="container">
-        <img src="../src/assets/netflix.png" alt="Netflix" class="logo">
+        <img src="/assets/netflix.png" alt="Netflix" class="logo">
         <div class="login-content">
-            <h1>Sign In</h1>
-            <form id="emailForm">
-                <input type="text" id='SignUpEmail' placeholder="Email or phone number">
-                <input type="password" id='SignUpPassword' placeholder="Password">
-                <button type="submit" id='SignUpButton'>회원가입</button>
-            </form>
-
-            <form id="phoneForm">
-                <div id="phoneInputSection">
-                    <input type="tel" id='phoneNumber' placeholder="전화번호 (예: +821012345678)" pattern="[+][0-9]{10,}">
-                    <div id="recaptcha-container"></div>
-                    <button type="submit" id='phoneSignUpButton'>인증번호 받기</button>
-                </div>
-                <div id="verificationSection" style="display: none;">
-                    <div class="verification-info">
-                        <p>인증번호가 전송되었습니다.</p>
-                        <p class="phone-number-display"></p>
-                    </div>
-                    <div class="verification-input">
-                        <input type="text" id='verificationCode' placeholder="SMS로 전송된 인증번호 6자리" maxlength="6">
-                        <div class="verification-buttons">
-                            <button type="button" id='verifyButton'>인증하기</button>
-                            <button type="button" id='resendButton'>인증번호 재전송</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <h1>로그인</h1>
+            
 
             <form id="signInForm">
-                <input type="text" id='SignInEmail' placeholder="Email or phone number">
-                <input type="password" id='SignInPassword' placeholder="Password">
+                <input type="text" id='SignInEmail' placeholder="이메일 또는 전화번호">
+                <input type="password" id='SignInPassword' placeholder="비밀번호">
                 <button type="submit" id='SignInButton'>로그인</button>
 
                 <div class="form-options">
                     <label>
-                        <input type="checkbox"> Remember me
+                        <input type="checkbox"> 자동로그인
                     </label>
-                    <a href="#" class="help-link">Need help?</a>
+                    <a href="#" class="help-link">도움이 필요하신가요?</a>
                 </div>
             </form>
 
@@ -62,7 +37,7 @@
                 linkEmailToPhoneUser,
                 checkEmailExists,
                 getCurrentUser
-            } from '../src/firebase/auth.js';
+            } from '/firebase/auth.js';
 
             import { 
                 RecaptchaVerifier,
@@ -189,7 +164,7 @@
                 }
             });
 
-            // 로그인
+            // 로그인 이벤트 리스너 부분 수정
             document.getElementById('signInForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const email = document.getElementById('SignInEmail').value;
@@ -197,9 +172,15 @@
 
                 try {
                     const user = await signInWithEmail(email, password);
-                    alert("로그인되었습니다!");
-                    window.location.href = '/client/public/index.html';
+                    if (user) {
+                        alert("로그인되었습니다!");
+                        // 절대 경로로 리디렉션 수정
+                        window.location.href = 'http://127.0.0.1:8000/main';
+                        // 또는
+                        // window.location.replace('/main');
+                    }
                 } catch (error) {
+                    console.error("로그인 실패:", error);
                     alert(error.message);
                 }
             });

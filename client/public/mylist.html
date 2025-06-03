@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>내가 찜한 리스트 - WellList</title>
+  
+  <link rel="stylesheet" href="../src/styles/main.css" />
+</head>
+<body>
+  <header>
+    <a href="main.html" class="logo"></a>
+    <nav>
+      <a href="/pages/index.html">홈</a>
+      <a href="/pages/tv.html">TV 쇼</a>
+      <a href="/pages/movie.html">영화</a>
+      <a href="/pages/trending.html">요즘 대세 콘텐츠</a>
+      <a href="/pages/mylist.html">내가 찜한 리스트</a>
+      <a href="/pages/contents.html">content</a>
+    </nav>
+    
+    <div class="header-right">
+      <button class="icon-button">
+        <img src="images/search_img.png" alt="검색">
+      </button>
+
+      <!-- 마이페이지 버튼 -->
+      <div class="mypage-wrapper">
+        <button class="icon-button" id="mypageButton">
+            <img src="images/mypage_img.png" alt="마이페이지">
+        </button>
+        <div class="dropdown-menu" id="mypageMenu">
+            <a href="mylist.html">내가 찜한 리스트</a>
+            <a href="#">설정</a>
+            <a href="login.html">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="mylist-section">
+      <h2>내가 찜한 콘텐츠</h2>
+      <div class="grid-list">
+        <div class="card"><img src="thumb1.jpg" alt="찜 콘텐츠 1" /></div>
+        <div class="card"><img src="thumb2.jpg" alt="찜 콘텐츠 2" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 3" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 4" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 5" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 6" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 7" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 8" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 9" /></div>
+        <div class="card"><img src="thumb3.jpg" alt="찜 콘텐츠 7" /></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../src/main.js"></script>
+  </body>
+  </html>

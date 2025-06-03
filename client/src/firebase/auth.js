@@ -25,7 +25,6 @@ const firebaseConfig = {
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const auth = getAuth();
 
 // 이메일 회원가입
 export async function signUpWithEmail(email, password) {
