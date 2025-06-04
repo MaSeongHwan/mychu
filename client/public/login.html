@@ -1,199 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix</title>
-    <link rel="stylesheet" href="../src/styles/login.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 - WellList</title>
+  <link rel="stylesheet" href="../src/styles/login.css">
 </head>
 <body>
+  <!-- Header -->
+  <header class="header">
     <div class="container">
-        <img src="/assets/netflix.png" alt="Netflix" class="logo">
-        <div class="login-content">
-            <h1>로그인</h1>
-            
-
-            <form id="signInForm">
-                <input type="text" id='SignInEmail' placeholder="이메일 또는 전화번호">
-                <input type="password" id='SignInPassword' placeholder="비밀번호">
-                <button type="submit" id='SignInButton'>로그인</button>
-
-                <div class="form-options">
-                    <label>
-                        <input type="checkbox"> 자동로그인
-                    </label>
-                    <a href="#" class="help-link">도움이 필요하신가요?</a>
-                </div>
-            </form>
-
-            <script type="module">
-            import {
-                signUpWithEmail,
-                signUpWithPhone,
-                confirmPhoneSignUp,
-                signInWithEmail,
-                linkPhoneNumberToEmailUser,
-                confirmPhoneLink,
-                linkEmailToPhoneUser,
-                checkEmailExists,
-                getCurrentUser
-            } from '/firebase/auth.js';
-
-            import { 
-                RecaptchaVerifier,
-                PhoneAuthProvider,
-                getAuth
-            } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-
-            const auth = getAuth(); // auth 객체 가져오기
-
-            let currentVerificationId = null;
-            let recaptchaVerifier = null;
-
-            // reCAPTCHA 초기화
-            function initializeRecaptcha() {
-                if (recaptchaVerifier) {
-                    recaptchaVerifier.clear();
-                }
-                
-                // Firebase 문서에 따라 auth 객체의 settings에 appVerificationDisabledForTesting 설정
-                // 테스트 시에만 사용하며, 실제 배포 시에는 제거하거나 false로 설정해야 합니다.
-                auth.settings.appVerificationDisabledForTesting = true;
-
-                recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                    'size': 'normal',
-                    'callback': (response) => {
-                        console.log("reCAPTCHA verified");
-                    },
-                    'expired-callback': () => {
-                        console.log("reCAPTCHA expired");
-                        initializeRecaptcha();
-                    }
-                });
-            }
-
-            // 페이지 로드 시 reCAPTCHA 초기화
-            window.addEventListener('load', () => {
-                initializeRecaptcha();
-            });
-
-            // 이메일 회원가입
-            document.getElementById('emailForm').addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const email = document.getElementById('SignUpEmail').value;
-                const password = document.getElementById('SignUpPassword').value;
-
-                try {
-                    const user = await signUpWithEmail(email, password);
-                    alert("회원가입이 완료되었습니다!");
-                } catch (error) {
-                    alert(error.message);
-                }
-            });
-
-            // 전화번호 회원가입 - 인증번호 요청
-            document.getElementById('phoneForm').addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const phoneNumber = document.getElementById('phoneNumber').value;
-
-                try {
-                    // 전화번호 형식 검증
-                    if (!phoneNumber.match(/^\+[0-9]{10,}$/)) {
-                        alert("올바른 전화번호 형식이 아닙니다. (예: +821012345678)");
-                        return;
-                    }
-
-                    // reCAPTCHA가 초기화되지 않았다면 다시 초기화
-                    if (!recaptchaVerifier) {
-                        initializeRecaptcha();
-                    }
-
-                    // verifyPhoneNumber 호출 전에 reCAPTCHA가 렌더링되고 확인될 때까지 기다립니다.
-                    // 테스트 환경에서는 appVerificationDisabledForTesting = true 덕분에 자동으로 확인됩니다.
-                    await recaptchaVerifier.verify();
-
-                    currentVerificationId = await signUpWithPhone(phoneNumber, recaptchaVerifier);
-                    console.log("인증번호 전송 성공:", currentVerificationId);
-                    
-                    // 인증번호 입력 섹션 표시
-                    document.getElementById('phoneInputSection').style.display = 'none';
-                    document.getElementById('verificationSection').style.display = 'block';
-                    
-                    // 전화번호 표시 업데이트
-                    document.querySelector('.phone-number-display').textContent = phoneNumber;
-                } catch (error) {
-                    console.error("인증번호 전송 실패:", error);
-                    alert(error.message);
-                    // 에러 발생 시 reCAPTCHA 재초기화
-                    initializeRecaptcha();
-                }
-            });
-
-            // 인증번호 확인
-            document.getElementById('verifyButton').addEventListener('click', async () => {
-                const verificationCode = document.getElementById('verificationCode').value;
-                
-                if (!verificationCode) {
-                    alert("인증번호를 입력해주세요.");
-                    return;
-                }
-
-                try {
-                    const user = await confirmPhoneSignUp(currentVerificationId, verificationCode);
-                    alert("회원가입이 완료되었습니다!");
-                    window.location.href = '/client/public/index.html';
-                } catch (error) {
-                    console.error("인증번호 확인 실패:", error);
-                    alert(error.message);
-                }
-            });
-
-            // 인증번호 재전송
-            document.getElementById('resendButton').addEventListener('click', async () => {
-                const phoneNumber = document.getElementById('phoneNumber').value;
-                
-                try {
-                    // reCAPTCHA 재초기화
-                    initializeRecaptcha();
-                    
-                    currentVerificationId = await signUpWithPhone(phoneNumber, recaptchaVerifier);
-                    alert("인증번호가 재전송되었습니다. SMS를 확인해주세요.");
-                } catch (error) {
-                    console.error("인증번호 재전송 실패:", error);
-                    alert(error.message);
-                }
-            });
-
-            // 로그인 이벤트 리스너 부분 수정
-            document.getElementById('signInForm').addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const email = document.getElementById('SignInEmail').value;
-                const password = document.getElementById('SignInPassword').value;
-
-                try {
-                    const user = await signInWithEmail(email, password);
-                    if (user) {
-                        alert("로그인되었습니다!");
-                        // 절대 경로로 리디렉션 수정
-                        window.location.href = 'http://127.0.0.1:8000/main';
-                        // 또는
-                        // window.location.replace('/main');
-                    }
-                } catch (error) {
-                    console.error("로그인 실패:", error);
-                    alert(error.message);
-                }
-            });
-            </script>            
-
-            <div class="signup-section">
-                <p>New to Netflix? <a href="#">Sign up now</a></p>
-                <small>
-                    This page is protected by Google reCAPTCHA to ensure you're not a bot. 
-                    <a href="#">Learn more.</a>
-                </small>
-            </div>
+      <div class="header-content">
+        <div class="header-left">
+          <a href="/" class="logo-link">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
+          </a>
         </div>
+        <div class="header-right">
+          <a href="sign.html" class="signup-link">회원가입</a>
+        </div>
+      </div>
     </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <h1 class="login-title">로그인</h1>
+            <p class="login-subtitle">WellList에서 무제한 콘텐츠를 즐겨보세요</p>
+          </div>
+
+          <form class="login-form" id="loginForm">
+            <div class="form-group">
+              <label for="contact" class="form-label">이메일 또는 전화번호</label>
+              <input 
+                type="text" 
+                id="contact" 
+                name="contact" 
+                class="form-input" 
+                placeholder="이메일 주소 또는 전화번호를 입력하세요"
+                required
+                autocomplete="username"
+              >
+              <div class="input-error" id="contactError"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">비밀번호</label>
+              <div class="password-input-container">
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  class="form-input" 
+                  placeholder="비밀번호를 입력하세요"
+                  required
+                  autocomplete="current-password"
+                >
+                <button type="button" class="password-toggle" id="passwordToggle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <div class="input-error" id="passwordError"></div>
+            </div>
+
+            <div class="form-options">
+              <label class="remember-label">
+                <input type="checkbox" id="rememberMe" name="rememberMe" class="checkbox-input">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">로그인 상태 유지</span>
+              </label>
+              <a href="#" class="forgot-password" id="forgotPassword">비밀번호를 잊으셨나요?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <span class="btn-text">로그인</span>
+              <div class="btn-loading" id="btnLoading">
+                <div class="spinner"></div>
+              </div>
+            </button>
+          </form>
+
+          <div class="login-footer">
+            <p class="signup-prompt">
+              아직 계정이 없으신가요? 
+              <a href="sign.html" class="signup-link-text">회원가입</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 비밀번호 찾기 모달 -->
+  <div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">비밀번호 찾기</h2>
+        <button type="button" class="modal-close" id="modalClose">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-description">가입하신 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.</p>
+        <form id="forgotPasswordForm">
+          <div class="form-group">
+            <label for="resetEmail" class="form-label">이메일 주소</label>
+            <input 
+              type="email" 
+              id="resetEmail" 
+              name="resetEmail" 
+              class="form-input" 
+              placeholder="이메일 주소를 입력하세요"
+              required
+            >
+          </div>
+          <button type="submit" class="modal-btn">재설정 링크 보내기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('loginForm');
+      const contactInput = document.getElementById('contact');
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('passwordToggle');
+      const loginBtn = document.querySelector('.login-btn');
+      const btnLoading = document.getElementById('btnLoading');
+      const forgotPasswordLink = document.getElementById('forgotPassword');
+      const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+      const modalClose = document.getElementById('modalClose');
+      const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+
+      // 비밀번호 표시/숨기기 토글
+      passwordToggle.addEventListener('click', function() {
+        togglePasswordVisibility(passwordInput, passwordToggle);
+      });
+
+      function togglePasswordVisibility(input, toggle) {
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        
+        const eyeIcon = toggle.querySelector('.eye-icon');
+        if (type === 'text') {
+          eyeIcon.innerHTML = `
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          `;
+        } else {
+          eyeIcon.innerHTML = `
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          `;
+        }
+      }
+
+      // 이메일/전화번호 유효성 검사
+      function validateContact(contact) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^01[0-9]-?[0-9]{4}-?[0-9]{4}$/;
+        
+        return emailRegex.test(contact) || phoneRegex.test(contact);
+      }
+
+      // 로그인 폼 제출 처리
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // 유효성 검사
+        let isValid = true;
+        
+        // 연락처 검사
+        if (!validateContact(contactInput.value)) {
+          showError('contactError', '올바른 이메일 주소 또는 전화번호를 입력하세요');
+          isValid = false;
+        } else {
+          clearError('contactError');
+        }
+
+        // 비밀번호 검사
+        if (passwordInput.value.length < 1) {
+          showError('passwordError', '비밀번호를 입력하세요');
+          isValid = false;
+        } else {
+          clearError('passwordError');
+        }
+
+        if (isValid) {
+          // 로딩 상태 표시
+          loginBtn.classList.add('loading');
+          btnLoading.style.display = 'block';
+          
+          // 실제 로그인 처리 (시뮬레이션)
+          setTimeout(() => {
+            alert('로그인 성공!');
+            loginBtn.classList.remove('loading');
+            btnLoading.style.display = 'none';
+            // 메인 페이지로 이동
+            window.location.href = '/';
+          }, 1500);
+        }
+      });
+
+      // 비밀번호 찾기 모달
+      forgotPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        forgotPasswordModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+
+      modalClose.addEventListener('click', function() {
+        forgotPasswordModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      });
+
+      forgotPasswordModal.addEventListener('click', function(e) {
+        if (e.target === forgotPasswordModal) {
+          forgotPasswordModal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+
+      // 비밀번호 찾기 폼 제출
+      forgotPasswordForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('resetEmail').value;
+        
+        if (email) {
+          alert(`${email}로 비밀번호 재설정 링크를 보냈습니다.`);
+          forgotPasswordModal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+          forgotPasswordForm.reset();
+        }
+      });
+
+      function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+
+      function clearError(elementId) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = '';
+        errorElement.style.display = 'none';
+      }
+
+      // 로고 클릭 시 홈으로 이동
+      const logoLink = document.querySelector('.logo-link');
+      logoLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/';
+      });
+
+      // Enter 키로 폼 제출
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !forgotPasswordModal.style.display) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
+    });
+  </script>
 </body>
-</html>
+</html> 로그인 html

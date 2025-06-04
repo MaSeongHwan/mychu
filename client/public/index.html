@@ -1,155 +1,370 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Clone</title>
-    <link rel="stylesheet" href="../src/styles/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 - WellList</title>
+  <link rel="stylesheet" href="../src/styles/index.css">
 </head>
 <body>
-    <div class="landing-page">
-        <section class="hero-section">
-            <div class="frame-48">
-                <div class="hero-image"></div>
-                <div class="hero-image-shadow"></div>
-                
-            </div>
-            <header class="header">
-                <div class="logo"></div>
-                <div class="combo-2">
-                    
-                    <button class="btn sign-in-btn-header"  onclick="location.href='login.html'"> 로그인 </button>
-                </div>
-            </header>
-            <div class="home-preview">
-                <div class="frame-16">
-                    <h1 class="hero-title">지금 바로 회원가입하고, 새로운 VOD 경험을 누려보세요!</h1>
-                    <p class="hero-subtitle">Watch anywhere. Cancel anytime.</p>
-                </div>
-                <div class="email-signup">
-                    <p class="signup-text">Ready to watch? Enter your email to create or restart your membership.</p>
-                    <div class="email-input-button">
-                        <div class="input-field">
-                            <input type="email" placeholder="이메일을 입력하세요" />
-                        </div>
-                        <button class="btn get-started-btn">시작하기</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="header-left">
+          <a href="/" class="logo-link">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
+          </a>
+        </div>
+        <div class="header-right">
+          <a href="login.html" class="login-link">로그인</a>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        <section class="blocks-section">
-            <div class="block">
-                <div class="headline-image">
-                    <div class="headline">
-                        <h2>Enjoy on your TV</h2>
-                        <p>Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</p>
-                    </div>
-                    <div class="screens-preview"></div>
-                </div>
-            </div>
-            <div class="block">
-                <div class="headline-image">
-                    <div class="screens-preview"></div>
-                    <div class="headline">
-                        <h2>Watch everywhere</h2>
-                        <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="block">
-                <div class="headline-image">
-                    <div class="headline">
-                        <h2>Create profiles for kids</h2>
-                        <p>Send kids on adventures with their favorite characters in a space made just for them—free with your membership.</p>
-                    </div>
-                    <div class="screens-preview"></div>
-                </div>
-            </div>
-            <div class="block">
-                <div class="headline-image">
-                    <div class="screens-preview">
-                        <div class="mobile-preview">
-                            <div class="stranger-things">Stranger Things</div>
-                            <div class="downloading">Downloading...</div>
-                        </div>
-                    </div>
-                    <div class="headline">
-                        <h2>Download your shows to watch offline</h2>
-                        <p>Watch on a plane, train, or submarine...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="signup-container">
+        <div class="signup-card">
+          <div class="signup-header">
+            <h1 class="signup-title">WellList에 오신 것을 환영합니다</h1>
+            <p class="signup-subtitle">무제한 영화, 드라마, 예능을 즐겨보세요</p>
+          </div>
 
-        <div class="home-sub-preview">
-            <div class="frame-21">
-                <div class="preview-image"></div>
-                <div class="frame-20">
-                    <div class="frame-19">
-                        <p>The Netflix you love for just $6.99.</p>
-                        <p>Get the Standard with ads plan.</p>
-                    </div>
-                    <div class="learn-more">Learn More</div>
-                </div>
+          <form class="signup-form" id="signupForm">
+            <div class="form-group">
+              <label for="contact" class="form-label">이메일 또는 전화번호</label>
+              <input 
+                type="text" 
+                id="contact" 
+                name="contact" 
+                class="form-input" 
+                placeholder="이메일 주소 또는 전화번호를 입력하세요"
+                required
+              >
+              <div class="input-error" id="contactError"></div>
             </div>
+
+            <div class="form-group">
+              <label for="name" class="form-label">이름</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-input" 
+                placeholder="이름을 입력하세요"
+                required
+              >
+              <div class="input-error" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">비밀번호</label>
+              <div class="password-input-container">
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  class="form-input" 
+                  placeholder="비밀번호를 입력하세요 (8자 이상)"
+                  required
+                >
+                <button type="button" class="password-toggle" id="passwordToggle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <div class="password-strength" id="passwordStrength"></div>
+              <div class="input-error" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+              <div class="password-input-container">
+                <input 
+                  type="password" 
+                  id="confirmPassword" 
+                  name="confirmPassword" 
+                  class="form-input" 
+                  placeholder="비밀번호를 다시 입력하세요"
+                  required
+                >
+                <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <div class="input-error" id="confirmPasswordError"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthdate" class="form-label">생년월일</label>
+              <input 
+                type="date" 
+                id="birthdate" 
+                name="birthdate" 
+                class="form-input" 
+                required
+              >
+              <div class="input-error" id="birthdateError"></div>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="agreeTerms" name="agreeTerms" class="checkbox-input" required>
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">
+                  <a href="#" class="terms-link">이용약관</a> 및 
+                  <a href="#" class="terms-link">개인정보처리방침</a>에 동의합니다
+                </span>
+              </label>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="agreeMarketing" name="agreeMarketing" class="checkbox-input">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">마케팅 정보 수신에 동의합니다 (선택)</span>
+              </label>
+            </div>
+
+            <button type="submit" class="signup-btn">
+              <span class="btn-text">회원가입</span>
+              <div class="btn-loading" id="btnLoading">
+                <div class="spinner"></div>
+              </div>
+            </button>
+          </form>
+
+          <div class="signup-footer">
+            <p class="login-prompt">
+              이미 계정이 있으신가요? 
+              <a href="login.html" class="login-link-text">로그인</a>
+            </p>
+          </div>
         </div>
 
-        <section class="faq-section">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-list">
-                <div class="faq-item">What is Netflix?</div>
-                <div class="faq-item">How much does Netflix cost?</div>
-                <div class="faq-item">Where can I watch?</div>
-                <div class="faq-item">How do I cancel?</div>
-                <div class="faq-item">What can I watch on Netflix?</div>
-                <div class="faq-item">Is Netflix good for kids?</div>
+        <div class="features-section">
+          <h2 class="features-title">WellList만의 특별한 혜택</h2>
+          <div class="features-grid">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+              <h3 class="feature-title">무제한 시청</h3>
+              <p class="feature-description">언제 어디서나 원하는 만큼 시청하세요</p>
             </div>
-            <div class="email-signup">
-                <p class="signup-text">Ready to watch? Enter your email to create or restart your membership.</p>
-                <div class="email-input-button">
-                    <div class="input-field">
-                        <span>Email address</span>
-                    </div>
-                    <button class="btn get-started-btn">Get Started</button>
-                </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </div>
+              <h3 class="feature-title">개인 맞춤 추천</h3>
+              <p class="feature-description">AI가 분석한 취향 맞춤 콘텐츠 추천</p>
             </div>
-        </section>
-
-        <footer class="footer">
-            <p>Questions? Call 1-844-505-2993</p>
-            <div class="footer-links">
-                <div class="link-group">
-                    <a href="#">FAQ</a>
-                    <a href="#">Investor Relations</a>
-                    <a href="#">Buy Gift Cards</a>
-                    <a href="#">Cookie Preferences</a>
-                    <a href="#">Legal Notices</a>
-                </div>
-                <div class="link-group">
-                    <a href="#">Help Center</a>
-                    <a href="#">Jobs</a>
-                    <a href="#">Ways to Watch</a>
-                    <a href="#">Corporate Information</a>
-                    <a href="#">Only on Netflix</a>
-                </div>
-                <div class="link-group">
-                    <a href="#">Account</a>
-                    <a href="#">Netflix Shop</a>
-                    <a href="#">Terms of Use</a>
-                    <a href="#">Contact Us</a>
-                    <a href="#">Do Not Sell or Share Personal Information</a>
-                </div>
-                <div class="link-group">
-                    <a href="#">Media Center</a>
-                    <a href="#">Redeem Gift Cards</a>
-                    <a href="#">Privacy</a>
-                    <a href="#">Speed Test</a>
-                    <a href="#">Ad Choices</a>
-                </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <h3 class="feature-title">멀티 디바이스</h3>
+              <p class="feature-description">TV, 스마트폰, 태블릿에서 자유롭게</p>
             </div>
-            <button class="btn language-selector">English</button>
-        </footer>
+          </div>
+        </div>
+      </div>
     </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 WellList. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">이용약관</a>
+          <a href="#">개인정보처리방침</a>
+          <a href="#">고객센터</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('signupForm');
+      const contactInput = document.getElementById('contact');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const passwordToggle = document.getElementById('passwordToggle');
+      const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+      const signupBtn = document.querySelector('.signup-btn');
+      const btnLoading = document.getElementById('btnLoading');
+
+      // 비밀번호 표시/숨기기 토글
+      passwordToggle.addEventListener('click', function() {
+        togglePasswordVisibility(passwordInput, passwordToggle);
+      });
+
+      confirmPasswordToggle.addEventListener('click', function() {
+        togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggle);
+      });
+
+      function togglePasswordVisibility(input, toggle) {
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        
+        const eyeIcon = toggle.querySelector('.eye-icon');
+        if (type === 'text') {
+          eyeIcon.innerHTML = `
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          `;
+        } else {
+          eyeIcon.innerHTML = `
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          `;
+        }
+      }
+
+      // 비밀번호 강도 체크
+      passwordInput.addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+      });
+
+      function checkPasswordStrength(password) {
+        const strengthIndicator = document.getElementById('passwordStrength');
+        let strength = 0;
+        let strengthText = '';
+        let strengthClass = '';
+
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        switch (strength) {
+          case 0:
+          case 1:
+            strengthText = '매우 약함';
+            strengthClass = 'very-weak';
+            break;
+          case 2:
+            strengthText = '약함';
+            strengthClass = 'weak';
+            break;
+          case 3:
+            strengthText = '보통';
+            strengthClass = 'medium';
+            break;
+          case 4:
+            strengthText = '강함';
+            strengthClass = 'strong';
+            break;
+          case 5:
+            strengthText = '매우 강함';
+            strengthClass = 'very-strong';
+            break;
+        }
+
+        strengthIndicator.textContent = password.length > 0 ? `비밀번호 강도: ${strengthText}` : '';
+        strengthIndicator.className = `password-strength ${strengthClass}`;
+      }
+
+      // 이메일/전화번호 유효성 검사
+      function validateContact(contact) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^01[0-9]-?[0-9]{4}-?[0-9]{4}$/;
+        
+        return emailRegex.test(contact) || phoneRegex.test(contact);
+      }
+
+      // 폼 제출 처리
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // 유효성 검사
+        let isValid = true;
+        
+        // 연락처 검사
+        if (!validateContact(contactInput.value)) {
+          showError('contactError', '올바른 이메일 주소 또는 전화번호를 입력하세요');
+          isValid = false;
+        } else {
+          clearError('contactError');
+        }
+
+        // 비밀번호 검사
+        if (passwordInput.value.length < 8) {
+          showError('passwordError', '비밀번호는 8자 이상이어야 합니다');
+          isValid = false;
+        } else {
+          clearError('passwordError');
+        }
+
+        // 비밀번호 확인 검사
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          showError('confirmPasswordError', '비밀번호가 일치하지 않습니다');
+          isValid = false;
+        } else {
+          clearError('confirmPasswordError');
+        }
+
+        // 이용약관 동의 검사
+        if (!document.getElementById('agreeTerms').checked) {
+          alert('이용약관에 동의해주세요');
+          isValid = false;
+        }
+
+        if (isValid) {
+          // 로딩 상태 표시
+          signupBtn.classList.add('loading');
+          btnLoading.style.display = 'block';
+          
+          // 실제 회원가입 처리 (시뮬레이션)
+          setTimeout(() => {
+            alert('회원가입이 완료되었습니다!');
+            signupBtn.classList.remove('loading');
+            btnLoading.style.display = 'none';
+            // 로그인 페이지로 이동
+            // window.location.href = 'login.html';
+          }, 2000);
+        }
+      });
+
+      function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+
+      function clearError(elementId) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = '';
+        errorElement.style.display = 'none';
+      }
+
+      // 로고 클릭 시 홈으로 이동
+      const logoLink = document.querySelector('.logo-link');
+      logoLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/';
+      });
+    });
+  </script>
 </body>
-</html> 
+</html>
