@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상견니 - WellList</title>
+  <link rel="stylesheet" href="../src/styles/contents.css">
+</head>
+<body>
+  <!-- Header 상단바!!-->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="header-left">
+          <a href="/" class="logo-link">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
+          </a>
+          <nav class="main-nav">
+            <a href="main.html" class="nav-link">홈</a>
+            <a href="/" class="nav-link">카테고리</a>
+            <a href="#" class="nav-link">영화</a>
+            <a href="#" class="nav-link">드라마</a>
+            <a href="#" class="nav-link">예능</a>
+            <a href="mylist.html" class="nav-link">마이페이지</a>
+          </nav>
+        </div>
+
+        <div class="header-right">
+          <div class="search-container">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="콘텐츠 검색..." class="search-input">
+          </div>
+          <button class="icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+            </svg>
+          </button>
+          <div class="user-menu-container">
+            <button class="icon-button user-menu-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <div class="user-dropdown">
+              <div class="dropdown-header">
+                <span class="user-name">사용자님</span>
+                <span class="user-email">user@example.com</span>
+              </div>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/mypage.html" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    마이페이지
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    내가 찜한 리스트
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    설정
+                  </a>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    로그아웃
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 히어로 섹션 -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-poster">
+          <div class="poster-container">
+            <img src="https://via.placeholder.com/300x450" alt="상견니 포스터" class="poster-image">
+            <div class="poster-glow"></div>
+          </div>
+        </div>
+        <div class="hero-info">
+          <div class="content-meta">
+            <span class="meta-badge">2023</span>
+            <span class="meta-badge">107분</span>
+            <span class="meta-badge genre">SF/판타지</span>
+            <span class="meta-badge rating">15+</span>
+          </div>
+          <h1 class="content-title">햄부기</h1>
+          
+      
+          
+          <!-- 감정 태그 -->
+          <div class="emotion-tags">
+            <span class="emotion-tag heart">💕 설렘</span>
+            <span class="emotion-tag mystery">🌟 로맨틱</span>
+            <span class="emotion-tag time">⏰ 시간여행</span>
+            <span class="emotion-tag tear">😢 감동</span>
+          </div>
+
+          <p class="content-synopsis">
+            2009년, 카일이와 '황위쉰'은 광화문 미진에서 우연히 재회한다. 처음 만났지만 마치 오래전부터 알고 있었던 것 같은 기시감과 묘한 설렘을 느끼는 두 사람. 이들은 사계절을 함께 보내며 가까워지고, 2010년의 마지막 날, 광화문 미진에서 돈가스와 들기름 막국수를 나눠먹기로 한다.
+          </p>
+
+          <!-- 주요 출연 배우 -->
+          <div class="cast-section">
+            <h3 class="cast-title">주요 출연</h3>
+            <div class="cast-list">
+              <div class="cast-item">
+                <div class="cast-avatar">
+                  
+                </div>
+                <div class="cast-info">
+                  <span class="cast-name">김카일</span>
+                  
+                </div>
+              </div>
+              <div class="cast-item">
+                <div class="cast-avatar">
+                  
+                </div>
+                <div class="cast-info">
+                  <span class="cast-name">죠나단 죠스타</span>
+                  
+                </div>
+              </div>
+              <div class="cast-item">
+                <div class="cast-avatar">
+                  
+                </div>
+                <div class="cast-info">
+                  <span class="cast-name">제이슨 장</span>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="action-buttons">
+            <button class="play-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              재생하기
+            </button>
+
+            <button class="wishlist-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+              찜하기
+            </button>
+            
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="main-content">
+    <div class="container">
+      <!-- 관련 상품 섹션 -->
+      <section class="related-products">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            '상견니' 관련 상품
+          </h2>
+          <p class="section-subtitle">영화 속 아이템과 굿즈를 만나보세요</p>
+        </div>
+        
+        <!-- 슬라이더 컨테이너 -->
+        <div class="products-slider">
+          <!-- 이전/다음 버튼 -->
+          <button class="slider-btn prev-btn" onclick="slideProducts('prev')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          
+          <button class="slider-btn next-btn" onclick="slideProducts('next')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+
+          <!-- 상품 그리드 (슬라이드 가능) -->
+          <div class="products-track">
+          <!-- 상품 1 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/280x280" alt="대만 여행 패키지">
+              <div class="product-overlay">
+                <button class="quick-view-btn">빠른 보기</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-vendor">여행굿즈</div>
+              <h3 class="product-name">대만 여행 패키지</h3>
+              <div class="product-price">
+                  <span class="final-price">20,000원</span>
+              </div>
+              <div class="product-rating">
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">무료배송</span>
+                <span class="product-tag">당일발송</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 2 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/280x280" alt="맥북">
+              <div class="product-badge new">신상</div>
+              <div class="product-overlay">
+                <button class="quick-view-btn">빠른 보기</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-vendor">드라마굿즈</div>
+              <h3 class="product-name">카일이의 맥북</h3>
+              <div class="product-price">
+                <span class="final-price">1,000,000,000원</span>
+              </div>
+              <div class="product-rating">
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">한정판</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 3 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/280x280" alt="카페 원두 세트">
+              <div class="product-badge sale">특가</div>
+              <div class="product-overlay">
+                <button class="quick-view-btn">빠른 보기</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-vendor">아아 한잔 주세요</div>
+              <h3 class="product-name">카페 수 아이스아메리카노</h3>
+              <div class="product-price">
+                  <span class="final-price">40,000원</span>
+              </div>
+              <div class="product-rating">
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">무료배송</span>
+                <span class="product-tag">베스트</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 4 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/280x280" alt="OST 앨범">
+              <div class="product-overlay">
+                <button class="quick-view-btn">빠른 보기</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-vendor">뮤직스토어</div>
+              <h3 class="product-name">상견니 OST 앨범 </h3>
+              <div class="product-price">
+                <span class="final-price">28,000원</span>
+              </div>
+              <div class="product-rating">
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">예약판매</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 5 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img src="https://via.placeholder.com/280x280" alt="맥북">
+              <div class="product-badge new">신상</div>
+              <div class="product-overlay">
+                <button class="quick-view-btn">빠른 보기</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-vendor">드라마굿즈</div>
+              <h3 class="product-name">카일이의 맥북</h3>
+              <div class="product-price">
+                <span class="final-price">1,000,000,000원</span>
+              </div>
+              <div class="product-rating">
+                <div class="stars">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">한정판</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+            <!-- 슬라이더 인디케이터 -->
+        <div class="slider-indicators">
+          <span class="indicator active" onclick="goToSlide(0)"></span>
+          <span class="indicator" onclick="goToSlide(1)"></span>
+          <span class="indicator" onclick="goToSlide(2)"></span>
+        </div>
+      </div>
+      </section>
+
+      <!-- 비슷한 콘텐츠 섹션 -->
+      <section class="similar-content">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+              <line x1="7" y1="2" x2="7" y2="22"></line>
+              <line x1="17" y1="2" x2="17" y2="22"></line>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <line x1="2" y1="7" x2="7" y2="7"></line>
+              <line x1="2" y1="17" x2="7" y2="17"></line>
+              <line x1="17" y1="17" x2="22" y2="17"></line>
+              <line x1="17" y1="7" x2="22" y2="7"></line>
+            </svg>
+            비슷한 콘텐츠
+          </h2>
+          <p class="section-subtitle">이런 작품도 좋아하실 거예요</p>
+        </div>
+        
+        <div class="content-slider">
+          <div class="content-grid">
+            <!-- 콘텐츠 1 -->
+            <div class="content-item">
+              <div class="item-poster">
+                <img src="https://via.placeholder.com/200x300" alt="사랑의 불시착" class="poster-image">
+                <div class="item-overlay">
+                  <button class="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button class="wishlist-btn" title="찜하기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">사랑의 불시착</h3>
+                <div class="item-meta">
+                  <span class="item-genre">로맨스</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 콘텐츠 2 -->
+            <div class="content-item">
+              <div class="item-poster">
+                <img src="https://via.placeholder.com/200x300" alt="도깨비" class="poster-image">
+                <div class="item-overlay">
+                  <button class="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button class="wishlist-btn" title="찜하기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">도깨비</h3>
+                <div class="item-meta">
+                  <span class="item-genre">판타지</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 콘텐츠 3 -->
+            <div class="content-item">
+              <div class="item-poster">
+                <img src="https://via.placeholder.com/200x300" alt="스물다섯 스물하나" class="poster-image">
+                <div class="item-overlay">
+                  <button class="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button class="wishlist-btn" title="찜하기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">스물다섯 스물하나</h3>
+                <div class="item-meta">
+                  <span class="item-genre">로맨스</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 콘텐츠 4 -->
+            <div class="content-item">
+              <div class="item-poster">
+                <img src="https://via.placeholder.com/200x300" alt="우리들의 블루스" class="poster-image">
+                <div class="item-overlay">
+                  <button class="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button class="wishlist-btn" title="찜하기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">우리들의 블루스</h3>
+                <div class="item-meta">
+                  <span class="item-genre">드라마</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 콘텐츠 5 -->
+            <div class="content-item">
+              <div class="item-poster">
+                <img src="https://via.placeholder.com/200x300" alt="이상한 변호사 우영우" class="poster-image">
+                <div class="item-overlay">
+                  <button class="play-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button class="wishlist-btn" title="찜하기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">이상한 변호사 우영우</h3>
+                <div class="item-meta">
+                  <span class="item-genre">드라마</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 사용자 메뉴 드롭다운 토글
+      const userMenuButton = document.querySelector('.user-menu-button');
+      const userDropdown = document.querySelector('.user-dropdown');
+      
+      if (userMenuButton && userDropdown) {
+        userMenuButton.addEventListener('mouseenter', function() {
+          userDropdown.classList.add('show');
+        });
+        
+        const userMenuContainer = document.querySelector('.user-menu-container');
+        userMenuContainer.addEventListener('mouseleave', function() {
+          userDropdown.classList.remove('show');
+        });
+      }
+
+      // 재생 버튼 기능
+      const playButton = document.querySelector('.play-button');
+      playButton.addEventListener('click', function() {
+        alert('상견니 재생을 시작합니다.');
+      });
+
+      // 찜하기 버튼 기능
+      const wishlistBtn = document.querySelector('.wishlist-btn');
+      let isWishlisted = false;
+      
+      wishlistBtn.addEventListener('click', function() {
+        isWishlisted = !isWishlisted;
+        const svg = this.querySelector('svg');
+        
+        if (isWishlisted) {
+          svg.setAttribute('fill', 'currentColor');
+          this.style.color = '#10b981';
+          alert('찜 목록에 추가되었습니다.');
+        } else {
+          svg.setAttribute('fill', 'none');
+          this.style.color = '';
+          alert('찜 목록에서 제거되었습니다.');
+        }
+      });
+
+      
+
+      // 상품 카드 호버 효과
+      const productCards = document.querySelectorAll('.product-card');
+      productCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // 빠른 보기 버튼 기능
+      const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+      quickViewBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+          alert(`${productName} 상품 상세보기`);
+        });
+      });
+
+      // 콘텐츠 아이템 클릭 기능
+      const contentItems = document.querySelectorAll('.content-item');
+      contentItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const title = this.querySelector('.item-title').textContent;
+          alert(`${title} 상세페이지로 이동합니다.`);
+        });
+      });
+
+      // 콘텐츠 아이템 버튼 기능
+      const playBtns = document.querySelectorAll('.content-item .play-btn');
+      const wishlistBtns = document.querySelectorAll('.content-item .wishlist-btn');
+
+      playBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const title = this.closest('.content-item').querySelector('.item-title').textContent;
+          alert(`${title} 재생을 시작합니다.`);
+        });
+      });
+
+      wishlistBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const title = this.closest('.content-item').querySelector('.item-title').textContent;
+          const svg = this.querySelector('svg');
+          
+          if (svg.getAttribute('fill') === 'currentColor') {
+            svg.setAttribute('fill', 'none');
+            this.style.color = '';
+            alert(`${title}을(를) 찜 목록에서 제거했습니다.`);
+          } else {
+            svg.setAttribute('fill', 'currentColor');
+            this.style.color = '#10b981';
+            alert(`${title}을(를) 찜 목록에 추가했습니다.`);
+          }
+        });
+      });
+
+      // 로고 클릭 시 홈으로 이동
+      const logoLink = document.querySelector('.logo-link');
+      logoLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/';
+      });
+
+      //
+      let currentSlide = 0;
+      const cardsPerView = window.innerWidth <= 768 ? 1 : 2; // 모바일에서는 1개, 데스크톱에서는 2개씩
+      const totalCards = document.querySelectorAll('.product-card').length;
+      const maxSlides = Math.ceil(totalCards / cardsPerView) - 1;
+
+      function slideProducts(direction) {
+        const track = document.querySelector('.products-track');
+        const cardWidth = document.querySelector('.product-card').offsetWidth + 24; // 카드 너비 + gap
+        
+        if (direction === 'next') {
+          currentSlide = currentSlide >= maxSlides ? 0 : currentSlide + 1;
+        } else {
+          currentSlide = currentSlide <= 0 ? maxSlides : currentSlide - 1;
+        }
+        
+        const translateX = -currentSlide * cardWidth * cardsPerView;
+        track.style.transform = `translateX(${translateX}px)`;
+        
+        updateIndicators();
+      }
+
+      function goToSlide(slideIndex) {
+        currentSlide = slideIndex;
+        const track = document.querySelector('.products-track');
+        const cardWidth = document.querySelector('.product-card').offsetWidth + 24;
+        const translateX = -currentSlide * cardWidth * cardsPerView;
+        
+        track.style.transform = `translateX(${translateX}px)`;
+        updateIndicators();
+      }
+
+      function updateIndicators() {
+        const indicators = document.querySelectorAll('.indicator');
+        indicators.forEach((indicator, index) => {
+          indicator.classList.toggle('active', index === currentSlide);
+        });
+      }
+
+      // 더보기 버튼 기능
+      const viewMoreBtns = document.querySelectorAll('.view-more-button');
+      viewMoreBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const section = this.closest('section');
+          const sectionTitle = section.querySelector('.section-title').textContent.trim();
+          alert(`${sectionTitle} 전체보기 페이지로 이동합니다.`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+          

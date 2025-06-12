@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>콘텐츠 평가 - WellList</title>
+  <link rel="stylesheet" href="../src/styles/rating.css">
+</head>
+<body>
+  <!-- 기존 페이지 콘텐츠 (예시) -->
+  <div class="page-content">
+    <div class="container">
+      
+      <p>임시....페이지</p>
+      
+      <!-- 테스트용 버튼 -->
+      <button class="test-button" onclick="showRatingModal('상견니', 'https://via.placeholder.com/120x180')">
+        평가 모달 테스트 (상견니)
+      </button>
+    </div>
+  </div>
+
+  <!-- 평가 모달 -->
+  <div class="rating-modal-overlay" id="ratingModalOverlay">
+    <div class="rating-modal">
+      <div class="modal-header">
+        <div class="completion-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2 class="modal-title">시청 완료!</h2>
+        <p class="modal-subtitle">콘텐츠는 어떠셨나요?</p>
+      </div>
+
+      <div class="content-info">
+        <div class="content-poster">
+          <img id="modalContentPoster" src="/placeholder.svg" alt="" class="poster-image">
+        </div>
+        <div class="content-details">
+          <h3 id="modalContentTitle" class="content-title"></h3>
+          <p class="content-message">시청해 주셔서 감사합니다!</p>
+        </div>
+      </div>
+
+      <div class="rating-section">
+        <h3 class="rating-title">이 작품을 평가해 주세요</h3>
+        <div class="rating-options">
+          <button class="rating-option excellent" data-rating="excellent">
+            <div class="rating-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              </svg>
+            </div>
+            <span class="rating-text">최고예요</span>
+            <span class="rating-description">정말 재미있었어요!</span>
+          </button>
+
+          <button class="rating-option good" data-rating="good">
+            <div class="rating-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 15h8"></path>
+                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              </svg>
+            </div>
+            <span class="rating-text">좋아요</span>
+            <span class="rating-description">괜찮았어요</span>
+          </button>
+
+          <button class="rating-option poor" data-rating="poor">
+            <div class="rating-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              </svg>
+            </div>
+            <span class="rating-text">별로예요</span>
+            <span class="rating-description">아쉬웠어요</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="skip-button" onclick="closeRatingModal()">
+          나중에 평가하기
+        </button>
+      </div>
+
+      <button class="close-button" onclick="closeRatingModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 평가 완료 토스트 -->
+  <div class="toast-notification" id="toastNotification">
+    <div class="toast-content">
+      <div class="toast-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <span class="toast-message">평가가 완료되었습니다!</span>
+    </div>
+  </div>
+
+  <script>
+    let currentContentTitle = '';
+    let currentContentPoster = '';
+
+    // 평가 모달 표시
+    function showRatingModal(title, posterUrl) {
+      currentContentTitle = title;
+      currentContentPoster = posterUrl;
+      
+      const overlay = document.getElementById('ratingModalOverlay');
+      const titleElement = document.getElementById('modalContentTitle');
+      const posterElement = document.getElementById('modalContentPoster');
+      
+      titleElement.textContent = title;
+      posterElement.src = posterUrl;
+      posterElement.alt = title;
+      
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      
+      // 모달 애니메이션
+      setTimeout(() => {
+        overlay.querySelector('.rating-modal').classList.add('animate-in');
+      }, 10);
+    }
+
+    // 평가 모달 닫기
+    function closeRatingModal() {
+      const overlay = document.getElementById('ratingModalOverlay');
+      const modal = overlay.querySelector('.rating-modal');
+      
+      modal.classList.remove('animate-in');
+      modal.classList.add('animate-out');
+      
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        modal.classList.remove('animate-out');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    // 평가 선택 처리
+    function handleRating(rating, ratingText) {
+      console.log(`평가: ${rating}, 콘텐츠: ${currentContentTitle}`);
+      
+      // 여기서 실제 평가 데이터를 서버로 전송
+      // submitRating(currentContentTitle, rating);
+      
+      // 모달 닫기
+      closeRatingModal();
+      
+      // 토스트 알림 표시
+      showToast(`"${currentContentTitle}"에 대한 평가가 완료되었습니다!`);
+      
+      // 추천 시스템 업데이트 (실제 구현에서는 서버 호출)
+      updateRecommendations(rating);
+    }
+
+    // 토스트 알림 표시
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      const messageElement = toast.querySelector('.toast-message');
+      
+      messageElement.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // 추천 시스템 업데이트 (예시)
+    function updateRecommendations(rating) {
+      console.log(`추천 시스템 업데이트: ${rating} 평가 반영`);
+      // 실제 구현에서는 사용자 선호도 분석 및 추천 알고리즘 업데이트
+    }
+
+    // 이벤트 리스너 설정
+    document.addEventListener('DOMContentLoaded', function() {
+      // 평가 옵션 클릭 이벤트
+      const ratingOptions = document.querySelectorAll('.rating-option');
+      ratingOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          const rating = this.getAttribute('data-rating');
+          const ratingText = this.querySelector('.rating-text').textContent;
+          
+          // 선택 효과
+          this.classList.add('selected');
+          
+          // 다른 옵션들 비활성화
+          ratingOptions.forEach(opt => {
+            if (opt !== this) {
+              opt.style.opacity = '0.5';
+              opt.style.pointerEvents = 'none';
+            }
+          });
+          
+          // 잠시 후 평가 처리
+          setTimeout(() => {
+            handleRating(rating, ratingText);
+          }, 500);
+        });
+      });
+
+      // 모달 외부 클릭 시 닫기
+      document.getElementById('ratingModalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeRatingModal();
+        }
+      });
+
+      // ESC 키로 모달 닫기
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          const overlay = document.getElementById('ratingModalOverlay');
+          if (overlay.classList.contains('show')) {
+            closeRatingModal();
+          }
+        }
+      });
+    });
+
+    // 실제 사용 예시: 콘텐츠 시청 완료 시 호출
+    function onContentWatchComplete(contentTitle, posterUrl) {
+      // 시청 완료 후 잠시 대기 후 평가 모달 표시
+      setTimeout(() => {
+        showRatingModal(contentTitle, posterUrl);
+      }, 1000);
+    }
+
+    // 시뮬레이션: 5초 후 자동으로 평가 모달 표시 (테스트용)
+    // setTimeout(() => {
+    //   onContentWatchComplete('상견니', 'https://via.placeholder.com/120x180');
+    // }, 5000);
+  </script>
+</body>
+</html>

@@ -80,17 +80,18 @@
     margin-top: 5rem;
     padding: 2rem 0;
     min-height: calc(100vh - 5rem);
+
+    
   }
-  
+  /* Signup container - MODIFIED to center the form */
   .signup-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
   }
   
+
   @media (min-width: 1024px) {
     .signup-container {
       grid-template-columns: 1fr 1fr;
@@ -146,6 +147,7 @@
   }
   
   .form-input {
+    width: 100%;
     padding: 0.75rem 1rem;
     background-color: #374151;
     border: 1px solid #4b5563;
@@ -168,6 +170,8 @@
   /* 비밀번호 입력 컨테이너 */
   .password-input-container {
     position: relative;
+    display: flex;
+    align-items: center;
   }
   
   .password-toggle {
@@ -342,58 +346,6 @@
     text-decoration: underline;
   }
   
-  /* 특징 섹션 */
-  .features-section {
-    background-color: #1f2937;
-    border-radius: 1rem;
-    padding: 2rem;
-    height: fit-content;
-  }
-  
-  .features-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #e5e7eb;
-  }
-  
-  .features-grid {
-    display: grid;
-    gap: 2rem;
-  }
-  
-  .feature-item {
-    text-align: center;
-  }
-  
-  .feature-icon {
-    width: 3rem;
-    height: 3rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-  }
-  
-  .feature-icon svg {
-    color: white;
-  }
-  
-  .feature-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #e5e7eb;
-  }
-  
-  .feature-description {
-    color: #9ca3af;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
   
   /* 푸터 */
   .footer {
