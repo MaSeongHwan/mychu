@@ -1,0 +1,84 @@
+import { API_BASE_URL } from './config.js';
+import { renderSlider } from '../components/Recommendations.js';
+
+/**
+ * 테스트 추천 API를 사용하여 모든 슬라이더를 초기화하는 함수
+ * 각 슬라이더마다 다른 파라미터로 API를 호출하여 서로 다른 콘텐츠를 표시
+ */
+export async function initRecommendationsWithTest() {
+  console.log('테스트 추천 API로 슬라이더 초기화 시작');
+    // 오늘의 인기작 슬라이더 초기화 - 액션/스릴러 장르로 필터링
+  try {
+    console.log(`테스트 추천 엔드포인트 호출 - 인기작: ${API_BASE_URL}/recommendation/test?n=10&is_adult=false&genre=액션`);
+    const topResponse = await fetch(`${API_BASE_URL}/recommendation/test?n=10&is_adult=false&genre=액션`);
+    
+    if (!topResponse.ok) {
+      console.error(`인기작 추천 API 에러: ${topResponse.status}`);
+      throw new Error(`서버 에러: ${topResponse.status}`);
+    }
+
+    const topData = await topResponse.json();
+    console.log('인기작 추천 데이터:', topData);
+    
+    const topItems = topData.items || [];
+    if (topItems.length > 0) {
+      renderSlider(document.getElementById('top-slider'), topItems);
+    } else {
+      document.querySelector('#top-slider .error-message').style.display = 'block';
+      document.querySelector('#top-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';
+    }
+  } catch (error) {
+    console.error('인기작 추천 데이터 로드 실패:', error);
+    document.querySelector('#top-slider .error-message').style.display = 'block';
+  }
+    // 감정 기반 추천 슬라이더 초기화 - 코미디/힐링 장르로 필터링
+  try {
+    console.log(`테스트 추천 엔드포인트 호출 - 감정 기반: ${API_BASE_URL}/recommendation/test?n=10&is_main=true&genre=코미디`);
+    const emoResponse = await fetch(`${API_BASE_URL}/recommendation/test?n=10&is_main=true&genre=코미디`);
+    
+    if (!emoResponse.ok) {
+      console.error(`감정 기반 추천 API 에러: ${emoResponse.status}`);
+      throw new Error(`서버 에러: ${emoResponse.status}`);
+    }
+
+    const emoData = await emoResponse.json();
+    console.log('감정 기반 추천 데이터:', emoData);
+    
+    const emoItems = emoData.items || [];
+    if (emoItems.length > 0) {
+      renderSlider(document.getElementById('emotion-slider'), emoItems);
+    } else {
+      document.querySelector('#emotion-slider .error-message').style.display = 'block';
+      document.querySelector('#emotion-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';
+    }
+  } catch (error) {
+    console.error('감정 기반 추천 데이터 로드 실패:', error);
+    document.querySelector('#emotion-slider .error-message').style.display = 'block';
+  }
+    // 최근 시청 콘텐츠 슬라이더 초기화 - 드라마 장르로 필터링
+  try {
+    console.log(`테스트 추천 엔드포인트 호출 - 최근 시청: ${API_BASE_URL}/recommendation/test?n=8&genre=드라마`);
+    const recentResponse = await fetch(`${API_BASE_URL}/recommendation/test?n=8&genre=드라마`);
+    
+    if (!recentResponse.ok) {
+      console.error(`최근 시청 추천 API 에러: ${recentResponse.status}`);
+      throw new Error(`서버 에러: ${recentResponse.status}`);
+    }
+
+    const recentData = await recentResponse.json();
+    console.log('최근 시청 추천 데이터:', recentData);
+    
+    const recentItems = recentData.items || [];
+    if (recentItems.length > 0) {
+      renderSlider(document.getElementById('recent-slider'), recentItems);
+    } else {
+      document.querySelector('#recent-slider .error-message').style.display = 'block';
+      document.querySelector('#recent-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';
+    }
+  } catch (error) {
+    console.error('최근 시청 추천 데이터 로드 실패:', error);
+    document.querySelector('#recent-slider .error-message').style.display = 'block';
+  }
+  
+  console.log('모든 슬라이더 초기화 완료');
+}

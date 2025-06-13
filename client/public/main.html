@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WellList - VOD 추천 시스템</title>
-  <link rel="stylesheet" href="../src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/index.css">
 </head>
 <body>
   <!-- Header -->
@@ -14,23 +15,22 @@
         <div class="header-left">
           <a href="/" class="logo-link">
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
-          </a>
-          <nav class="main-nav">
+          </a>          <nav class="main-nav">            
             <a href="#" class="nav-link">홈</a>
+            <a href="#" class="nav-link">카테고리</a>
             <a href="#" class="nav-link">영화</a>
             <a href="#" class="nav-link">드라마</a>
             <a href="#" class="nav-link">예능</a>
-            <a href="#" class="nav-link">내가 찜한 콘텐츠</a>
+            <a href="/mylist.html" class="nav-link">내가 찜한 콘텐츠</a>
           </nav>
-        </div>
-
-        <div class="header-right">
+        </div>        <div class="header-right">
           <div class="search-container">
             <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input type="text" placeholder="콘텐츠 검색..." class="search-input">
+            <div class="search-suggestions" id="search-suggestions"></div>
           </div>
           <button class="icon-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -49,10 +49,8 @@
               <div class="dropdown-header">
                 <span class="user-name">사용자님</span>
                 <span class="user-email">user@example.com</span>
-              </div>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#" class="dropdown-item">
+              </div>              <ul class="dropdown-menu">                <li>
+                  <a href="/mylist.html" class="dropdown-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                     </svg>
@@ -67,10 +65,8 @@
                     </svg>
                     설정
                   </a>
-                </li>
-                <li class="dropdown-divider"></li>
-                <li>
-                  <a href="#" class="dropdown-item">
+                </li>                <li class="dropdown-divider"></li>                <li>
+                  <a href="/login" class="dropdown-item" id="logout-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                       <polyline points="16 17 21 12 16 7"></polyline>
@@ -94,7 +90,7 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Header Section -->
   <section class="hero">
     <div class="hero-background">
       <img src="https://via.placeholder.com/1200x600" alt="스트레인저 씽즈 4" class="hero-image">
@@ -137,60 +133,69 @@
       </div>
     </div>
   </section>
-
   <!-- Content Categories -->
   <main class="main-content">
     <div class="container">
-      <!-- 지금 인기 있는 콘텐츠 -->
-      <section class="content-section">
+      <h2 class="content-heading">지금 인기 있는 콘텐츠</h2>      <!-- 오늘의 인기작 Top 10 슬라이더 섹션 -->
+      <section class="section" id="top-section">
         <div class="section-header">
-          <h3 class="section-title">지금 인기 있는 콘텐츠</h3>
+          <h2>오늘의 인기작</h2>
           <div class="section-controls">
-            <button class="control-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
             </button>
-            <button class="control-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
             </button>
           </div>
-        </div>
-
-        <div class="content-grid">
-          <div class="content-card">
-            <div class="card-image-container">
-              <img src="https://via.placeholder.com/200x300" alt="더 글로리" class="card-image">
-              <div class="card-overlay"></div>
-              <button class="play-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-              </button>
-            </div>
-            <div class="card-content">
-              <h4 class="card-title">더 글로리</h4>
-              <div class="card-meta">
-                <span>드라마</span>
-                <div class="card-rating">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon-small">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                  <span>4.9</span>
-                </div>
-              </div>
-            </div>
+        </div>        
+        <div class="slider" id="top-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
           </div>
-
-          <!-- 나머지 콘텐츠 카드들 (간결함을 위해 생략) -->
-          <!-- 실제 구현 시에는 이 부분에 나머지 카드들이 들어갑니다 -->
         </div>
       </section>
 
-      <!-- 다른 섹션들 (간결함을 위해 생략) -->
-      <!-- 실제 구현 시에는 이 부분에 나머지 섹션들이 들어갑니다 -->
+      <!-- 개인화된 추천 슬라이더 섹션 -->
+      <section class="section" id="emotion-section">
+        <div class="section-header">
+          <h2>소금님, 오늘은 따듯한 힐링 영화가 어울려요</h2>
+          <div class="section-controls">
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
+            </button>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="slider" id="emotion-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
+          </div>
+          <!-- 슬라이더 컨텐츠는 JavaScript로 동적 생성됩니다 -->
+        </div>
+      </section>
+
+      <!-- 최근 시청 콘텐츠 슬라이더 섹션 -->
+      <section class="section" id="recent-section">
+        <div class="section-header">
+          <h2>최근 시청 콘텐츠</h2>
+          <div class="section-controls">
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
+            </button>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="slider" id="recent-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -235,31 +240,35 @@
         <p>&copy; 2025 WellList. All rights reserved.</p>
       </div>
     </div>
-  </footer>
-
-  <script>
-    // 사용자 메뉴 드롭다운 토글
+  </footer>  <script type="module" src="../src/main.js"></script>  <script type="module">
+    import { initializeUserMenu, setupLogout } from '../src/components/UserMenu.js';
+    import { initializeSearch } from '../src/components/Search.js';
+    // 테스트 추천 API를 사용하는 새 함수 임포트
+    import { initRecommendationsWithTest } from '../src/api/recommendation_test.js';
+    
     document.addEventListener('DOMContentLoaded', function() {
-      const userMenuButton = document.querySelector('.user-menu-button');
-      const userDropdown = document.querySelector('.user-dropdown');
-      
-      // 드롭다운 메뉴 토글
-      userMenuButton.addEventListener('mouseenter', function() {
-        userDropdown.classList.add('show');
-      });
-      
-      // 드롭다운 메뉴 영역을 벗어나면 닫기
-      const userMenuContainer = document.querySelector('.user-menu-container');
-      userMenuContainer.addEventListener('mouseleave', function() {
-        userDropdown.classList.remove('show');
-      });
+      console.log('DOM 로드 완료, 초기화 시작');
       
       // 로고 클릭 시 홈으로 이동
       const logoLink = document.querySelector('.logo-link');
       logoLink.addEventListener('click', function(e) {
         e.preventDefault();
-        window.location.href = '/';
+        window.location.href = '/main.html';
       });
+      
+      // 향상된 검색 기능 초기화 - 자동완성 포함
+      initializeSearch();
+      console.log('검색 초기화 완료');
+
+      // 사용자 메뉴 초기화
+      initializeUserMenu();
+      setupLogout();
+
+      // 테스트 추천 API를 사용하여 모든 슬라이더 초기화
+      initRecommendationsWithTest();
+      console.log('테스트 추천 API로 콘텐츠 로드 시작');
+      
+      console.log('모든 초기화 완료');
     });
   </script>
 </body>

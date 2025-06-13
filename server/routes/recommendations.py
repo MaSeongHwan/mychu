@@ -1,39 +1,25 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from server.core.database import get_db
 from sqlalchemy.orm import Session
-from ..core.database import get_session
-from sqlalchemy import text
+import logging
+import random
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# 더미 데이터 설정
+DUMMY_MOVIES = [
+    {
+        "idx": i,
+        "asset_nm": f"영화 제목 {i}",
+        "poster_path": f"https://picsum.photos/300/450?random={i}",
+        "genre": "액션/드라마"
+    } for i in range(1, 11)
+]
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
-@router.get("/")
-def get_recommendations(
-    n: int = 10,
-    category: str = None,
-    db: Session = Depends(get_session)
-):
-    try:
-        where_clause = ""
-        if category == "movie":
-            where_clause = "WHERE a.genre IN ('영화', '액션/모험', '액션/어드벤쳐')"
-        elif category == "drama":
-            where_clause = "WHERE a.genre IN ('드라마', '미니시리즈', '주말연속극')"
-        
-        query = text(f"""
-            SELECT 
-                a.full_asset_id, 
-                a.asset_nm,
-                COALESCE(i.poster_path, '') as poster_path
-            FROM asset a
-            LEFT JOIN imagedb i ON a.full_asset_id = i.full_asset_id
-            {where_clause}
-            ORDER BY RANDOM() 
-            LIMIT :n
-        """)
-        
-        result = db.execute(query, {"n": n})
-        records = [dict(r) for r in result]
-        return {"items": records}
-        
-    except Exception as e:
-        print(f"Error: {e}")
-        raise
+# 레거시 추천 라우트는 server/api/routes/recommendation_test.py로 이전되었습니다.
+# /recommendations/top, /recommendations/emotion, /recommendations/recent 엔드포인트는
+# /recommendation/top, /recommendation/emotion, /recommendation/recent로 대체되었습니다.

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WellList - VOD 추천 시스템</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/index.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="header-left">
+          <a href="/" class="logo-link">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
+          </a>
+          <nav class="main-nav">            
+            <a href="#" class="nav-link">홈</a>
+            <a href="#" class="nav-link">카테고리</a>
+            <a href="#" class="nav-link">영화</a>
+            <a href="#" class="nav-link">드라마</a>
+            <a href="#" class="nav-link">예능</a>
+            <a href="/mylist.html" class="nav-link">내가 찜한 콘텐츠</a>
+          </nav>
+        </div>        <div class="header-right">
+          <div class="search-container">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="콘텐츠 검색..." class="search-input">
+            <div class="search-suggestions" id="search-suggestions"></div>
+          </div>
+          <button class="icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+            </svg>
+          </button>
+          <div class="user-menu-container">
+            <button class="icon-button user-menu-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            <div class="user-dropdown">
+              <div class="dropdown-header">
+                <span class="user-name">사용자님</span>
+                <span class="user-email">user@example.com</span>
+              </div>              <ul class="dropdown-menu">                <li>
+                  <a href="/mylist.html" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    내가 찜한 리스트
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    설정
+                  </a>
+                </li>                <li class="dropdown-divider"></li>                <li>
+                  <a href="/login" class="dropdown-item" id="logout-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    로그아웃
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button class="icon-button mobile-menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <section id="search-results" class="section">
+          <div class="section-header">
+            <h2>검색 결과</h2>
+          </div>
+          <div class="search-container" style="margin: 20px 0;">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="q" placeholder="콘텐츠 검색..." class="search-input">
+          </div>
+          <div id="results-grid" class="content-grid"></div>
+        </section>
+      </div>
+    </main>    <script type="module" src="../src/api/search_page.js"></script>
+
+    <!-- User Menu Script -->
+    <script type="module">
+      import { initializeUserMenu, setupLogout } from '../src/components/UserMenu.js';
+      import { initializeSearch } from '../src/components/Search.js';
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('검색 페이지 DOM 로드 완료');
+        
+        // 로고 클릭 시 홈으로 이동
+        const logoLink = document.querySelector('.logo-link');
+        logoLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = '/main.html';
+        });
+
+        // 검색 기능 초기화 - 자동완성 포함
+        initializeSearch();
+        console.log('검색 초기화 완료');
+
+        // 사용자 메뉴 초기화
+        initializeUserMenu();
+        setupLogout();
+        console.log('검색 페이지 초기화 완료');
+      });
+    </script>
+
