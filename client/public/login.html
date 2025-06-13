@@ -35,13 +35,13 @@
 
           <form class="login-form" id="loginForm">
             <div class="form-group">
-              <label for="contact" class="form-label">이메일 또는 전화번호</label>
+              <label for="contact" class="form-label">이메일</label>
               <input 
                 type="text" 
                 id="contact" 
                 name="contact" 
                 class="form-input" 
-                placeholder="이메일 주소 또는 전화번호를 입력하세요"
+                placeholder="이메일 주소를 입력하세요"
                 required
                 autocomplete="username"
               >
@@ -271,12 +271,7 @@
         errorElement.style.display = 'none';
       }
 
-      // 로고 클릭 시 홈으로 이동
-      const logoLink = document.querySelector('.logo-link');
-      logoLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = '/';
-      });
+      
 
       // Enter 키로 폼 제출
       document.addEventListener('keypress', function(e) {
