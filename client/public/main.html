@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WellList - VOD 추천 시스템</title>
   <link rel="stylesheet" href="/src/styles/main.css">
-  <link rel="stylesheet" href="/src/styles/index.css">
+  
 </head>
 <body>
   <!-- Header -->
@@ -15,16 +15,16 @@
         <div class="header-left">
           <a href="/" class="logo-link">
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
-          </a>          <nav class="main-nav">            
-            <a href="#" class="nav-link">홈</a>
+          </a>          
+          <nav class="main-nav">            
+            <a href="main.html" class="nav-link">홈</a>
             <a href="#" class="nav-link">카테고리</a>
             <a href="#" class="nav-link">영화</a>
             <a href="#" class="nav-link">드라마</a>
             <a href="#" class="nav-link">예능</a>
-            <a href="/mylist" class="nav-link">내가 찜한 콘텐츠</a>
+            
           </nav>
-        </div>        
-        <div class="header-right">
+        </div>        <div class="header-right">
           <div class="search-container">
             <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
@@ -33,7 +33,7 @@
             <input type="text" placeholder="콘텐츠 검색..." class="search-input">
             <div class="search-suggestions" id="search-suggestions"></div>
           </div>
-    
+
           <div class="user-menu-container">
             <button class="icon-button user-menu-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -45,10 +45,8 @@
               <div class="dropdown-header">
                 <span class="user-name">사용자님</span>
                 <span class="user-email">user@example.com</span>
-              </div>              
-              <ul class="dropdown-menu">                
-                <li>
-                  <a href="/mylist" class="dropdown-item">
+              </div>              <ul class="dropdown-menu">                <li>
+                  <a href="/mylist.html" class="dropdown-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                     </svg>
@@ -64,7 +62,7 @@
                     설정
                   </a>
                 </li>                <li class="dropdown-divider"></li>                <li>
-                  <a href="/" class="dropdown-item" id="logout-btn">
+                  <a href="/login" class="dropdown-item" id="logout-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                       <polyline points="16 17 21 12 16 7"></polyline>
@@ -125,7 +123,7 @@
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            내 목록
+            찜하기
           </button>
         </div>
       </div>
@@ -201,44 +199,12 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-column">
-          <h5 class="footer-title">서비스</h5>
-          <ul class="footer-links">
-            <li><a href="#">이용약관</a></li>
-            <li><a href="#">개인정보처리방침</a></li>
-            <li><a href="#">고객센터</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5 class="footer-title">콘텐츠</h5>
-          <ul class="footer-links">
-            <li><a href="#">영화</a></li>
-            <li><a href="#">드라마</a></li>
-            <li><a href="#">예능</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5 class="footer-title">계정</h5>
-          <ul class="footer-links">
-            <li><a href="#">내 계정</a></li>
-            <li><a href="#">구독 관리</a></li>
-            <li><a href="#">시청 기록</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5 class="footer-title">지원</h5>
-          <ul class="footer-links">
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">문의하기</a></li>
-            <li><a href="#">피드백</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
         <p>&copy; 2025 WellList. All rights reserved.</p>
       </div>
-    </div>
-  </footer>  <script type="module" src="/src/main.js"></script>  <script type="module">
+    </div>    
+  </footer>  
+  <script type="module" src="/src/main.js"></script>  
+  <script type="module">
     import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
     import { initializeSearch } from '/src/components/Search.js';
     // 테스트 추천 API를 사용하는 새 함수 임포트
