@@ -34,6 +34,7 @@ yarn-error.log*
 
 # 가상환경 파일 
 venv/
+.venv/
 node_modules/
 
 # 예외 (예제 파일은 Git에 포함)
