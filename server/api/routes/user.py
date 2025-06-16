@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import func
+from sqlalchemy import func,text
 from server.core.database import get_db
 from server.core.firebase_auth import init_firebase
 from server.models.user import User as UserModel, UserLog, MyList
 from server.api.schemas.user import User as UserSchema, UserCreate, UserRegister
-
 from firebase_admin import auth, exceptions as firebase_exceptions
 from datetime import datetime, date
 from typing import Optional
@@ -41,6 +40,20 @@ def is_adult(age_range: int) -> bool:
     return age_range >= 20
 
 router = APIRouter(tags=["users"])
+
+def fix_user_idx_sequence(db: Session):
+    """PostgreSQL 시퀀스를 현재 최대 user_idx 기준으로 보정합니다."""
+    try:
+        max_id = db.query(func.max(UserModel.user_idx)).scalar() or 0
+        sequence_name_result = db.execute(text("SELECT pg_get_serial_sequence('users', 'user_idx')"))
+        sequence_name = sequence_name_result.scalar()
+
+        db.execute(text(f"SELECT setval(:seq, :val, true)"), {"seq": sequence_name, "val": max_id + 1})
+        db.commit()
+        logger.info(f"✅ 시퀀스 보정 완료: {sequence_name} → {max_id + 1}")
+    except Exception as e:
+        db.rollback()
+        logger.error(f"❌ 시퀀스 보정 실패: {e}")
 
 # ------------------------ 기본 User API ------------------------
 
@@ -108,42 +121,48 @@ async def register_firebase_user(
     db: Session = Depends(get_db)
 ):
     # 토큰에서 추출한 UID와 요청 본문의 UID가 일치하는지 확인
-    # 클라이언트가 JWT로 인증했을 때, 해당 JWT 내부의 UID와 요청에 포함된 UID가 같아야 함
     if token_data['uid'] != user.sha2_hash:
-        raise HTTPException(status_code=401, detail="Token UID does not match request UID")    # 기존 사용자 확인
+        raise HTTPException(status_code=401, detail="Token UID does not match request UID")
+
+    # 기존 사용자 확인
     existing = db.query(UserModel).filter(UserModel.sha2_hash == user.sha2_hash).first()
     if existing:
         raise HTTPException(status_code=400, detail="User already exists")
-    
+
     # 생년월일이 문자열로 오면 Date 객체로 변환
     if isinstance(user.birth, str):
         try:
             user.birth = datetime.strptime(user.birth, "%Y-%m-%d").date()
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid birthdate format. Use YYYY-MM-DD")
-              # 나이대와 성인 여부 자동 계산
+
+    # 나이대와 성인 여부 자동 계산
     age_range = get_age_range(user.birth)
-    adult = is_adult(age_range)    # 새 사용자 객체 생성 (필요한 필드만 설정)
+    adult = is_adult(age_range)
+
+    # 새 사용자 객체 생성
     db_user = UserModel(
         sha2_hash=user.sha2_hash,
         age=age_range,
         created_at=datetime.now(),
         birth=user.birth,
         is_adult=adult,
-        sec_password=user.sec_password,  # UserRegister에서 가져옴
+        sec_password=user.sec_password,
         nick_name=user.nick_name
     )
-    
+
     try:
+        # 시퀀스 보정 후 다시 시도
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
+        logger.info("✅ 시퀀스 보정 후 재시도 성공")
         return db_user
-    except SQLAlchemyError:
+    except SQLAlchemyError as e2:
         db.rollback()
-        raise HTTPException(status_code=500, detail="Failed to create user")
+        logger.error(f"❌ 시퀀스 보정 후에도 실패: {str(e2)}")
+        raise HTTPException(status_code=500, detail="Failed to create user even after sequence fix")
 
-# 현재 사용자 정보 조회
 @router.get("/auth/me", response_model=UserSchema)
 async def get_current_user(
     token_data: dict = Depends(verify_firebase_token),
