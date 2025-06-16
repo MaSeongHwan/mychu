@@ -27,23 +27,30 @@ export async function signUpWithEmail(email, password, nickname, birthdate) {
     let userCredential = null;
     let user = null;
     try {
+        console.log("Firebase 회원가입 시도:", email);
+        
         // 1. Firebase Auth에 사용자 등록
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
         user = userCredential.user;
+        console.log("Firebase 사용자 생성 성공:", user.uid);
         
         // 2. ID 토큰(JWT) 가져오기 - 이것은 서버에 인증하기 위한 용도
         const idToken = await user.getIdToken();
         
         // 3. 백엔드 서버에 사용자 등록 - JWT 토큰으로 인증, UID는 사용자 식별용
         const payload = {
-            sha2_hash: user.uid, // 이것은 Firebase에서 제공하는 고유 사용자 ID (UID)
+            firebase_uid: user.uid,  // 백엔드에서 기대하는 필드명과 맞춤 (firebase_uid)
+            sha2_hash: user.uid,     // 중요: 백엔드는 이 필드도 필요할 수 있음
             email: email,
-            nick_name: nickname || email.split('@')[0],
-            birth: birthdate || null,
+            nickname: nickname || email.split('@')[0],  // 필드명 수정 (nick_name → nickname)
+            birthdate: birthdate || null,                // 필드명 수정 (birth → birthdate)
             terms_agreed_at: new Date().toISOString(),
             is_adult: false,
             sec_password: "0000"
         };
+        
+        console.log(`백엔드 회원가입 요청: ${API_BASE_URL}/users/auth/register`);
+        console.log("요청 데이터:", payload);
         
         const response = await fetch(`${API_BASE_URL}/users/auth/register`, {
             method: 'POST',
@@ -54,32 +61,86 @@ export async function signUpWithEmail(email, password, nickname, birthdate) {
             body: JSON.stringify(payload)
         });
         
-        // JSON 응답을 한 번만 파싱
+        // JSON 응답을 안전하게 파싱
         let responseJson;
         try {
-            responseJson = await response.json();
+            // Content-Type 확인
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                responseJson = await response.json();
+            } else {
+                const text = await response.text();
+                responseJson = { detail: text || "알 수 없는 서버 오류" };
+            }
         } catch (e) {
-            // JSON이 아닌 응답을 처리
-            throw new Error('서버 응답을 처리할 수 없습니다');
+            console.error("JSON 파싱 오류:", e);
+            responseJson = { detail: "서버 응답을 처리할 수 없습니다" };
         }
 
         if (!response.ok) {
-            throw new Error(responseJson.detail || '서버 등록 실패');
+            const errorMsg = responseJson.detail || '서버 등록 실패';
+            console.error("백엔드 등록 실패:", response.status, errorMsg);
+            throw new Error(errorMsg);
         }
 
         console.log("회원가입 성공:", responseJson);
-        return responseJson;
-    } catch (error) {
+        return responseJson;    } catch (error) {
         console.error("회원가입 실패:", error);
-        // Firebase Auth에서 생성된 사용자 삭제
-        if (user && error.code !== 'auth/email-already-in-use') {
+        
+        // 사용자가 더 이해하기 쉬운 오류 메시지로 변환
+        let betterErrorMessage;
+        
+        if (error.code) {
+            // Firebase 인증 관련 오류
+            switch(error.code) {
+                case 'auth/email-already-in-use':
+                    betterErrorMessage = '이미 사용 중인 이메일입니다.';
+                    break;
+                case 'auth/invalid-email':
+                    betterErrorMessage = '유효하지 않은 이메일 형식입니다.';
+                    break;
+                case 'auth/weak-password':
+                    betterErrorMessage = '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용해주세요.';
+                    break;
+                case 'auth/network-request-failed':
+                    betterErrorMessage = '네트워크 연결에 문제가 있습니다. 인터넷 연결을 확인해주세요.';
+                    break;
+                default:
+                    betterErrorMessage = `Firebase 오류: ${error.message || error.code}`;
+            }
+        } 
+        
+        // 서버에서 온 오류일 수도 있음
+        else if (error instanceof Error && error.message) {
+            betterErrorMessage = error.message;
+        }
+
+        else {
             try {
-                await user.delete();
-            } catch (deleteError) {
-                console.error("사용자 삭제 실패:", deleteError);
+                betterErrorMessage = JSON.stringify(error);
+            } catch {
+                betterErrorMessage = '알 수 없는 오류가 발생했습니다.';
             }
         }
-        throw error;
+        
+        // Firebase Auth에서 생성된 사용자 삭제 (이미 존재하는 이메일 경우 제외)
+        if (user && error.code !== 'auth/email-already-in-use') {
+            try {
+                console.log("Firebase 사용자 삭제 시도...");
+                await user.delete();
+                console.log("Firebase 사용자 삭제 성공");
+            } catch (deleteError) {
+                console.error("사용자 삭제 실패:", deleteError);
+                // 사용자 삭제 실패해도 계속 진행
+            }
+        }
+        
+        // 원본 오류 대신 더 나은 메시지를 가진 새 오류를 throw
+        const enhancedError = new Error(betterErrorMessage);
+        enhancedError.originalError = error;
+        throw enhancedError;
+        console.error("🔥 회원가입 실패 (디버깅용):", error, JSON.stringify(error, null, 2));
+
     }
 }
 
@@ -128,8 +189,7 @@ export async function signInWithEmail(email, password) {
                 displayName: user.displayName || email.split('@')[0]
             };
         }
-        
-        // 4. 데이터셋 정보 가져오기 (있는 경우) - 동일하게 JWT로 인증
+          // 4. 데이터셋 정보 가져오기 (있는 경우) - 동일하게 JWT로 인증
         try {
             console.log(`데이터셋 정보 요청: ${API_BASE_URL}/users/auth/${user.uid}/dataset`);
             const datasetResponse = await fetch(`${API_BASE_URL}/users/auth/${user.uid}/dataset`, {
@@ -139,11 +199,23 @@ export async function signInWithEmail(email, password) {
             });
 
             if (datasetResponse.ok) {
-                const datasetData = await datasetResponse.json();
-                if (datasetData) {
-                    userData.dataset = datasetData;
-                    console.log("데이터셋 정보 가져오기 성공:", datasetData);
+                const contentType = datasetResponse.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const datasetData = await datasetResponse.json();
+                    if (datasetData) {
+                        userData.dataset = datasetData;
+                        console.log("데이터셋 정보 가져오기 성공:", datasetData);
+                    } else {
+                        console.log("데이터셋 정보가 비어 있습니다.");
+                    }
+                } else {
+                    console.log("데이터셋 응답이 JSON 형식이 아닙니다.");
                 }
+            } else if (datasetResponse.status === 404) {
+                console.log("데이터셋 정보가 없습니다 (404)");
+                userData.dataset = null;
+            } else {
+                console.warn(`데이터셋 정보 가져오기 실패: ${datasetResponse.status}`);
             }
         } catch (datasetError) {
             console.error("데이터셋 정보 가져오기 실패:", datasetError);
@@ -158,49 +230,16 @@ export async function signInWithEmail(email, password) {
     }
 }
 
-// 이메일로 가입한 사용자가 전화번호 추가
-export async function linkPhoneNumberToEmailUser(user, phoneNumber, recaptchaVerifier) {
-    try {
-        const provider = new PhoneAuthProvider(auth);
-        const verificationId = await provider.verifyPhoneNumber(phoneNumber, recaptchaVerifier);
-        return verificationId;
-    } catch (error) {
-        console.error("전화번호 연동 요청 실패:", error.code, error.message);
-        throw error;
-    }
-}
-
-// 전화번호 인증 코드 확인 및 연동
-export async function confirmPhoneLink(user, verificationId, verificationCode) {
-    try {
-        const credential = PhoneAuthProvider.credential(verificationId, verificationCode);
-        await linkWithCredential(user, credential);
-        console.log("전화번호 연동 성공");
-        return true;
-    } catch (error) {
-        console.error("전화번호 연동 실패:", error.code, error.message);
-        throw error;
-    }
-}
-
-// 전화번호로 가입한 사용자가 이메일 추가
-export async function linkEmailToPhoneUser(user, email, password) {
-    try {
-        const credential = EmailAuthProvider.credential(email, password);
-        await linkWithCredential(user, credential);
-        console.log("이메일 연동 성공");
-        return true;
-    } catch (error) {
-        console.error("이메일 연동 실패:", error.code, error.message);
-        throw error;
-    }
-}
 
 // 이메일 중복 체크
 export async function checkEmailExists(email) {
     try {
         const methods = await fetchSignInMethodsForEmail(auth, email);
-        return methods.length > 0;
+        console.log("이메일에 사용 가능한 로그인 방식:", methods);
+        
+        // 이메일/비밀번호 방식으로 가입된 계정인지 확인
+        // 더 정확한 확인을 위해 "password" 메서드가 있는지 명시적으로 체크
+        return methods.includes("password");
     } catch (error) {
         console.error("이메일 체크 실패:", error.code, error.message);
         throw error;
@@ -254,9 +293,9 @@ async function fetchOrUpdateUserData(user) {
             }
 
             return userData;
-        }
-          // 사용자 정보가 없으면 새로 등록
+        }          // 사용자 정보가 없으면 새로 등록
         if (response.status === 404) {
+            console.log("사용자 정보 없음, 자동 등록 시도...");
             const registerResponse = await fetch(`${API_BASE_URL}/users/auth/register`, {
                 method: 'POST',
                 headers: {
@@ -265,9 +304,12 @@ async function fetchOrUpdateUserData(user) {
                 },
                 body: JSON.stringify({
                     firebase_uid: user.uid,
+                    sha2_hash: user.uid, // 두 필드 모두 포함하여 백엔드 호환성 보장
                     email: user.email,
                     nickname: user.displayName || user.email.split('@')[0],
-                    terms_agreed_at: new Date().toISOString()
+                    terms_agreed_at: new Date().toISOString(),
+                    is_adult: false,
+                    sec_password: "0000"
                 })
             });
 

@@ -21,9 +21,10 @@
             <a href="#" class="nav-link">영화</a>
             <a href="#" class="nav-link">드라마</a>
             <a href="#" class="nav-link">예능</a>
-            <a href="/mylist.html" class="nav-link">내가 찜한 콘텐츠</a>
+            <a href="/mylist" class="nav-link">내가 찜한 콘텐츠</a>
           </nav>
-        </div>        <div class="header-right">
+        </div>        
+        <div class="header-right">
           <div class="search-container">
             <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
@@ -32,12 +33,7 @@
             <input type="text" placeholder="콘텐츠 검색..." class="search-input">
             <div class="search-suggestions" id="search-suggestions"></div>
           </div>
-          <button class="icon-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-            </svg>
-          </button>
+    
           <div class="user-menu-container">
             <button class="icon-button user-menu-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -49,8 +45,10 @@
               <div class="dropdown-header">
                 <span class="user-name">사용자님</span>
                 <span class="user-email">user@example.com</span>
-              </div>              <ul class="dropdown-menu">                <li>
-                  <a href="/mylist.html" class="dropdown-item">
+              </div>              
+              <ul class="dropdown-menu">                
+                <li>
+                  <a href="/mylist" class="dropdown-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                     </svg>
@@ -66,7 +64,7 @@
                     설정
                   </a>
                 </li>                <li class="dropdown-divider"></li>                <li>
-                  <a href="/login" class="dropdown-item" id="logout-btn">
+                  <a href="/" class="dropdown-item" id="logout-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                       <polyline points="16 17 21 12 16 7"></polyline>
@@ -240,11 +238,11 @@
         <p>&copy; 2025 WellList. All rights reserved.</p>
       </div>
     </div>
-  </footer>  <script type="module" src="../src/main.js"></script>  <script type="module">
-    import { initializeUserMenu, setupLogout } from '../src/components/UserMenu.js';
-    import { initializeSearch } from '../src/components/Search.js';
+  </footer>  <script type="module" src="/src/main.js"></script>  <script type="module">
+    import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
+    import { initializeSearch } from '/src/components/Search.js';
     // 테스트 추천 API를 사용하는 새 함수 임포트
-    import { initRecommendationsWithTest } from '../src/api/recommendation_test.js';
+    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
     
     document.addEventListener('DOMContentLoaded', function() {
       console.log('DOM 로드 완료, 초기화 시작');

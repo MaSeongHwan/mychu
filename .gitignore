@@ -4,16 +4,13 @@ client/src/firebase/config.js
 
 # 환경 변수 파일
 .env
-client/.env
 **/.env.*
 
 # 캐시 및 컴파일된 파일
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Node.js 의존성
-node_modules/
+*.pyc
 
 # 로그 파일
 *.log
@@ -28,10 +25,6 @@ yarn-error.log*
 *.swp
 *.swo
 
-# 시스템 파일
-.DS_Store
-Thumbs.db
-
 # 보안 관련 파일
 *.pem
 *.key
@@ -39,8 +32,9 @@ Thumbs.db
 *credentials*.json
 *serviceAccount*.json
 
-# Python 가상환경
+# 가상환경 파일 
 venv/
+node_modules/
 
 # 예외 (예제 파일은 Git에 포함)
 !.env.example

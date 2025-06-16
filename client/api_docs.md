@@ -119,16 +119,6 @@ class Asset(Base):
     # ... 기타 필드
 ```
 
-### AssetImage 모델
-```python
-class AssetImage(Base):
-    __tablename__ = "asset_img"
-    
-    img_index = Column(Integer, primary_key=True)
-    full_asset_id = Column(Text, ForeignKey("asset.full_asset_id"))
-    poster_path = Column(Text)
-```
-
 ## 3. 성능 최적화
 
 ### 캐싱 전략

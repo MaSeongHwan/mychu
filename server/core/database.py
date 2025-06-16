@@ -26,10 +26,10 @@ def get_db():
         db.close()
 
 def init_db():
-    """데이터베이스 초기화 및 연결 테스트"""
+    """데이터베이스 초기화 및 연결 테스트"""    
     try:
         # Import models inside the function to avoid circular imports
-        from server.models.user import User
+        from server.models.user import User, UserLog, VodLog, MyList
         from server.models.asset import Asset
         from server.models.log import Product, ProductKeyword
         

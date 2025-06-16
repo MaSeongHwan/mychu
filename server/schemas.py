@@ -41,3 +41,13 @@ class UserRead(BaseModel):
 
     class Config:
         from_attributes = True
+        # 필드 명칭 매핑 추가 (user_idx → user_index)
+        json_schema_extra = {
+            "example": {
+                "user_index": 1,
+                "age_avg": 30,
+                "main_channels": "netflix",
+                "use_tms": 1,
+                "cnt": 10
+            }
+        }

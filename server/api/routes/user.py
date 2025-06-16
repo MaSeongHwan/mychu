@@ -8,7 +8,7 @@ from server.models.user import User as UserModel, UserLog, MyList
 from server.api.schemas.user import User as UserSchema, UserCreate, UserRegister
 
 from firebase_admin import auth, exceptions as firebase_exceptions
-from datetime import datetime, date, timezone
+from datetime import datetime, date
 from typing import Optional
 import re
 import logging
@@ -40,10 +40,7 @@ def is_adult(age_range: int) -> bool:
     # 만 20세(20~) 이상만 True
     return age_range >= 20
 
-router = APIRouter(
-    prefix="/users",
-    tags=["users"]
-)
+router = APIRouter(tags=["users"])
 
 # ------------------------ 기본 User API ------------------------
 

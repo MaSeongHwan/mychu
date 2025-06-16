@@ -67,15 +67,6 @@ CREATE TABLE asset (
 );
 ```
 
-#### imagedb 테이블
-```sql
-CREATE TABLE imagedb (
-    full_asset_id VARCHAR(100) PRIMARY KEY,
-    asset_nm TEXT,
-    poster_path TEXT
-);
-```
-
 ### 데이터 매핑
 
 #### 컨텐츠 카드 컴포넌트

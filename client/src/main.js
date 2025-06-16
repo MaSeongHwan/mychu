@@ -1,4 +1,4 @@
-<script src="../src/main.js"></script>
+// main.js 파일
 
 const sliderConfigs = [
   { selector: '오늘의 인기작', type: 'movie' },
@@ -12,25 +12,29 @@ sliderConfigs.forEach(cfg => {
   );
   const slider = section?.querySelector('.slider');
   if (!slider) return;
-//   fetch(`http://localhost:8000/recommendations/random?count=10&type=${cfg.type}`)
-//     .then(res => res.json())
-//     .then(data => {
-//       slider.innerHTML = '';
-//       data.forEach(item => {
-//         const card = document.createElement('div');
-//         card.className = 'card';
-//         card.innerHTML = `
-//           <img src="${item.poster_path}" alt="${item.asset_nm}" />
-//           <div class="info">
-//             <div class="title">${item.asset_nm}</div>
-//             <div class="genre">${item.genre}</div>
-//             <div class="director">${item.actr_disp}</div>
-//           </div>
-//         `;
-//         slider.appendChild(card);
-//       });
-//     });
-// });
+  
+  // 주석 처리된 코드는 나중에 필요할 때 주석 해제할 수 있습니다
+  /*
+  fetch(`http://localhost:8000/recommendations/random?count=10&type=${cfg.type}`)
+    .then(res => res.json())
+    .then(data => {
+      slider.innerHTML = '';
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.poster_path}" alt="${item.asset_nm}" />
+          <div class="info">
+            <div class="title">${item.asset_nm}</div>
+            <div class="genre">${item.genre}</div>
+            <div class="director">${item.actr_disp}</div>
+          </div>
+        `;
+        slider.appendChild(card);
+      });
+    });
+  */
+});
 
 // main.js
 

@@ -103,15 +103,14 @@
             </svg>
             <input type="text" id="q" placeholder="콘텐츠 검색..." class="search-input">
           </div>
-          <div id="results-grid" class="content-grid"></div>
-        </section>
+          <div id="results-grid" class="content-grid"></div>        </section>
       </div>
-    </main>    <script type="module" src="../src/api/search_page.js"></script>
+    </main>    <script type="module" src="/src/api/search_page.js"></script>
 
     <!-- User Menu Script -->
     <script type="module">
-      import { initializeUserMenu, setupLogout } from '../src/components/UserMenu.js';
-      import { initializeSearch } from '../src/components/Search.js';
+      import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
+      import { initializeSearch } from '/src/components/Search.js';
       
       document.addEventListener('DOMContentLoaded', function() {
         console.log('검색 페이지 DOM 로드 완료');

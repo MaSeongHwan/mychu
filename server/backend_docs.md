@@ -14,10 +14,25 @@
   app.include_router(search_router,     prefix="/search",        tags=["search"])
   app.include_router(rec_test_router,   prefix="",               tags=["recommendation"])
   app.include_router(rec_test_endpoint_router, prefix="",       tags=["recommendation-test"])
-  app.include_router(legacy_rec_router, prefix="",               tags=["recommendations"])
+  app.include_router(rec_router,        prefix="",               tags=["recommendations"])
   ```
 - 정적 파일 및 템플릿 처리
 - 서버 시작점
+
+### 라우트 정리 내역 (2025-06-15)
+- 중복 경로 정리: `server/routes`와 `server/api/routes` 간 중복 제거
+- 모든 라우트를 `server/api/routes`로 통합 (표준화)
+- 라우터 import 경로 업데이트:
+  ```python
+  # 이전
+  from server.routes.user import router as user_router
+  from server.routes.recommendations import router as legacy_rec_router
+  
+  # 이후
+  from server.api.routes.user import router as user_router
+  from server.api.routes.recommendations import router as rec_router
+  ```
+- 기존 파일들은 `server/routes_backup_docs.md`에 참조용으로 보관됨
 
 ## 2. 코어 모듈 (core/)
 
@@ -143,22 +158,6 @@
   - 후보군 스코어링 및 다양성 적용 인터페이스 구현
 - `model_inference.py`에서 ML 모델 통합 구조 마련
 
-### 향후 개발 계획
-1. 단계적 추천 모델 개발 로드맵
-   - 1단계: 인기도 기반 추천 구현 (조회수, 평점 기반)
-   - 2단계: 콘텐츠 기반 필터링 구현 (TF-IDF, 장르/태그 유사도)
-   - 3단계: 협업 필터링 모델 구현 (사용자 행동 기반)
-   - 4단계: 하이브리드 추천 시스템 구현
-
-2. 모델 인프라 구축
-   - 오프라인 모델 학습 파이프라인 구축
-   - 모델 저장 및 로드 메커니즘 개선
-   - A/B 테스트 프레임워크 통합
-
-3. 추천 다양성 및 품질 개선
-   - 콘텐츠 다양성 알고리즘 구현
-   - 사용자 피드백 기반 모델 개선
-   - 콜드 스타트 문제 해결 전략 구현
 
 ## 6. API 스키마 (api/schemas/)
 

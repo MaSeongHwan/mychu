@@ -59,10 +59,6 @@
 - `schemas.py`: Pydantic 스키마
 - `user.py`: 사용자 모델
 
-#### tfidf/
-- `tfidf_matrix.npz`: TF-IDF 매트릭스 데이터
-- `tfidf_vectorizer.pkl`: TF-IDF 벡터라이저
-
 ### 3.4 routes/
 - `__init__.py`: 라우트 패키지 초기화
 - `asset.py`: 자산 관련 라우트
@@ -91,4 +87,3 @@
 - **백엔드**: FastAPI, Python
 - **데이터베이스**: PostgreSQL
 - **인증**: Firebase Authentication
-- **추천 엔진**: TF-IDF
