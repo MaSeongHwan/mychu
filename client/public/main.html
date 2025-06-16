@@ -31,6 +31,7 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input type="text" placeholder="콘텐츠 검색..." class="search-input">
+            <div id="search-suggestions" class="search-suggestions"></div>
           </div>
           <div class="user-menu-container">
             <button class="icon-button user-menu-button">
@@ -210,7 +211,7 @@
       const logoLink = document.querySelector('.logo-link');
       logoLink.addEventListener('click', function(e) {
         e.preventDefault();
-        window.location.href = '/main.html';
+        window.location.href = '/main';
       });
       
       // 향상된 검색 기능 초기화 - 자동완성 포함

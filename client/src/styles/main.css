@@ -62,7 +62,7 @@ ul {
 }
 
 .container {
-  max-width: 1400px;
+  width: min(1400px, 90vw);
   margin: 0 auto;
   padding: 0 2rem;
 }

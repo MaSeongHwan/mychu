@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,HTMLResponse
 import os
 import logging
 import sys
@@ -86,6 +86,7 @@ async def startup_event():
     init_db()
     init_firebase()
 
+
 # 페이지 라우트
 @app.get("/")
 async def read_root(request: Request):
@@ -107,9 +108,15 @@ async def read_mylist(request: Request):
 async def read_adult(request: Request):
     return templates.TemplateResponse("adult.html", {"request": request})
 
-@app.get("/contents")
+@app.get("/contents", response_class=HTMLResponse)
 async def read_contents(request: Request):
     return templates.TemplateResponse("contents.html", {"request": request})
+
+@app.get("/contents_test")
+async def read_contents_test(request: Request):
+    return templates.TemplateResponse("contents_test.html", {"request": request})
+
+
 # 템플릿 및 정적 파일 디버깅용 라우터
 @app.get("/debug-templates")
 async def debug_templates():

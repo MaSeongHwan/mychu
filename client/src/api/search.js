@@ -8,7 +8,7 @@ import { API_BASE_URL } from "./config.js";
  */
 export async function searchFiltered(query, limit = 10) {
   const params = new URLSearchParams({ query, limit });
-  const res = await fetch(`${API_BASE_URL}/search?${params.toString()}`);
+  const res = await fetch(`${API_BASE_URL}/search/?${params.toString()}`);  // ✅ 수정됨
   if (!res.ok) throw new Error(`검색 실패: ${res.status}`);
   const { results } = await res.json();
   return results;
@@ -19,7 +19,7 @@ export async function searchFiltered(query, limit = 10) {
  */
 export async function searchAll({ query, limit = 10, is_adult = false, user_id }) {
   const params = new URLSearchParams({ query, limit, is_adult, user_id });
-  const res = await fetch(`${API_BASE_URL}/search/all?${params.toString()}`);
+  const res = await fetch(`${API_BASE_URL}/search/all?${params.toString()}`);  // ✅ 수정됨
   if (!res.ok) throw new Error(`검색 실패: ${res.status}`);
   const { results } = await res.json();
   return results;
@@ -35,7 +35,7 @@ export async function searchAdvanced({ query, limit = 10, genre, release_year, i
   if (typeof is_adult !== "undefined") params.set("is_adult", is_adult);
   if (typeof is_movie !== "undefined") params.set("is_movie", is_movie);
   if (user_id) params.set("user_id", user_id);
-  const res = await fetch(`${API_BASE_URL}/search/advanced?${params.toString()}`);
+  const res = await fetch(`${API_BASE_URL}/search/advanced?${params.toString()}`);  // ✅ 수정됨
   if (!res.ok) throw new Error(`고급 검색 실패: ${res.status}`);
   const { results } = await res.json();
   return results;

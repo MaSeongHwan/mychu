@@ -128,7 +128,7 @@ export function renderSlider(container, items) {
     // 카드 클릭 이벤트
     card.addEventListener('click', () => {
       if (item.asset_idx) {
-        window.location.href = `/contents.html?id=${item.asset_idx}`;
+        window.location.href = `/contents?id=${item.asset_idx}`;
       }
     });
 

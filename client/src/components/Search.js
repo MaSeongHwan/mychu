@@ -71,7 +71,7 @@ export function initializeSearch() {
       if (!keyword) return;
       
       // 검색 페이지로 이동
-      window.location.href = `/search.html?q=${encodeURIComponent(keyword)}`;
+      window.location.href = `/search?q=${encodeURIComponent(keyword)}`;
     }
   });
   
@@ -83,7 +83,7 @@ export function initializeSearch() {
     const id = item.dataset.id;
     if (id) {
       // 콘텐츠 상세 페이지로 이동
-      window.location.href = `/contents.html?id=${id}`;
+      window.location.href = `/contents?id=${id}`;
     } else {
       // 텍스트만 클릭한 경우 - 검색창에 해당 텍스트 채우기
       const titleEl = item.querySelector('.item-title');

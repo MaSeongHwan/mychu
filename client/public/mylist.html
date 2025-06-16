@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>  <meta charset="UTF-8">
+<head>  
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마이페이지 - WellList</title>
-  <link rel="stylesheet" href="/src/styles/mylist.css">
-  <script type="module" src="/src/pages/mylist.js" defer> </script>
+  <link rel="stylesheet" href="src/styles/mylist.css">
+  <script type="module" src="src/pages/mylist.js" defer> </script>
 </head>
 <body>
   <!-- Header -->
@@ -461,6 +462,38 @@
       }
     `;
     document.head.appendChild(style);
+  </script>
+  <script type="module" src="/src/main.js"></script>  
+  <script type="module">
+    import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
+    import { initializeSearch } from '/src/components/Search.js';
+    // 테스트 추천 API를 사용하는 새 함수 임포트
+    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM 로드 완료, 초기화 시작');
+      
+      // 로고 클릭 시 홈으로 이동
+      const logoLink = document.querySelector('.logo-link');
+      logoLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/main';
+      });
+      
+      // 향상된 검색 기능 초기화 - 자동완성 포함
+      initializeSearch();
+      console.log('검색 초기화 완료');
+
+      // 사용자 메뉴 초기화
+      initializeUserMenu();
+      setupLogout();
+
+      // 테스트 추천 API를 사용하여 모든 슬라이더 초기화
+      initRecommendationsWithTest();
+      console.log('테스트 추천 API로 콘텐츠 로드 시작');
+      
+      console.log('모든 초기화 완료');
+    });
   </script>
 </body>
 </html>

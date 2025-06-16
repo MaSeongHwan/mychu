@@ -28,8 +28,9 @@ async function createCard(item) {
     </div>
   `;
 
+  // 여기서 item.id를 활용해서 이동
   card.addEventListener('click', () => {
-    window.location.href = `/contents.html?id=${item.full_asset_id}`;
+    window.location.href = `/contents?id=${item.id}`;
   });
 
   return card;

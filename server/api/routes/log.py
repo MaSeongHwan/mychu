@@ -6,7 +6,6 @@ from server.models.log import Product, ProductKeyword
 from server.models.user import VodLog
 
 router = APIRouter(
-    prefix="/logs",
     tags=["logs"]
 )
 

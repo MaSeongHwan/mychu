@@ -9,8 +9,7 @@ from server.models.user import User
 from server.api.schemas.search import SearchResponse
 
 router = APIRouter(
-    prefix="/search",
-    tags=["search"]
+     tags=["search"]
 )
 
 @router.get("/", response_model=SearchResponse)

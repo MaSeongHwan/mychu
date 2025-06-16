@@ -5,7 +5,6 @@ from server.core.database import get_db
 from server.models.asset import Asset
 
 router = APIRouter(
-    prefix="/images",
     tags=["images"]
 )
 

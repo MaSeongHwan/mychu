@@ -60,7 +60,7 @@ function loadUserData() {
                 } else {
                     console.error('사용자 데이터 가져오기 실패:', response.status, response.statusText);
                     // 로그인 페이지로 리다이렉트
-                    window.location.href = '/login.html';
+                    window.location.href = '/login';
                 }
             } catch (error) {
                 console.error('사용자 데이터 가져오기 오류:', error);
@@ -68,7 +68,7 @@ function loadUserData() {
         } else {
             console.log("로그인된 사용자 없음, 로그인 페이지로 리다이렉트");
             // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         }
     });
 }
@@ -162,7 +162,7 @@ async function handleLogout(event) {
         await auth.signOut();
         console.log("User logged out successfully");
         // 로그아웃 후 로그인 페이지로 리다이렉트
-        window.location.href = '/login.html';
+        window.location.href = '/login';
     } catch (error) {
         console.error('로그아웃 실패:', error);
         alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
