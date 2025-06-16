@@ -103,6 +103,13 @@ async def read_main(request: Request):
 async def read_mylist(request: Request):
     return templates.TemplateResponse("mylist.html", {"request": request})
 
+@app.get("/adult")
+async def read_adult(request: Request):
+    return templates.TemplateResponse("adult.html", {"request": request})
+
+@app.get("/contents")
+async def read_contents(request: Request):
+    return templates.TemplateResponse("contents.html", {"request": request})
 # 템플릿 및 정적 파일 디버깅용 라우터
 @app.get("/debug-templates")
 async def debug_templates():

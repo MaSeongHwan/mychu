@@ -39,6 +39,7 @@
     background-color: rgba(15, 17, 22, 0.95);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid #2a2c35;
+    height: var(--header-height);
   }
   
   .header-content {
