@@ -57,6 +57,7 @@ templates = Jinja2Templates(directory=CLIENT_PUBLIC_DIR)
 app.mount("/static", StaticFiles(directory=CLIENT_PUBLIC_DIR), name="static")
 app.mount("/src", StaticFiles(directory=CLIENT_SRC_DIR), name="src")
 app.mount("/client", StaticFiles(directory=CLIENT_DIR), name="client")
+app.mount("/components", StaticFiles(directory="client/public/components"), name="components")
 
 # 정적 파일 존재 여부 확인 및 로깅
 css_path = os.path.join(CLIENT_SRC_DIR, "styles", "mylist.css")
