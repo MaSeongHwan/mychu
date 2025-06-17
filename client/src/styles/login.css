@@ -104,10 +104,13 @@
   
   /* 로그인 카드 */
   .login-card {
-    background-color: #1f2937;
+    background-color: rgba(31, 41, 55, 0.35); /* 투명도 35% */
+    backdrop-filter: blur(16px);              /* 블러 효과로 가독성 유지 */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* 테두리로 윤곽 강조 */
     border-radius: 1rem;
     padding: 2.5rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
     width: 100%;
     max-width: 400px;
   }
