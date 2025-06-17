@@ -14,6 +14,7 @@ from server.api.routes.search import router as search_router
 from server.api.routes.user import router as user_router
 from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
+from server.api.routes.mas_recommendation import router as mas_rec_router #마승환 실험버전
 
 # 설정 및 초기화
 from server.config.settings import CORS_ORIGINS
@@ -72,6 +73,8 @@ app.include_router(log_router,        prefix="/logs",   tags=["logs"])
 app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
+app.include_router(mas_rec_router, prefix="/mas_recommendation", tags=["mas_recommendation"]) #마승환 실험 버전
+
 
 # 로거 설정
 logger = logging.getLogger("uvicorn")
