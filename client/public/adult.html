@@ -10,12 +10,121 @@
     import { loadHeader } from '/components/loadHeader.js';
     loadHeader();
   </script>
+  <style>
+    .password-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .password-modal.active {
+      display: flex;
+    }
+
+    .password-container {
+      background-color: #1f2937;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      border: 1px solid #374151;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .password-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      background-color: #374151;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .password-input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+
+    .password-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #10b981;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .password-submit:hover {
+      background-color: #059669;
+    }
+
+    .password-error {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      display: none;
+    }
+
+    .password-error.empty {
+      color: #f59e0b;
+    }
+
+    .back-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background-color: #374151;
+      color: #ffffff;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      background-color: #4b5563;
+      border-color: #6b7280;
+    }
+  </style>
 </head>
 <body>
-
+  <!-- 비밀번호 입력 모달 -->
+  <div class="password-modal" id="passwordModal">
+    <div class="password-container">
+      <h2 class="password-title">성인 인증</h2>
+      <input type="password" class="password-input" id="passwordInput" placeholder="비밀번호를 입력하세요">
+      <button class="password-submit" id="passwordSubmit">확인</button>
+      <p class="password-error" id="passwordError">비밀번호가 일치하지 않습니다.</p>
+      <p class="password-error empty" id="passwordEmpty" style="display: none;">비밀번호를 입력하세요</p>
+      <a href="/main" class="back-button">뒤로가기</a>
+    </div>
+  </div>
 
   <!-- 메인 콘텐츠 -->
-  <main class="main-content">
+  <main class="main-content" style="display: none;">
     <div class="container">
       <!-- 장르 헤더 -->
       <section class="genre-header">
@@ -331,7 +440,6 @@
         <div class="slider" id="top10-slider">
           <div class="card-container">
             <div class="card">
-              <div class="rank-badge">1</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -356,7 +464,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">2</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -381,7 +488,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">3</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -406,7 +512,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">4</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -431,7 +536,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">5</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -456,7 +560,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">6</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -481,7 +584,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">7</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -506,7 +608,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">8</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -531,7 +632,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">9</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -556,7 +656,6 @@
               </div>
             </div>
             <div class="card">
-              <div class="rank-badge">10</div>
               <div class="item-poster">
                 <img src="https://via.placeholder.com/300x450" class="poster-image">
                 <div class="item-overlay">
@@ -784,6 +883,55 @@
           }
         }
       });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const passwordModal = document.getElementById('passwordModal');
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordSubmit = document.getElementById('passwordSubmit');
+      const passwordError = document.getElementById('passwordError');
+      const passwordEmpty = document.getElementById('passwordEmpty');
+      const mainContent = document.querySelector('.main-content');
+
+      // 모달 표시
+      passwordModal.classList.add('active');
+
+      // 비밀번호 확인
+      passwordSubmit.addEventListener('click', () => {
+        const password = passwordInput.value;
+        passwordError.style.display = 'none';
+        passwordEmpty.style.display = 'none';
+
+        if (!password) {
+          passwordEmpty.style.display = 'block';
+          return;
+        }
+
+        if (password === '0000') {
+          passwordModal.classList.remove('active');
+          mainContent.style.display = 'block';
+          // 세션 스토리지에 인증 상태 저장
+          sessionStorage.setItem('adultAuth', 'true');
+        } else {
+          passwordError.style.display = 'block';
+          passwordInput.value = '';
+        }
+      });
+
+      // Enter 키로도 제출 가능
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          passwordSubmit.click();
+        }
+      });
+
+      // 이미 인증된 경우 모달 숨기기
+      if (sessionStorage.getItem('adultAuth') === 'true') {
+        passwordModal.classList.remove('active');
+        mainContent.style.display = 'block';
+      }
     });
   </script>
 </body>
