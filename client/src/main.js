@@ -35,26 +35,3 @@ sliderConfigs.forEach(cfg => {
     });
   */
 });
-
-// main.js
-
-document.addEventListener("DOMContentLoaded", () => {
-  const mypageButton = document.getElementById('mypageButton');
-  const mypageMenu = document.getElementById('mypageMenu');
-  const mypageWrapper = document.querySelector('.mypage-wrapper');
-
-  console.log('mypageButton:', mypageButton);  // 로그 추가
-  console.log('mypageMenu:', mypageMenu);      // 로그 추가
-
-  // 마우스 올렸을 때 메뉴 열기
-  mypageButton.addEventListener('mouseenter', () => {
-    console.log('마우스 들어옴');
-    mypageMenu.style.display = 'block';
-  });
-
-  // 마우스 떠나면 메뉴 닫기
-  mypageWrapper.addEventListener('mouseleave', () => {
-    console.log('마우스 나감');
-    mypageMenu.style.display = 'none';
-  });
-});
