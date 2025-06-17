@@ -1,60 +1,378 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WellList - VOD 추천 시스템</title>
-  <link rel="stylesheet" href="/src/styles/main.css">
-  <link rel="stylesheet" href="/src/styles/index.css">
-  <script type="module" src="/src/pages/mylist.js" defer></script>
-  <script type="module">
-    import { loadHeader } from '/components/loadHeader.js';
-    loadHeader();
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 결과 - WellList</title>
+    <link rel="stylesheet" href="../src/styles/search.css">
 </head>
 <body>
-  <!-- Header -->
-  <!-- Main Content -->
+    <!-- 헤더 (상단바) -->
+    <!-- 메인 콘텐츠 -->
     <main class="main-content">
-      <div class="container">
-        <section id="search-results" class="section">
-          <div class="section-header">
-            <h2>검색 결과</h2>
-          </div>
-          <div class="search-container" style="margin: 20px 0;">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="q" placeholder="콘텐츠 검색..." class="search-input">
-          </div>
-          <div id="results-grid" class="content-grid"></div>        </section>
-      </div>
-    </main>    <script type="module" src="/src/api/search_page.js"></script>
+        <div class="container">
+            <!-- 검색 결과 헤더 -->
+            <div class="search-header">
+                <div class="search-info">
+                    <h1 class="search-title">'검색어' 검색 결과</h1>
+                    <p class="search-count">총 <span class="result-count">10</span>개의 콘텐츠를 찾았습니다</p>
+                </div>
+            </div>
 
-    <!-- User Menu Script -->
-    <script type="module">
-      import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
-      import { initializeSearch } from '/src/components/Search.js';
-      
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('검색 페이지 DOM 로드 완료');
-        
-        // 로고 클릭 시 홈으로 이동
-        const logoLink = document.querySelector('.logo-link');
-        logoLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          window.location.href = '/main';
+            <!-- 검색 결과 그리드 -->
+            <section class="search-results">
+                <div class="results-grid">
+                    <!-- 콘텐츠 1 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="상견니" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">상견니</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 2 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="사랑의 불시착" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">사랑의 불시착</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 3 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="도깨비" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">도깨비</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 4 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="태양의 후예" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">태양의 후예</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.6</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 5 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="별에서 온 그대" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">별에서 온 그대</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 6 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="시크릿 가든" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">시크릿 가든</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 7 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="김비서가 왜 그럴까" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">김비서가 왜 그럴까</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 8 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="로맨스는 별책부록" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">로맨스는 별책부록</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 9 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="내 아이디는 강남미인" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">내 아이디는 강남미인</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 콘텐츠 10 -->
+                    <div class="content-item">
+                        <div class="item-poster">
+                            <img src="https://via.placeholder.com/200x300" alt="치즈인더트랩" class="poster-image">
+                            <div class="item-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="wishlist-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-title">치즈인더트랩</h3>
+                            <div class="item-meta">
+                                <span class="item-genre">로맨스</span>
+                                <div class="item-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>4.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 헤더 로딩 및 검색 설정 -->
+    <script type="module" src="/src/init.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+
+            // 콘텐츠 아이템 클릭 기능
+            const contentItems = document.querySelectorAll('.content-item');
+            contentItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const title = this.querySelector('.item-title').textContent;
+                    alert(`${title} 상세페이지로 이동합니다.`);
+                });
+            });
+
+            // 재생 버튼 기능
+            const playBtns = document.querySelectorAll('.play-btn');
+            playBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const title = this.closest('.content-item').querySelector('.item-title').textContent;
+                    alert(`${title} 재생을 시작합니다.`);
+                });
+            });
+
+            // 찜하기 버튼 기능
+            const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+            wishlistBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const title = this.closest('.content-item').querySelector('.item-title').textContent;
+                    const svg = this.querySelector('svg');
+                    
+                    if (svg.getAttribute('fill') === 'currentColor') {
+                        svg.setAttribute('fill', 'none');
+                        this.style.color = '';
+                        alert(`${title}을(를) 찜 목록에서 제거했습니다.`);
+                    } else {
+                        svg.setAttribute('fill', 'currentColor');
+                        this.style.color = '#10b981';
+                        alert(`${title}을(를) 찜 목록에 추가했습니다.`);
+                    }
+                });
+            });
+
+            
         });
-
-        // 검색 기능 초기화 - 자동완성 포함
-        initializeSearch();
-        console.log('검색 초기화 완료');
-
-        // 사용자 메뉴 초기화
-        initializeUserMenu();
-        setupLogout();
-        console.log('검색 페이지 초기화 완료');
-      });
     </script>
-
+</body>
+</html>
