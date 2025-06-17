@@ -9,12 +9,10 @@ import sys
 
 # 라우터 import
 from server.api.routes.asset import router as asset_router  
-from server.api.routes.log import router as log_router
 from server.api.routes.search import router as search_router
 from server.api.routes.user import router as user_router
 from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
-from server.api.routes.mas_recommendation import router as mas_rec_router #마승환 실험버전
 
 # 설정 및 초기화
 from server.config.settings import CORS_ORIGINS
@@ -70,11 +68,9 @@ else:
 # 라우터 등록
 app.include_router(user_router,       prefix="/users", tags=["users"])
 app.include_router(asset_router,      prefix="/assets", tags=["assets"])
-app.include_router(log_router,        prefix="/logs",   tags=["logs"])
 app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
-app.include_router(mas_rec_router, prefix="/mas_recommendation", tags=["mas_recommendation"]) #마승환 실험 버전
 
 
 # 로거 설정
@@ -104,9 +100,21 @@ async def read_root(request: Request):
 async def read_main(request: Request):
     return templates.TemplateResponse("main.html", {"request": request})
 
+@app.get("/drama")
+async def read_drama(request: Request):
+    return templates.TemplateResponse("drama.html", {"request": request})
+
+@app.get("/movie")
+async def read_movie(request: Request):
+    return templates.TemplateResponse("movie.html", {"request": request})
+
 @app.get("/mylist")
 async def read_mylist(request: Request):
     return templates.TemplateResponse("mylist.html", {"request": request})
+
+@app.get("/rating")
+async def read_rating(request: Request):
+    return templates.TemplateResponse("rating.html", {"request": request})
 
 @app.get("/adult")
 async def read_adult(request: Request):

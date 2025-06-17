@@ -34,7 +34,8 @@ def get_test_recommendations(
         Asset.poster_path,
         Asset.genre,
         Asset.rlse_year.label('release_year'),
-        Asset.is_movie
+        Asset.is_movie,
+        Asset.smry
     )
     
     # 기본 필터 적용
@@ -63,7 +64,8 @@ def get_test_recommendations(
                     poster_path = r.poster_path or "",
                     genre = r.genre or "",
                     release_year = r.release_year,
-                    is_movie = r.is_movie
+                    is_movie = r.is_movie,
+                    smry=r.smry
                 )
             )
         except Exception as e:

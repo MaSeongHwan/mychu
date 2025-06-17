@@ -5,11 +5,6 @@
 
 ## 2. 핵심 컴포넌트
 
-### TF-IDF 벡터라이저
-- 위치: `server/models/tfidf/tfidf_vectorizer.pkl`
-- 기능: 컨텐츠 설명과 메타데이터를 벡터화
-- 처리 대상: 제목, 설명, 장르 등
-
 ### 특성 매트릭스
 - 위치: `server/models/tfidf/tfidf_matrix.npz`
 - 기능: 벡터화된 컨텐츠 특성 저장
