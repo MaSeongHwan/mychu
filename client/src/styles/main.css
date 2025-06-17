@@ -154,14 +154,52 @@ ul {
   background: linear-gradient(to right, #0f1116 0%, rgba(15, 17, 22, 0.7) 50%, transparent 100%);
 }
 
-/* 슬라이더 관련 스타일 제거 */
-.hero-slider-track,
-.hero-slide,
-.hero-slide-overlay,
-.hero-slider-nav,
-.action-asset-button {
-  display: none !important; /* 슬라이더 관련 요소 숨김 */
+/* 슬라이더 관련 스타일 활성화 */
+.hero-slider-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  height: 100%; /* 슬라이더 트랙 높이를 hero 섹션에 맞춤 */
 }
+
+.hero-slide {
+  min-width: 100%;
+  height: 100%; /* 슬라이드 높이를 트랙에 맞춤 */
+  background-size: cover;
+  background-position: center;
+  position: relative; /* 내부 콘텐츠를 위한 상대 위치 */
+  display: flex; /* 내부 콘텐츠 정렬을 위해 추가 */
+  align-items: center; /* 내부 콘텐츠 수직 중앙 정렬 */
+  justify-content: center; /* 내부 콘텐츠 수평 중앙 정렬 (선택 사항) */
+}
+
+.hero-slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-slider-nav.prev { left: 16px; }
+.hero-slider-nav.next { right: 16px; }
+
+/* action-asset-button은 main.html에 없으므로 주석 처리 */
+/*
+.action-asset-button {
+  display: none !important;
+}
+*/
 
 .hero-content {
   position: relative;
@@ -199,7 +237,7 @@ ul {
   border-radius: 1rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease;
-  background-color: #222;
+  background-color: #0f1116;
   background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png');
   background-size: cover;
   background-position: center;
@@ -384,7 +422,7 @@ ul {
 /* 메인 콘텐츠 */
 .main-content {
   padding: 2rem 0;
-  background-color: #141414;
+  background-color: #0f1116;
   min-height: 100vh;
 }
 

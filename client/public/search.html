@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검색 결과 - WellList</title>
     <link rel="stylesheet" href="../src/styles/search.css">
 </head>
@@ -10,14 +10,14 @@
     <!-- 헤더 (상단바) -->
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <div class="container">
+      <div class="container">
             <!-- 검색 결과 헤더 -->
             <div class="search-header">
                 <div class="search-info">
                     <h1 class="search-title">'검색어' 검색 결과</h1>
                     <p class="search-count">총 <span class="result-count">10</span>개의 콘텐츠를 찾았습니다</p>
                 </div>
-            </div>
+          </div>
 
             <!-- 검색 결과 그리드 -->
             <section class="search-results">
@@ -35,7 +35,7 @@
                                 <button class="wishlist-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                    </svg>
+            </svg>
                                 </button>
                             </div>
                         </div>
@@ -44,8 +44,8 @@
                             <div class="item-meta">
                                 <span class="item-genre">로맨스</span>
                             </div>
-                        </div>
-                    </div>
+          </div>
+        </div>
 
                     <!-- 콘텐츠 2 -->
                     <div class="content-item">
@@ -68,9 +68,9 @@
                             <h3 class="item-title">사랑의 불시착</h3>
                             <div class="item-meta">
                                 <span class="item-genre">로맨스</span>
-                            </div>
-                        </div>
-                    </div>
+        </div>
+        </div>
+    </div>
 
                     <!-- 콘텐츠 3 -->
                     <div class="content-item">
@@ -249,29 +249,29 @@
 
                     <!-- 콘텐츠 10 -->
                     <div class="content-item">
-                        <div class="item-poster">
+            <div class="item-poster">
                             <img src="https://via.placeholder.com/200x300" alt="치즈인더트랩" class="poster-image">
-                            <div class="item-overlay">
-                                <button class="play-btn">
+              <div class="item-overlay">
+                <button class="play-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                    </svg>
-                                </button>
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
                                 <button class="wishlist-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-info">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="item-info">
                             <h3 class="item-title">치즈인더트랩</h3>
-                            <div class="item-meta">
+              <div class="item-meta">
                                 <span class="item-genre">로맨스</span>
                             </div>
                         </div>
-                    </div>
-                </div>
+              </div>
+            </div>
             </section>
         </div>
     </main>
@@ -282,8 +282,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
+            // URL에서 검색어 가져오기
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('q') || '검색어'; // 'q' 파라미터가 없으면 기본값 '검색어'
 
+            // 검색 결과 제목 업데이트
+            const searchTitleElement = document.querySelector('.search-header .search-title');
+            if (searchTitleElement) {
+                searchTitleElement.textContent = `'${searchQuery}' 검색 결과`;
+            }
+
+            // 총 콘텐츠 개수 업데이트 (현재는 고정값 10)
+            const resultCountElement = document.querySelector('.search-count .result-count');
+            if (resultCountElement) {
+                resultCountElement.textContent = '10'; // 실제 검색 결과에 따라 변경될 수 있음
+            }
+            
             // 콘텐츠 아이템 클릭 기능
             const contentItems = document.querySelectorAll('.content-item');
             contentItems.forEach(item => {
@@ -297,34 +311,34 @@
             const playBtns = document.querySelectorAll('.play-btn');
             playBtns.forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
+          e.stopPropagation();
                     const title = this.closest('.content-item').querySelector('.item-title').textContent;
-                    alert(`${title} 재생을 시작합니다.`);
+          alert(`${title} 재생을 시작합니다.`);
                 });
             });
-
+        
             // 찜하기 버튼 기능
             const wishlistBtns = document.querySelectorAll('.wishlist-btn');
             wishlistBtns.forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
+          e.stopPropagation();
                     const title = this.closest('.content-item').querySelector('.item-title').textContent;
                     const svg = this.querySelector('svg');
-                    
-                    if (svg.getAttribute('fill') === 'currentColor') {
-                        svg.setAttribute('fill', 'none');
+          
+          if (svg.getAttribute('fill') === 'currentColor') {
+            svg.setAttribute('fill', 'none');
                         this.style.color = '';
-                        alert(`${title}을(를) 찜 목록에서 제거했습니다.`);
-                    } else {
-                        svg.setAttribute('fill', 'currentColor');
+            alert(`${title}을(를) 찜 목록에서 제거했습니다.`);
+          } else {
+            svg.setAttribute('fill', 'currentColor');
                         this.style.color = '#10b981';
-                        alert(`${title}을(를) 찜 목록에 추가했습니다.`);
-                    }
-                });
+            alert(`${title}을(를) 찜 목록에 추가했습니다.`);
+        }
+      });
             });
 
             
-        });
-    </script>
+    });
+  </script>
 </body>
 </html>

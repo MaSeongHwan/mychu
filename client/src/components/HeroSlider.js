@@ -1,8 +1,8 @@
 export function initHeroSlider() {
   const sliderTrack = document.querySelector('.hero-slider-track');
   const slides = Array.from(document.querySelectorAll('.hero-slide'));
-  const nextBtn = document.querySelector('.hero-slider-next');
-  const prevBtn = document.querySelector('.hero-slider-prev');
+  const nextBtn = document.getElementById('mainHeroNextBtn');
+  const prevBtn = document.getElementById('mainHeroPrevBtn');
   let currentSlideIndex = 0;
   let autoSlideInterval;
 
@@ -10,7 +10,9 @@ export function initHeroSlider() {
   const imageUrls = [
     'https://via.placeholder.com/1920x1080/0d1117/ffffff?text=Slide+1', // Dark blue background
     'https://via.placeholder.com/1920x1080/2f1b67/ffffff?text=Slide+2', // Purple background
-    'https://via.placeholder.com/1920x1080/0f1116/ffffff?text=Slide+3'  // Dark background
+    'https://via.placeholder.com/1920x1080/0f1116/ffffff?text=Slide+3',
+    'https://via.placeholder.com/1920x1080/4f1116/ffffff?text=Slide+4', // New image 4
+    'https://via.placeholder.com/1920x1080/0d4117/ffffff?text=Slide+5'  // New image 5
   ];
 
   slides.forEach((slide, index) => {
@@ -42,7 +44,7 @@ export function initHeroSlider() {
 
   const startAutoSlide = () => {
     stopAutoSlide(); // Clear any existing interval
-    autoSlideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    autoSlideInterval = setInterval(nextSlide, 3000); // Change slide every 5 seconds
   };
 
   const stopAutoSlide = () => {
