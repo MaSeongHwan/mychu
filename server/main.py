@@ -109,6 +109,10 @@ async def read_mylist(request: Request):
 async def read_adult(request: Request):
     return templates.TemplateResponse("adult.html", {"request": request})
 
+@app.get("/search", response_class=HTMLResponse)
+async def read_search(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
+
 @app.get("/contents", response_class=HTMLResponse)
 async def read_contents(request: Request):
     return templates.TemplateResponse("contents.html", {"request": request})

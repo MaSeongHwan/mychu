@@ -1,21 +1,62 @@
-/* 루트 CSS 변수 정의 */
-:root {
-  --base-font-size: 16px;
-  --scale-ratio: 1;
-  --container-width: min(1280px, 90vw);
-  --header-height: 4rem;
-  --card-aspect-ratio: 1.5;
-  --grid-gap: clamp(1rem, 2vw, 2rem);
-  
-  /* 섹션 패딩 */
-  --section-padding: clamp(2rem, 5vw, 4rem);
-  
-  /* 반응형 여백 */
-  --content-margin: clamp(1rem, 3vw, 2rem);
-  
-  /* 카드 그리드 */
-  --card-min-width: clamp(200px, 25vw, 300px);
-  --cards-per-row: 4;
+/* 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(var(--base-font-size) * var(--scale-ratio));
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #0f1116;
+  color: #ffffff;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+
+/* 기본 스타일 (메인 CSS에서 가져옴) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #0f1116;
+  color: #ffffff;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 /* 헤더 */

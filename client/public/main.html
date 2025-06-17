@@ -5,51 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WellList - VOD 추천 시스템</title>
   <link rel="stylesheet" href="/src/styles/main.css">
-  
 </head>
+
 <body>
   <!-- Header -->
   <!-- ✅ 여기에는 아무것도 넣지 않음! 헤더는 JS로 삽입됩니다 -->
 
+  <!-- 드롭다운 메뉴 추가 -->
+  <div class="dropdown-container">
+    <button class="dropdown-btn">장르 
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline></svg></button>
+    <div class="dropdown-content">
+      <a href="#">SBS</a>
+      <a href="#">애니</a>
+      <a href="#">SF & 판타지</a>
+      <a href="#">한국 예능</a>
+      <a href="#">코미디</a>
+      <a href="#">호러</a>
+      <a href="#">한국 드라마</a>
+      <a href="#">로맨스</a>
+      <a href="#">스포츠</a>
+      <a href="#">미국 드라마</a>
+      <a href="#">드라마 장르</a>
+      <a href="#">키즈</a>
+      <a href="#">영국 드라마</a>
+      <a href="#">액션</a>
+      <a href="#">청소년</a>
+      <a href="#">아시아 드라마</a>
+      <a href="#">스릴러</a>
+      <a href="#">다큐멘터리 시리즈</a>
+    </div>
+  </div>
+
   <!-- Header Section -->
   <section class="hero">
     <div class="hero-background">
-      <img src="https://via.placeholder.com/1200x600" alt="스트레인저 씽즈 4" class="hero-image">
+      <img src="https://via.placeholder.com/1200x600" alt="배경 이미지" class="hero-image">
       <div class="hero-overlay"></div>
     </div>
 
     <div class="container">
       <div class="hero-content">
-        <span class="badge">오늘의 추천</span>
-        <h2 class="hero-title">스트레인저 씽즈 4</h2>
-        <div class="content-meta">
-          <div class="rating">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
-            <span>4.8</span>
+        <div class="hero-poster">
+          <div class="poster-container">
+            <img id="main-hero-poster-img" src="https://via.placeholder.com/200x300" alt="콘텐츠 포스터" class="poster-image" />
+            <div class="poster-glow"></div>
           </div>
-          <span>2022</span>
-          <span>SF/스릴러</span>
-          <span>시즌 4</span>
         </div>
-        <p class="hero-description">
-          호킨스를 떠난 지 6개월 후, 친구들은 뿔뿔이 흩어져 있고 고등학교의 공포를 헤쳐나가려 애쓴다. 이런 와중에 새로운 초자연적 공포가 수면 위로 떠오르며 끔찍한 미스터리를 드러낸다.
-        </p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            재생
-          </button>
-          <button class="btn btn-outline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            찜하기
-          </button>
+        <div class="hero-info">
+          <span class="badge">오늘의 추천</span>
+          <h2 class="hero-title">스트레인저 씽즈 4</h2>
+          <div class="content-meta">
+            <div class="rating">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>4.8</span>
+            </div>
+            <span>2022</span>
+            <span>SF/스릴러</span>
+            <span>시즌 4</span>
+          </div>
+          <p class="hero-description">
+            호킨스를 떠난 지 6개월 후, 친구들은 뿔뿔이 흩어져 있고 고등학교의 공포를 헤쳐나가려 애쓴다. 이런 와중에 새로운 초자연적 공포가 수면 위로 떠오르며 끔찍한 미스터리를 드러낸다.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              재생
+            </button>
+            <button class="btn btn-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              찜하기
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -139,16 +174,18 @@
     import { initializeSearch } from '/src/components/Search.js';
     // 테스트 추천 API를 사용하는 새 함수 임포트
     import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    import { initHeroSlider } from '/src/components/HeroSlider.js'; // HeroSlider 임포트
+    import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
     
     document.addEventListener('DOMContentLoaded', function() {
       console.log('DOM 로드 완료, 초기화 시작');
       
       // 로고 클릭 시 홈으로 이동
-      const logoLink = document.querySelector('.logo-link');
-      logoLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = '/main';
-      });
+      // const logoLink = document.querySelector('.logo-link');
+      // logoLink.addEventListener('click', function(e) {
+      //   e.preventDefault();
+      //   window.location.href = '/main';
+      // });
       
       // 향상된 검색 기능 초기화 - 자동완성 포함
       initializeSearch();
@@ -161,6 +198,14 @@
       // 테스트 추천 API를 사용하여 모든 슬라이더 초기화
       initRecommendationsWithTest();
       console.log('테스트 추천 API로 콘텐츠 로드 시작');
+
+      // Hero 슬라이더 초기화
+      // initHeroSlider(); // 슬라이더 기능을 제거했으므로 주석 처리
+      // console.log('Hero 슬라이더 초기화 완료');
+
+      // 드롭다운 초기화
+      initDropdown();
+      console.log('드롭다운 초기화 완료');
       
       console.log('모든 초기화 완료');
     });

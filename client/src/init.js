@@ -8,6 +8,16 @@ const isAdultPage = location.pathname.includes('/adult');
 
 loadHeader().then(() => {
   // ✅ 헤더가 로딩된 후 초기화
+
+  // 로고 클릭 시 홈으로 이동
+  const logoLink = document.querySelector('.logo-link');
+  if (logoLink) {
+    logoLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/main';
+    });
+  }
+
   initializeSearch(isAdultPage
     ? (q, l) => searchAll({ query: q, limit: l, is_adult: true })
     : searchFiltered
