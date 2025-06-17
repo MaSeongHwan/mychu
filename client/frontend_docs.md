@@ -11,7 +11,8 @@ client/
 │   ├── mylist.html      # 찜 목록
 │   └── search.html      # 검색 결과 페이지
 │   ├── images/          # 이미지 파일
-│   │   ├── logo.png     # 로고 사진
+│   │   ├── logo.png     # 기존 로고 이미지 (경로명 오류 수정 후 welllist_backno.png 사용 가능)
+│   │   └── welllist_backno.png # 추가된 로고 이미지 (실제 파일 존재 시)
 │   │   └── ...
 ├── src/
 │   ├── api/            # API 통신 관련 파일
@@ -22,12 +23,15 @@ client/
 │   │   ├── search.js   # 검색 API 관련
 │   │   └── ...
 │   ├── components/     # UI 컴포넌트
-│   │   ├── Recommendations.js # 추천 슬라이더 렌더링
+│   │   ├── Dropdown.js # 드롭다운 메뉴 기능
+│   │   ├── MainHeroSlider.js # 메인 히어로 섹션 슬라이더
+│   │   ├── Recommendations.js # 추천 슬라이더 렌더링 (일반)
 │   │   ├── Search.js   # 검색 UI 컴포넌트
-│   │   ├── Slider.js   # 슬라이더 UI
+│   │   ├── Slider.js   # 슬라이더 UI (재활용 가능)
 │   │   ├── UserMenu.js # 사용자 메뉴
 │   │   └── utils.js    # 유틸리티 함수
 │   ├── styles/         # CSS 파일
+│   │   ├── contents.css # 컨텐츠 상세 페이지 스타일
 │   │   ├── index.css
 │   │   ├── login.css
 │   │   ├── main.css
@@ -37,7 +41,7 @@ client/
 │   │   └── config.js   # Firebase 설정
 │   └── pages/          # 페이지별 로직
 │       ├── asset.js    # 콘텐츠 관련
-│       ├── main.js     # 메인 페이지
+│       ├── main.js     # 메인 페이지 로직 (기존 마이페이지 관련 코드 제거)
 │       └── mylist.js   # 찜 목록
 └── package.json
 ```
@@ -154,6 +158,10 @@ export async function initRecommendationsWithTest() {
     console.error('최근 시청 추천 데이터 로드 실패:', error);
   }
 }
+
+// MainHeroSlider.js - 메인 히어로 섹션 슬라이더
+// API: http://127.0.0.1:8000/recommendation/test?n=4&is_adult=false&is_main=true
+// 응답 데이터 (asset_nm, poster_path, genre, release_year 등)를 사용하여 동적으로 슬라이드를 생성하고 자동 넘김 및 탐색 기능을 제공.
 ```
 
 ### 검색 기능
@@ -175,25 +183,32 @@ export async function searchFiltered(query, limit = 10) {
 - 회원가입 링크
 - Firebase 인증 통합
 - 반응형 디자인 적용
-- welllist 스타일 UI/UX
+- WellList 스타일 UI/UX
 
 ### login.html (인증)
 - 이메일/비밀번호 로그인
 - Firebase 인증 통합
 - 유효성 검사
 - 비밀번호 강도 체크
+- 로고 이미지 경로 수정 (images/welllist_backno.png 또는 images/logo.png)
 
 ### main.html (메인 페이지)
 - 헤더
-  - 로고
+  - 로고 (init.js에서 이벤트 리스너 처리)
   - 네비게이션 메뉴
     - 홈, 카테고리, 영화, 예능, 드라마, 마이페이지
   - 검색바
   - 사용자 메뉴
     - 마이페이지, 설정, 로그아웃
-- 메인섹션
+- 메인 섹션 (Hero Section)
+  - API에서 동적으로 로드되는 슬라이더 (MainHeroSlider.js)
   - 추천 컨텐츠 하이라이트
   - 재생/찜하기 버튼
+  - 자동 슬라이드 및 탐색 버튼
+- 드롭다운 메뉴 (장르)
+  - 헤더 로고 아래에 위치
+  - 3x6 그리드 형태의 장르 목록 (Dropdown.js)
+  - 클릭 시 토글, 외부 클릭 시 닫힘 기능
 - 컨텐츠 섹션
   - 카테고리별 슬라이더
   - 반응형 그리드 레이아웃
@@ -240,10 +255,16 @@ export async function searchFiltered(query, limit = 10) {
 ## 6. JavaScript 모듈
 
 ### main.js
-- FastAPI 서버 연동
+- 기존 마이페이지 관련 코드 제거
+- FastAPI 서버 연동 (슬라이더 초기화)
 - 컨텐츠 로딩 및 렌더링
-- 이벤트 핸들러 관리
+- 이벤트 핸들러 관리 (일반 슬라이더)
 - 반응형 동작 처리
+
+### init.js
+- 헤더 로딩 후 초기화 (`loadHeader()`)
+- 로고 클릭 시 메인 페이지 이동 이벤트 리스너 처리
+- 검색 기능, 사용자 메뉴, 추천 콘텐츠 초기화
 
 ### auth.js
 - Firebase 인증 통합
@@ -255,13 +276,22 @@ export async function searchFiltered(query, limit = 10) {
 - 이미지 최적화
 - 캐싱 전략
 
+### Dropdown.js
+- 드롭다운 메뉴의 표시/숨김 로직 처리
+- 버튼 클릭 및 외부 클릭 이벤트 핸들링
+
+### MainHeroSlider.js
+- 메인 히어로 섹션 슬라이더의 API 데이터 호출
+- 동적 슬라이드 생성 및 표시
+- 자동 슬라이드 및 좌우 탐색 기능 구현
+
 ## 7. API 연동
 
 ### 엔드포인트
 - `/recommendation/top`: 인기 컨텐츠 (FastAPI 서버)
 - `/recommendation/emotion`: 감정 기반 추천 (FastAPI 서버)
 - `/recommendation/recent`: 최근 시청 (FastAPI 서버)
-- `/recommendation/test`: 테스트 추천 API 엔드포인트 (여러 파라미터 지원)
+- `/recommendation/test`: 테스트 추천 API 엔드포인트 (MainHeroSlider에서 사용, 여러 파라미터 지원)
 - `/search`: 컨텐츠 검색 (기본)
 - `/search/advanced`: 고급 검색 (필터링 기능 제공)
 
@@ -270,14 +300,16 @@ export async function searchFiltered(query, limit = 10) {
   - 인기작: `genre=액션`
   - 감정 기반: `genre=코미디`
   - 최근 시청: `genre=드라마`
+  - 메인 히어로 슬라이더: `n=4&is_adult=false&is_main=true`
 - 각 슬레이트가 서로 다른 콘텐츠를 표시하도록 설계
 
 ### 데이터 흐름
 1. 페이지 로드
-2. `initRecommendationsWithTest()` 함수 호출
-3. 각 슬레이트별로 API 요청 (서로 다른 파라미터)
-4. 응답 데이터를 `renderSlider()` 함수로 렌더링
-5. 사용자 인터랙션에 따른 UI 업데이트
+2. `init.js`에서 헤더 로드 후 `initMainHeroSlider()` 및 `initDropdown()` 호출 (main.html)
+3. `MainHeroSlider.js`에서 API 요청 (`/recommendation/test?n=4&is_adult=false&is_main=true`)
+4. 응답 데이터를 `populateSlider()` 함수로 슬라이드 동적 렌더링
+5. `recommendation_test.js`에서 다른 슬라이더들에 대한 API 요청 및 `renderSlider()` 렌더링
+6. 사용자 인터랙션에 따른 UI 업데이트
 
 ## 8. 사용자 경험
 
