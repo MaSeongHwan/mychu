@@ -2,13 +2,14 @@ import { API_BASE_URL } from './config.js';
 import { renderSlider } from '../components/Recommendations.js';
 
 /**
- * API 응답 데이터에서 poster_path만 남기고 나머지 필드들을 제거하는 함수
+ * API 응답 데이터에서 poster_path와 asset_idx만 남기고 나머지 필드들을 제거하는 함수
  * @param {Array} items - API에서 받은 콘텐츠 배열
- * @returns {Array} poster_path만 포함된 배열
+ * @returns {Array} poster_path와 asset_idx만 포함된 배열
  */
 function filterPosterPathOnly(items) {
   return items.map(item => ({
-    poster_path: item.poster_path
+    poster_path: item.poster_path,
+    asset_idx: item.asset_idx
   }));
 }
 

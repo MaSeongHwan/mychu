@@ -171,6 +171,7 @@ function updateUserInfo(userData) {
     
     // 가입일 포맷팅
     if (userData.created_at) {
+<<<<<<< Updated upstream
         const joinDate = new Date(userData.created_at);
         const joinDateFormatted = `가입일: ${joinDate.getFullYear()}년 ${joinDate.getMonth() + 1}월 ${joinDate.getDate()}일`;
         if (profileJoinDate) {
@@ -180,6 +181,24 @@ function updateUserInfo(userData) {
     } else {
         if (profileJoinDate) {
             profileJoinDate.textContent = '가입일: 정보 없음';
+=======
+        // created_at에서 앞에서부터 4개만 따서 년도만 표시
+        const yearOnly = userData.created_at.substring(0, 4);
+        const joinDateFormatted = `가입일: ${yearOnly}년`;
+        const profileJoinDate = document.querySelector('.profile-join-date');
+        if (profileJoinDate) profileJoinDate.textContent = joinDateFormatted;
+    }
+      // 로그아웃 버튼 이벤트 핸들러 설정
+    document.querySelectorAll('.dropdown-item').forEach(button => {
+        // 버튼 텍스트에서 공백과 줄바꿈 제거
+        const buttonText = button.textContent.replace(/\s+/g, ' ').trim();
+        console.log('드롭다운 아이템 텍스트:', buttonText);
+        
+        // SVG 이후의 텍스트만 검사
+        if (buttonText.includes('로그아웃')) {
+            button.addEventListener('click', handleLogout);
+            console.log('로그아웃 버튼 이벤트 핸들러 설정됨');
+>>>>>>> Stashed changes
         }
     }
 }

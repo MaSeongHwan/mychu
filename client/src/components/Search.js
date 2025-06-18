@@ -32,9 +32,10 @@ export function initializeSearch() {
         console.log('검색 결과:', results);
         
         if (results && results.length > 0) {
-          // poster_path만 필터링
+          // poster_path와 asset_idx만 필터링
           const filteredResults = results.map(item => ({
-            poster_path: item.poster_path
+            poster_path: item.poster_path,
+            asset_idx: item.asset_idx
           }));
           
           // 자동완성 결과 표시
@@ -85,7 +86,11 @@ export function initializeSearch() {
     const item = e.target.closest('.suggestion-item');
     if (!item) return;
     
-    // 이미지만 표시하므로 클릭 시 아무 동작 안함
+    const id = item.dataset.id;
+    if (id) {
+      // 콘텐츠 상세 페이지로 이동
+      window.location.href = `/contents?id=${id}`;
+    }
     suggestionsContainer.style.display = 'none';
   });
 }
@@ -101,7 +106,7 @@ function renderSuggestions(results, container, query) {
     
     // 항목 HTML 생성 (이미지만)
     const html = `
-      <div class="suggestion-item">
+      <div class="suggestion-item" data-id="${item.asset_idx}">
         <img src="${thumbnail}" alt="Poster" />
       </div>
     `;

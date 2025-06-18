@@ -25,19 +25,31 @@ async function doSearch(keyword) {
       return;
     }
 
-    // poster_path만 필터링
+    // poster_path와 asset_idx만 필터링
     const filteredItems = items.map(item => ({
-      poster_path: item.poster_path
+      poster_path: item.poster_path,
+      asset_idx: item.asset_idx
     }));
 
     // 검색 결과 카드 생성 (이미지만)
     grid.innerHTML = filteredItems.map(item => `
-      <div class="content-card">
+      <div class="content-card" data-id="${item.asset_idx || ''}" style="cursor: pointer;">
         <div class="card-image">
           <img src="${item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="Poster" />
         </div>
       </div>
     `).join('');
+    
+    // 클릭 이벤트 추가
+    const cards = grid.querySelectorAll('.content-card');
+    cards.forEach(card => {
+      const id = card.dataset.id;
+      if (id) {
+        card.addEventListener('click', () => {
+          window.location.href = `/contents?id=${id}`;
+        });
+      }
+    });
   } catch (err) {
     console.error('검색 오류:', err);
     grid.innerHTML = '<div class="error-message"><p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p></div>';

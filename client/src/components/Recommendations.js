@@ -93,6 +93,11 @@ export function renderSlider(container, items) {
   items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'card';
+    
+    // asset_idx가 있으면 dataset에 추가
+    if (item.asset_idx) {
+      card.dataset.id = item.asset_idx;
+    }
 
     // 이미지만 추가 (poster_path만 사용)
     const img = document.createElement('img');
@@ -100,6 +105,14 @@ export function renderSlider(container, items) {
     img.alt = 'Poster';
     img.loading = 'lazy';
     card.appendChild(img);
+
+    // 클릭 이벤트 추가
+    if (item.asset_idx) {
+      card.addEventListener('click', () => {
+        window.location.href = `/contents?id=${item.asset_idx}`;
+      });
+      card.style.cursor = 'pointer';
+    }
 
     cardContainer.appendChild(card);
   });
