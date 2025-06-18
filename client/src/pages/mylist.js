@@ -2,6 +2,7 @@
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { firebaseConfig } from '../firebase/config.js';
+import { initializeSearch } from '../components/Search.js';
 
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
@@ -11,6 +12,9 @@ console.log('마이리스트 스크립트 로드됨');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded 이벤트 발생');
+    
+    // 검색 기능 초기화
+    initializeSearch();
     
     // 사용자 정보 로드
     loadUserData();
@@ -189,6 +193,19 @@ function setupTabs() {
             
             // 선택한 탭 콘텐츠 표시
             document.getElementById(tabId).classList.add('active');
+            
+            // 탭 전환 시 통계 업데이트
+            updateContentCount();
+            
+            // 탭에 따른 라벨 업데이트
+            const statLabel = document.querySelector('.stat-label');
+            if (statLabel) {
+                if (tabId === 'watch-history') {
+                    statLabel.textContent = '시청 기록';
+                } else if (tabId === 'wishlist') {
+                    statLabel.textContent = '찜한 콘텐츠';
+                }
+            }
         });
     });
 }
@@ -196,21 +213,33 @@ function setupTabs() {
 // 리스트 뷰 타입 전환 기능 설정
 function setupViewToggle() {
     const viewButtons = document.querySelectorAll('.view-btn');
-    const contentGrids = document.querySelectorAll('.content-grid');
     
     viewButtons.forEach(button => {
         button.addEventListener('click', function() {
             const viewType = this.getAttribute('data-view');
+            const parentSection = this.closest('.content-section');
+            const viewToggle = parentSection.querySelector('.view-toggle');
+            const grid = parentSection.querySelector('.content-grid');
+            const items = grid.querySelectorAll('.content-item');
             
-            // 모든 뷰 버튼 비활성화
-            viewButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // 선택한 뷰 버튼 활성화
+            // 같은 섹션 내의 뷰 버튼들에서 active 클래스 제거
+            viewToggle.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            // 클릭된 버튼에 active 클래스 추가
             this.classList.add('active');
-            
-            // 콘텐츠 그리드 뷰 타입 변경
-            contentGrids.forEach(grid => {
-                grid.className = `content-${viewType}`;
+            // 그리드에 뷰 타입 클래스 적용
+            grid.className = `content-grid ${viewType}-view`;
+
+            // 리스트 뷰일 때 이미지/오버레이 숨기기, 그리드 뷰일 때 다시 보이기
+            items.forEach(item => {
+                const poster = item.querySelector('.item-poster');
+                const overlay = item.querySelector('.item-overlay');
+                if (viewType === 'list') {
+                    if (poster) poster.style.display = 'none';
+                    if (overlay) overlay.style.display = 'none';
+                } else {
+                    if (poster) poster.style.display = '';
+                    if (overlay) overlay.style.display = '';
+                }
             });
         });
     });
@@ -224,26 +253,93 @@ function setupRemoveButtons() {
         button.addEventListener('click', function(event) {
             event.stopPropagation();
             const contentItem = this.closest('.content-item');
+            const title = contentItem.querySelector('.item-title').textContent;
+            const isWatchHistory = contentItem.closest('#watch-history') !== null;
             
-            if (contentItem) {
+            const confirmMessage = isWatchHistory 
+                ? `"${title}" 시청 기록을 삭제하시겠습니까?`
+                : `"${title}"을(를) 찜 목록에서 제거하시겠습니까?`;
+            
+            if (confirm(confirmMessage)) {
                 // 실제 서버 요청 구현 필요
-                console.log('찜 해제:', contentItem.querySelector('.item-title').textContent);
-                contentItem.remove();
-                
-                // 찜한 콘텐츠 수 업데이트
-                updateContentCount();
+                console.log(isWatchHistory ? '시청 기록 삭제:' : '찜 해제:', title);
+                contentItem.style.animation = 'fadeOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    contentItem.remove();
+                    updateContentCount();
+                }, 300);
             }
+        });
+    });
+    
+    // 재생 버튼 기능
+    const playButtons = document.querySelectorAll('.play-btn');
+    playButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const item = this.closest('.content-item');
+            const title = item.querySelector('.item-title').textContent;
+            const isWatchHistory = item.closest('#watch-history') !== null;
+            
+            if (isWatchHistory) {
+                alert(`"${title}" 이어보기를 시작합니다.`);
+            } else {
+                alert(`"${title}" 재생을 시작합니다.`);
+            }
+        });
+    });
+    
+    // 정렬 기능
+    const sortSelects = document.querySelectorAll('.sort-select');
+    sortSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            const sortType = this.value;
+            const grid = this.closest('.content-section').querySelector('.content-grid');
+            const items = Array.from(grid.querySelectorAll('.content-item'));
+            const isWatchHistory = grid.closest('#watch-history') !== null;
+            
+            items.sort((a, b) => {
+                switch(sortType) {
+                    case 'name':
+                        return a.querySelector('.item-title').textContent.localeCompare(b.querySelector('.item-title').textContent);
+                    case 'rating':
+                        const ratingA = parseFloat(a.querySelector('.item-rating span')?.textContent || '0');
+                        const ratingB = parseFloat(b.querySelector('.item-rating span')?.textContent || '0');
+                        return ratingB - ratingA;
+                    case 'duration':
+                        if (isWatchHistory) {
+                            // 시청 진행률로 정렬
+                            const progressA = parseInt(a.querySelector('.progress-fill')?.style.width || '0');
+                            const progressB = parseInt(b.querySelector('.progress-fill')?.style.width || '0');
+                            return progressB - progressA;
+                        }
+                        return 0;
+                    case 'recent':
+                    default:
+                        return 0; // 기본 순서 유지
+                }
+            });
+            
+            // 정렬된 순서로 다시 배치
+            items.forEach(item => grid.appendChild(item));
         });
     });
 }
 
 // 콘텐츠 개수 업데이트
 function updateContentCount() {
-    const wishlistCount = document.querySelector('#wishlistGrid').querySelectorAll('.content-item').length;
+    const wishlistCount = document.querySelectorAll('#wishlist .content-item').length;
+    const watchHistoryCount = document.querySelectorAll('#watch-history .content-item').length;
     const statNumber = document.querySelector('.stat-number');
     
     if (statNumber) {
-        statNumber.textContent = wishlistCount;
+        // 현재 활성화된 탭에 따라 개수 업데이트
+        const activeTab = document.querySelector('.tab-button.active');
+        if (activeTab && activeTab.getAttribute('data-tab') === 'watch-history') {
+            statNumber.textContent = watchHistoryCount;
+        } else {
+            statNumber.textContent = wishlistCount;
+        }
     }
 }
 
