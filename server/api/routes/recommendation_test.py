@@ -10,7 +10,7 @@ from server.api.schemas.recommendation import RecommendationResponse, Recommenda
 # Create a separate router for the test endpoint
 router = APIRouter(
     prefix="/recommendation",
-    tags=["recommendation-test"]
+    tags=["recommendation"]
 )
 
 @router.get("/test", response_model=RecommendationResponse)
@@ -22,55 +22,51 @@ def get_test_recommendations(
     db: Session = Depends(get_db),
 ):
     """
-    테스트용 추천 API - 다양한 파라미터 지원
+    테스트용 추천 API - 다양한 파라미터 지원 -> 아무 실험 하시와요
     """
     import random
     
-    # 각 슬라이더 타입에 따라 장르를 다르게 설정하여 결과를 차별화
-    # ORM 쿼리 구성
-    query = db.query(
-        Asset.idx.label('asset_idx'),
-        Asset.super_asset_nm.label('asset_nm'), 
-        Asset.poster_path,
-        Asset.genre,
-        Asset.rlse_year.label('release_year'),
-        Asset.is_movie,
-        Asset.smry
-    )
+    # Asset 전체 컬럼을 select
+    query = db.query(Asset)
     
     # 기본 필터 적용
     query = query.filter(Asset.is_adult == is_adult)
-    
     if is_main:
         query = query.filter(Asset.is_main == is_main)
-        
-    # 장르 필터링이 있으면 적용
     if genre:
         query = query.filter(Asset.genre.ilike(f"%{genre}%"))
-      # 랜덤 정렬 및 제한
     query = query.order_by(func.random()).limit(n)
     
-    # 쿼리 실행
     rows = query.all()
 
-    # 결과를 RecommendationItem으로 변환
     items = []
     for r in rows:
         try:
             items.append(
                 RecommendationItem(
-                    asset_idx = r.asset_idx,
+                    idx = r.idx,
+                    full_asset_id = r.full_asset_id,
+                    unique_asset_id = r.unique_asset_id,
                     asset_nm = r.asset_nm,
-                    poster_path = r.poster_path or "",
-                    genre = r.genre or "",
-                    release_year = r.release_year,
+                    super_asset_nm = r.super_asset_nm,
+                    actr_disp = r.actr_disp,
+                    genre = r.genre,
+                    degree = r.degree,
+                    asset_time = r.asset_time,
+                    rlse_year = r.rlse_year,
+                    smry = r.smry,
+                    epsd_no = r.epsd_no,
+                    is_adult = r.is_adult,
                     is_movie = r.is_movie,
-                    smry=r.smry
+                    is_drama = r.is_drama,
+                    is_main = r.is_main,
+                    keyword = r.keyword,
+                    poster_path = r.poster_path,
+                    smry_shrt = getattr(r, 'smry_shrt', None)
                 )
             )
         except Exception as e:
             print(f"Error creating recommendation item: {e}")
             continue
 
-    # 응답 반환
     return RecommendationResponse(items=items)

@@ -73,7 +73,7 @@ document.getElementById('search-btn').addEventListener('click', async () => {
 function renderResults(results) {
   const list = document.getElementById('result-list');
   list.innerHTML = '';
-  results.forEach(item => {
+  results.forEach(item => 
     const li = document.createElement('li');
     li.textContent = item.asset_nm + ' (' + item.genre + ')';
     list.appendChild(li);
@@ -255,19 +255,80 @@ LIMIT :n
 - 빈 결과 반환 시 더미 데이터로 대체
 - 모든 예외 상황에서 일관된 응답 형식 유지
 
-## 2. 데이터 모델
+## 2. 데이터 모델 (assets 테이블 최신화)
 
-### Asset 모델
+### Asset 모델 (최신 DDL 기준)
 ```python
 class Asset(Base):
-    __tablename__ = "asset"
-    
-    asset_index = Column(Integer, primary_key=True)
+    __tablename__ = "assets"
+    idx = Column(Integer, primary_key=True)
     full_asset_id = Column(Text, unique=True, nullable=False)
-    asset_nm = Column(Text, nullable=True)
+    unique_asset_id = Column(Text, nullable=False)
+    asset_nm = Column(Text, nullable=False)
+    super_asset_nm = Column(Text, nullable=False)
+    actr_disp = Column(Text, nullable=True)
     genre = Column(Text, nullable=True)
-    # ... 기타 필드
+    degree = Column(Integer, nullable=True)
+    asset_time = Column(Integer, nullable=True)
+    rlse_year = Column(BigInteger, nullable=True)
+    smry = Column(Text, nullable=True)
+    epsd_no = Column(Integer, default=0, nullable=False)
+    is_adult = Column(Boolean, default=False, nullable=False)
+    is_movie = Column(Boolean, default=False, nullable=False)
+    is_drama = Column(Boolean, default=False, nullable=False)
+    is_main = Column(Boolean, default=False, nullable=False)
+    keyword = Column(Text, nullable=True)
+    poster_path = Column(Text, nullable=True)
+    smry_shrt = Column(Text, nullable=True)
 ```
+
+- 주요 변경점:
+  - rlse_year: Integer → BigInteger
+  - smry_shrt: 컬럼 추가
+  - 각 컬럼의 nullable/default/unique 조건 DDL과 일치
+
+### API 응답 예시 (assets)
+```json
+{
+  "items": [
+    {
+      "idx": 1,
+      "full_asset_id": "movie-1",
+      "unique_asset_id": "unique-1",
+      "asset_nm": "영화 제목",
+      "super_asset_nm": "상위 영화 제목",
+      "actr_disp": "배우1, 배우2",
+      "genre": "드라마",
+      "degree": 12,
+      "asset_time": 120,
+      "rlse_year": 2023,
+      "smry": "상세 설명 ...",
+      "epsd_no": 0,
+      "is_adult": false,
+      "is_movie": true,
+      "is_drama": false,
+      "is_main": true,
+      "keyword": "감동, 힐링",
+      "poster_path": "/images/poster1.jpg",
+      "smry_shrt": "짧은 요약 ..."
+    }
+  ]
+}
+```
+
+- 모든 API 응답/예시/모델 설명에서 위 필드가 반영되어야 하며, 누락된 필드는 추가, 타입/옵션은 DDL과 일치하게 고쳐야 합니다.
+
+### 쿼리 예시 (assets)
+```sql
+SELECT 
+    idx, full_asset_id, unique_asset_id, asset_nm, super_asset_nm, actr_disp, genre, degree, asset_time, rlse_year, smry, epsd_no, is_adult, is_movie, is_drama, is_main, keyword, poster_path, smry_shrt
+FROM assets
+WHERE ...
+```
+
+---
+
+# 이하 기존 내용 유지 (엔드포인트, 사용법 등)
 
 ## 3. 성능 최적화
 

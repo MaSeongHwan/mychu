@@ -6,7 +6,7 @@ from typing import List, Optional
 from server.core.search_engine import main_search_assets, is_adult_search_assets, advanced_search_assets
 from server.core.database import get_db
 from server.models.user import User
-from server.api.schemas.search import SearchResponse
+from server.api.schemas.search import SearchResponse, SearchItem
 
 router = APIRouter(
      tags=["search"]
