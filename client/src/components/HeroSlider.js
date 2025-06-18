@@ -39,6 +39,15 @@ export async function initHeroSlider() {
             posterImg.src = movie.poster_path;
             posterImg.alt = movie.asset_nm || '영화 포스터';
           }
+
+          if (movie.asset_idx) {
+            slide.addEventListener('click', (event) => {
+              event.stopPropagation();
+              console.log('카드 클릭!', movie.idx || movie.asset_idx);
+              window.location.href = `/contents?id=${movie.idx || movie.asset_idx}`;
+            });
+            slide.style.cursor = 'pointer';
+          }
         }
       });
     } else {

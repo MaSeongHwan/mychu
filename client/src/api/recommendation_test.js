@@ -299,3 +299,91 @@ export async function initRecommendationsWithTest() {
   
   console.log('모든 슬라이더 초기화 완료 (영화 데이터만)');
 }
+
+/**
+ * 여러 추천 엔드포인트를 병렬로 호출하는 최적화된 함수
+ * @param {Array<string>} types - 호출할 추천 유형 배열 ('popular', 'emotion', 'recent', 'test' 등)
+ * @param {Object} options - 각 호출에 대한 추가 옵션
+ * @returns {Promise<Object>} - 각 유형별 결과가 담긴 객체
+ */
+export async function fetchMultipleRecommendations(types = ['popular', 'emotion', 'recent'], options = {}) {
+  console.log(`병렬로 ${types.length}개의 추천 데이터 요청 시작`);
+  console.time('parallel-recommendations');
+  
+  // 기본 옵션
+  const defaultOptions = {
+    n: 10,
+    is_adult: false,
+    is_main: true
+  };
+  
+  const mergedOptions = { ...defaultOptions, ...options };
+  
+  // 각 타입별 URL 생성
+  function getUrlForType(type) {
+    const baseUrl = `${API_BASE_URL}/recommendation/`;
+    const params = new URLSearchParams();
+    
+    // 기본 파라미터 추가
+    params.append('n', mergedOptions.n);
+    
+    // 타입별 경로 및 추가 파라미터 설정
+    switch(type) {
+      case 'popular':
+        params.append('is_adult', mergedOptions.is_adult);
+        return `${baseUrl}popular?${params.toString()}`;
+      case 'emotion':
+        params.append('is_main', mergedOptions.is_main);
+        params.append('genre', '코미디');
+        return `${baseUrl}test?${params.toString()}`;
+      case 'recent':
+        return `${baseUrl}recent?${params.toString()}`;
+      case 'test':
+        params.append('is_main', mergedOptions.is_main);
+        return `${baseUrl}test?${params.toString()}`;
+      default:
+        return `${baseUrl}${type}?${params.toString()}`;
+    }
+  }
+  
+  try {
+    // 모든 추천 요청을 병렬로 실행
+    const fetchPromises = types.map(type => {
+      return fetch(getUrlForType(type))
+        .then(response => {
+          if (!response.ok) {
+            console.error(`${type} 추천 API 에러: ${response.status}`);
+            return { error: `서버 에러: ${response.status}` };
+          }
+          return response.json();
+        })
+        .then(data => {
+          // 포스터와 ID만 추출하여 경량화
+          const items = data.items || [];
+          return filterPosterPathOnly(items);
+        })
+        .catch(error => {
+          console.error(`${type} 추천 데이터 로드 중 오류:`, error);
+          return [];
+        });
+    });
+    
+    // 병렬로 모든 요청 처리
+    const results = await Promise.all(fetchPromises);
+    
+    // 결과를 유형별로 매핑
+    const resultMap = {};
+    types.forEach((type, index) => {
+      resultMap[type] = results[index];
+    });
+    
+    console.timeEnd('parallel-recommendations');
+    console.log('병렬 추천 데이터 요청 완료:', resultMap);
+    
+    return resultMap;
+  } catch (error) {
+    console.error('병렬 추천 데이터 요청 중 오류 발생:', error);
+    console.timeEnd('parallel-recommendations');
+    throw error;
+  }
+}

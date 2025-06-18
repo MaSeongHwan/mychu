@@ -39,4 +39,15 @@ export function initDropdown() {
 
   dropdownBtn.addEventListener('click', toggleDropdown);
   document.addEventListener('click', closeDropdown);
+
+  // 드롭다운 wrapper에서만 감지
+  document.querySelectorAll('.dropdown-wrapper').forEach(wrapper => {
+    wrapper.addEventListener('mousedown', function(event) {
+      const dropdownBtn = wrapper.querySelector('.dropdown-btn');
+      const dropdownContent = wrapper.querySelector('.dropdown-content');
+      if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
+        dropdownContent.classList.remove('show');
+      }
+    });
+  });
 } 

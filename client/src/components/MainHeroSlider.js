@@ -99,8 +99,11 @@ export function initMainHeroSlider() {
             
             // 클릭 이벤트 추가
             if (item.asset_idx) {
-                slideElement.addEventListener('click', () => {
-                    window.location.href = `/contents?id=${item.asset_idx}`;
+                const card = slideElement.querySelector('.hero-slide');
+                card.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    console.log('카드 클릭!', item.idx || item.asset_idx);
+                    window.location.href = `/contents?id=${item.idx || item.asset_idx}`;
                 });
                 slideElement.style.cursor = 'pointer';
             }

@@ -44,9 +44,11 @@ def get_test_recommendations(
             exclude_genre = genre[2:].strip()
             query = query.filter(~Asset.genre.ilike(f"%{exclude_genre}%"))
         else:
-            query = query.filter(Asset.genre.ilike(f"%{genre}%"))
+            query = query.filter(Asset.genre.ilike(f"%{genre}%"))    # n 개수로 제한 적용하여 성능 개선
 
-    rows = query.all()
+    # 추가: 기타 장르 제외
+    query = query.filter(~Asset.poster_path.ilike("%upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg%"))
+    rows = query.limit(n).all()
     items = []
     for r in rows:
         try:
@@ -91,6 +93,7 @@ def get_popular_recommendations(
     genre: Optional[str] = Query(None, description="특정 장르로 필터링 (!=로맨스: 제외)"),
     db: Session = Depends(get_db),
 ):
+
     # 기본 쿼리 - 하드코딩된 장르 필터 제거
     query = (
         db.query(Asset)
@@ -116,6 +119,9 @@ def get_popular_recommendations(
 
     # 인기순 정렬하고 제한
     rows = query.order_by(Score.cnt.desc()).limit(n).all()
+
+    # 추가: 일단 이미지 없는거 제외
+    query = query.filter(~Asset.poster_path.ilike("%upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg%"))
 
     # 결과 변환
     items = []
@@ -177,6 +183,9 @@ def get_recent_recommendations(
             query = query.filter(~Asset.genre.ilike(f"%{exclude_genre}%"))
         else:
             query = query.filter(Asset.genre.ilike(f"%{genre}%"))
+
+    # 추가: 일단 이미지 없는거 제외
+    query = query.filter(~Asset.poster_path.ilike("%No-Image-Placeholder.svg%"))
 
     # ⚠️ 핵심 수정: limit(n) 추가!
     rows = query.order_by(Asset.rlse_year.desc()).limit(n).all()

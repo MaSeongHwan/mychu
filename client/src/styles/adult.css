@@ -26,11 +26,7 @@ body {
   border-bottom: 1px solid #2a2c35;
   backdrop-filter: blur(8px);
 }
-.header.adult-mode {
-  border-bottom: 2px solid #dc2626;
-  box-shadow: 0 4px 20px rgba(220,38,38,0.3);
-  background: linear-gradient(135deg, rgba(15,17,22,0.95) 0%, rgba(220,38,38,0.1) 100%);
-}
+
 .header.adult-mode::before {
   content: '';
   position: absolute;
