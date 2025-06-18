@@ -31,8 +31,7 @@ body::before {
 .header {
   position: fixed;
   top: 0; left: 0; width: 100%; z-index: 50;
-  background: rgba(0,0,0,0);
-  backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0); /* 완전 투명 */
   border-bottom: none !important;
   box-shadow: none !important;
 }
