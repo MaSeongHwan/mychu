@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WellList - VOD 추천 시스템</title>
+  <title>WellList - 드라마 추천 시스템</title>
   <link rel="stylesheet" href="/src/styles/main.css">
 </head>
 
@@ -95,11 +95,11 @@
   <!-- Content Categories -->
   <main class="main-content">
     <div class="container">
-      <h2 class="content-heading">지금 인기 있는 콘텐츠</h2>      
+      <h2 class="content-heading">지금 인기 있는 드라마</h2>      
       <!-- 오늘의 인기작 Top 10 슬라이더 섹션 -->
       <section class="section" id="top-section">
         <div class="section-header">
-          <h2>오늘의 인기작</h2>
+          <h2>오늘의 인기 드라마</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn">
               <span class="icon icon-arrow-left"></span>
@@ -111,7 +111,7 @@
         </div>        
         <div class="slider" id="top-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            드라마를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
@@ -119,7 +119,7 @@
       <!-- 개인화된 추천 슬라이더 섹션 -->
       <section class="section" id="emotion-section">
         <div class="section-header">
-          <h2>소금님, 오늘은 따듯한 힐링 영화가 어울려요</h2>
+          <h2>소금님, 오늘은 따듯한 로맨스 드라마가 어울려요</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn">
               <span class="icon icon-arrow-left"></span>
@@ -131,7 +131,7 @@
         </div>
         <div class="slider" id="emotion-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            드라마를 불러오는데 실패했습니다.
           </div>
           <!-- 슬라이더 컨텐츠는 JavaScript로 동적 생성됩니다 -->
         </div>
@@ -140,7 +140,7 @@
       <!-- 최근 시청 콘텐츠 슬라이더 섹션 -->
       <section class="section" id="recent-section">
         <div class="section-header">
-          <h2>최근 시청 콘텐츠</h2>
+          <h2>최근 시청 드라마</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn">
               <span class="icon icon-arrow-left"></span>
@@ -152,7 +152,7 @@
         </div>
         <div class="slider" id="recent-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            드라마를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
@@ -176,8 +176,8 @@
   <script type="module">
     import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
     import { initializeSearch } from '/src/components/Search.js';
-    // 테스트 추천 API를 사용하는 새 함수 임포트
-    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    // drama.html용 드라마 전용 추천 API 함수 임포트
+    import { initRecommendationsForDrama } from '/src/api/recommendation_test.js';
     import { initHeroSlider } from '/src/components/HeroSlider.js'; // HeroSlider 임포트
     import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
     
@@ -199,9 +199,9 @@
       initializeUserMenu();
       setupLogout();
 
-      // 테스트 추천 API를 사용하여 모든 슬라이더 초기화
-      initRecommendationsWithTest();
-      console.log('테스트 추천 API로 콘텐츠 로드 시작');
+      // drama.html용 드라마 전용 추천 API를 사용하여 모든 슬라이더 초기화
+      initRecommendationsForDrama();
+      console.log('drama.html용 드라마 전용 추천 API로 콘텐츠 로드 시작');
 
       // Hero 슬라이더 초기화
       // initHeroSlider(); // 슬라이더 기능을 제거했으므로 주석 처리
