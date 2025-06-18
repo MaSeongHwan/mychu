@@ -155,6 +155,7 @@
   }
   
   .form-input {
+    width: 100%;
     padding: 0.875rem 1rem;
     background-color: #374151;
     border: 1px solid #4b5563;
@@ -181,7 +182,9 @@
   
   /* 비밀번호 입력 컨테이너 */
   .password-input-container {
-    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
   }
   
   .password-input-container .form-input {

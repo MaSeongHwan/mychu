@@ -532,3 +532,37 @@
     font-size: 0.875rem;
     line-height: 1.5;
   }
+
+  .page-header {
+    position: relative;
+  }
+  
+  .profile-stats-badge {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    background: #10b981;
+    color: #fff;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 10;
+    flex-direction: column;
+  }
+  
+  .profile-stats-badge .stat-number {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  .profile-stats-badge .stat-label {
+    color: #e0f7ef;
+    font-size: 0.7rem;
+    margin-top: 0.1rem;
+  }
