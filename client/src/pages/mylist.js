@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadUserData() {
     console.log("Firebase 인증 상태 확인 중...");
     
+    // 로딩 상태 표시
+    showLoadingState();
+    
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("사용자 로그인 확인됨:", user.email);
@@ -68,6 +71,7 @@ function loadUserData() {
                 }
             } catch (error) {
                 console.error('사용자 데이터 가져오기 오류:', error);
+                showErrorState();
             }
         } else {
             console.log("로그인된 사용자 없음, 로그인 페이지로 리다이렉트");
@@ -75,6 +79,40 @@ function loadUserData() {
             window.location.href = '/login';
         }
     });
+}
+
+// 로딩 상태 표시
+function showLoadingState() {
+    const profileName = document.querySelector('.profile-name');
+    const profileJoinDate = document.querySelector('.profile-join-date');
+    const headerUserName = document.querySelector('.dropdown-header .user-name');
+    
+    if (profileName) {
+        profileName.textContent = '로딩중...';
+    }
+    if (profileJoinDate) {
+        profileJoinDate.textContent = '가입일: 로딩중...';
+    }
+    if (headerUserName) {
+        headerUserName.textContent = '로딩중...';
+    }
+}
+
+// 에러 상태 표시
+function showErrorState() {
+    const profileName = document.querySelector('.profile-name');
+    const profileJoinDate = document.querySelector('.profile-join-date');
+    const headerUserName = document.querySelector('.dropdown-header .user-name');
+    
+    if (profileName) {
+        profileName.textContent = '사용자 정보를 불러올 수 없습니다';
+    }
+    if (profileJoinDate) {
+        profileJoinDate.textContent = '가입일: 정보 없음';
+    }
+    if (headerUserName) {
+        headerUserName.textContent = '사용자 정보 오류';
+    }
 }
 
 // 사용자의 데이터셋 정보 가져오기
@@ -101,19 +139,20 @@ function updateUserInfo(userData) {
     // 프로필 섹션의 사용자 이름과 이메일
     const profileName = document.querySelector('.profile-name');
     const profileEmail = document.querySelector('.profile-email');
+    const profileJoinDate = document.querySelector('.profile-join-date');
     
     // 사용자 이름 설정 및 로깅
     console.log('사용자 데이터:', userData);
     
     if (headerUserName) {
-        headerUserName.textContent = userData.nickname + '님';
+        headerUserName.textContent = userData.nick_name + '님';
         console.log('헤더 이름 업데이트됨:', headerUserName.textContent);
     } else {
         console.error('헤더 사용자 이름 요소를 찾을 수 없음');
     }
     
     if (profileName) {
-        profileName.textContent = userData.nickname + '님';
+        profileName.textContent = userData.nick_name + '님';
         console.log('프로필 이름 업데이트됨:', profileName.textContent);
     } else {
         console.error('프로필 이름 요소를 찾을 수 없음');
@@ -127,8 +166,14 @@ function updateUserInfo(userData) {
     if (userData.created_at) {
         const joinDate = new Date(userData.created_at);
         const joinDateFormatted = `가입일: ${joinDate.getFullYear()}년 ${joinDate.getMonth() + 1}월 ${joinDate.getDate()}일`;
-        const profileJoinDate = document.querySelector('.profile-join-date');
-        if (profileJoinDate) profileJoinDate.textContent = joinDateFormatted;
+        if (profileJoinDate) {
+            profileJoinDate.textContent = joinDateFormatted;
+            console.log('가입일 업데이트됨:', joinDateFormatted);
+        }
+    } else {
+        if (profileJoinDate) {
+            profileJoinDate.textContent = '가입일: 정보 없음';
+        }
     }
       // 로그아웃 버튼 이벤트 핸들러 설정
     document.querySelectorAll('.dropdown-item').forEach(button => {
