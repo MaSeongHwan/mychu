@@ -349,8 +349,8 @@
   <script type="module">
     import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
     import { initializeSearch } from '/src/components/Search.js';
-    // 테스트 추천 API를 사용하는 새 함수 임포트
-    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    // main.html용 전체 콘텐츠 추천 API 함수 임포트
+    import { initRecommendationsForMain } from '/src/api/recommendation_test.js';
     import { initHeroSlider } from '/src/components/HeroSlider.js'; // HeroSlider 임포트
     import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
     
@@ -372,9 +372,9 @@
       initializeUserMenu();
       setupLogout();
 
-      // 테스트 추천 API를 사용하여 모든 슬라이더 초기화
-      initRecommendationsWithTest();
-      console.log('테스트 추천 API로 콘텐츠 로드 시작');
+      // main.html용 전체 콘텐츠 추천 API를 사용하여 모든 슬라이더 초기화
+      initRecommendationsForMain();
+      console.log('main.html용 전체 콘텐츠 추천 API로 콘텐츠 로드 시작');
 
       // Hero 슬라이더 초기화
       initHeroSlider(); // 슬라이더 기능 활성화

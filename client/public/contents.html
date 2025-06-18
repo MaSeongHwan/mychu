@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>콘텐츠 상세 페이지</title>
   <link rel="stylesheet" href="/src/styles/contents.css" />
+  <script type="module">
+    import { loadHeader } from '/components/loadHeader.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      loadHeader();
+    });
+  </script>
 </head>
 <body>
-  <!-- Header -->
-  <!-- ✅ 여기에는 아무것도 넣지 않음! 헤더는 JS로 삽입됩니다 -->
+  <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
   
   <main class="main-content">
     <section class="hero-section">

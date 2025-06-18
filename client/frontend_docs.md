@@ -288,9 +288,6 @@ export async function searchFiltered(query, limit = 10) {
 ## 7. API 연동
 
 ### 엔드포인트
-- `/recommendation/top`: 인기 컨텐츠 (FastAPI 서버)
-- `/recommendation/emotion`: 감정 기반 추천 (FastAPI 서버)
-- `/recommendation/recent`: 최근 시청 (FastAPI 서버)
 - `/recommendation/test`: 테스트 추천 API 엔드포인트 (MainHeroSlider에서 사용, 여러 파라미터 지원)
 - `/search`: 컨텐츠 검색 (기본)
 - `/search/advanced`: 고급 검색 (필터링 기능 제공)

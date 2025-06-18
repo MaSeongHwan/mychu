@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마이페이지 - WellList</title>
-  <link rel="stylesheet" href="src/styles/mylist.css">
-  <script type="module" src="src/init.js"></script>
-  <script type="module" src="src/pages/mylist.js" defer></script>
+  <link rel="stylesheet" href="/src/styles/mylist.css">
+  <script type="module" src="/src/init.js"></script>
+  <script type="module" src="/src/pages/mylist.js" defer></script>
+  <script type="module">
+    import { loadHeader } from '/components/loadHeader.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      loadHeader();
+    });
+  </script>
 </head>
 <body>
-  <!-- Header -->
-  <!-- 여기에는 아무것도 넣지 않음! 헤더는 JS로 삽입됩니다 -->
+  <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
 
   <!-- Main Content -->
   <main class="main-content">

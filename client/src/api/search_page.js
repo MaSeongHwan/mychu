@@ -1,4 +1,5 @@
 import { searchFiltered } from './search.js';
+import { renderSearchResults } from '../components/Search.js';
 
 // URL에서 q 파라 읽기
 const params = new URLSearchParams(location.search);
@@ -18,38 +19,18 @@ async function doSearch(keyword) {
   grid.innerHTML = '<div class="loading-indicator"><p>검색 중…</p></div>';
   
   try {
+    console.log('검색 페이지에서 검색 시작:', keyword);
     const items = await searchFiltered(keyword, 20);
+    console.log('검색 결과 수신:', items?.length || 0);
 
     if (!items || !items.length) {
       grid.innerHTML = '<div class="no-results"><p>검색 결과가 없습니다. 다른 키워드로 검색해 보세요.</p></div>';
       return;
     }
 
-    // poster_path와 asset_idx만 필터링
-    const filteredItems = items.map(item => ({
-      poster_path: item.poster_path,
-      asset_idx: item.asset_idx
-    }));
-
-    // 검색 결과 카드 생성 (이미지만)
-    grid.innerHTML = filteredItems.map(item => `
-      <div class="content-card" data-id="${item.asset_idx || ''}" style="cursor: pointer;">
-        <div class="card-image">
-          <img src="${item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="Poster" />
-        </div>
-      </div>
-    `).join('');
+    // 통합된 검색 결과 렌더링 함수 사용
+    renderSearchResults(items, grid);
     
-    // 클릭 이벤트 추가
-    const cards = grid.querySelectorAll('.content-card');
-    cards.forEach(card => {
-      const id = card.dataset.id;
-      if (id) {
-        card.addEventListener('click', () => {
-          window.location.href = `/contents?id=${id}`;
-        });
-      }
-    });
   } catch (err) {
     console.error('검색 오류:', err);
     grid.innerHTML = '<div class="error-message"><p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p></div>';

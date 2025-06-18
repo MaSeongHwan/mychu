@@ -151,4 +151,60 @@ ul { list-style: none; }
   .item-info { padding: 0.75rem; }
   .item-title { font-size: 0.875rem; }
 }
+
+.content-card {
+  background: #1f2937;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #374151;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.content-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  border-color: #10b981;
+}
+
+.card-image {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.content-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.card-info {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-genre {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  background: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+}
   
