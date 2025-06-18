@@ -18,6 +18,8 @@ def get_test_recommendations(
     n: int = Query(10, description="가져올 아이템 수"),
     is_adult: bool = Query(False, description="성인 제외"),
     is_main: bool = Query(True, description="메인 추천만"),
+    is_movie: bool = Query(False, description="영화만"),
+    is_drama: bool = Query(False, description="드라마만"),
     genre: Optional[str] = Query(None, description="특정 장르 필터링 (예: 로맨스 or !=로맨스)"),
     db: Session = Depends(get_db),
 ):
@@ -33,6 +35,10 @@ def get_test_recommendations(
     query = query.filter(Asset.is_adult == is_adult)
     if is_main:
         query = query.filter(Asset.is_main == is_main)
+    if is_movie:
+        query = query.filter(Asset.is_movie == is_movie)
+    if is_drama:
+        query = query.filter(Asset.is_drama == is_drama)
     if genre:
         if genre.startswith("!="):
             exclude_genre = genre[2:].strip()
@@ -80,6 +86,8 @@ def get_popular_recommendations(
     n: int = Query(10, description="가져올 아이템 수"),
     is_adult: bool = Query(False, description="성인 제외"),
     is_main: bool = Query(True, description="메인 추천만"),
+    is_movie: bool = Query(False, description="영화만"),
+    is_drama: bool = Query(False, description="드라마만"),
     genre: Optional[str] = Query(None, description="특정 장르로 필터링 (!=로맨스: 제외)"),
     db: Session = Depends(get_db),
 ):
@@ -93,6 +101,10 @@ def get_popular_recommendations(
 
     if is_main:
         query = query.filter(Asset.is_main == is_main)
+    if is_movie:
+        query = query.filter(Asset.is_movie == is_movie)
+    if is_drama:
+        query = query.filter(Asset.is_drama == is_drama)
 
     # 장르 필터링 - test 엔드포인트와 동일한 방식 사용
     if genre:
