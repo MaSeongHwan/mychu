@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마이페이지 - WellList</title>
   <link rel="stylesheet" href="src/styles/mylist.css">
-  <script type="module" src="src/pages/mylist.js" defer> </script>
-  <script type="module">
-    import { loadHeader } from '/components/loadHeader.js';
-    loadHeader();
-  </script>
+  <script type="module" src="src/init.js"></script>
+  <script type="module" src="src/pages/mylist.js" defer></script>
 </head>
 <body>
   <!-- Header -->
@@ -101,7 +98,7 @@
             <p class="profile-join-date"></p>
           </div>
         </div>
-        <div class="profile-stats">
+        <div class="profile-stats profile-stats-badge">
           <div class="stat-item">
             <span class="stat-number">24</span>
             <span class="stat-label">찜한 콘텐츠</span>
@@ -123,12 +120,12 @@
       <div class="tab-content active" id="wishlist">
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title">내가 찜한 콘텐츠</h2>
+            <h2 class="section-title">내가 찜한 콘텐츠 <span class="section-badge" id="wishlistCountBadge">0</span></h2>
             <div class="section-controls">
               <select class="sort-select">
                 <option value="recent">최근 추가순</option>
                 <option value="name">제목순</option>
-                <option value="rating">평점순</option>
+                <option value="genre">장르순</option>
               </select>
               <div class="view-toggle">
                 <button class="view-btn active" data-view="grid">

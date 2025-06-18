@@ -1,8 +1,7 @@
 // 사용자 정보 및 내 리스트 관련 스크립트
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { firebaseConfig } from '../firebase/config.js';
-import { initializeSearch } from '../components/Search.js';
 
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
@@ -10,23 +9,31 @@ const auth = getAuth(app);
 
 console.log('마이리스트 스크립트 로드됨');
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded 이벤트 발생');
-    
-    // 검색 기능 초기화
-    initializeSearch();
-    
-    // 사용자 정보 로드
-    loadUserData();
-    
-    // 탭 전환 처리
-    setupTabs();
-    
-    // 리스트 뷰 타입 전환 처리
-    setupViewToggle();
-    
-    // 찜 해제 버튼 이벤트 처리
-    setupRemoveButtons();
+// 페이지 초기화 함수
+async function initializePage() {
+    try {
+        // init.js에서 이미 헤더와 검색이 초기화되었으므로
+        // 마이리스트 페이지 전용 기능만 초기화
+        
+        // 1. 사용자 정보 로드
+        console.log('사용자 정보 로딩 중...');
+        loadUserData();
+        
+        // 2. UI 이벤트 설정
+        setupTabs();
+        setupViewToggle();
+        setupRemoveButtons();
+        
+        console.log('마이리스트 페이지 초기화 완료');
+    } catch (error) {
+        console.error('마이리스트 페이지 초기화 오류:', error);
+    }
+}
+
+// DOM이 로드된 후 초기화 (init.js 이후에 실행됨)
+document.addEventListener('DOMContentLoaded', () => {
+    // init.js가 완료된 후 실행되도록 약간의 지연 추가
+    setTimeout(initializePage, 100);
 });
 
 // 사용자 인증 상태 확인 및 사용자 데이터 로드
@@ -183,47 +190,6 @@ function updateUserInfo(userData) {
         if (profileJoinDate) profileJoinDate.textContent = joinDateFormatted;
 >>>>>>> Stashed changes
     }
-      // 로그아웃 버튼 이벤트 핸들러 설정
-    document.querySelectorAll('.dropdown-item').forEach(button => {
-        // 버튼 텍스트에서 공백과 줄바꿈 제거
-        const buttonText = button.textContent.replace(/\s+/g, ' ').trim();
-        console.log('드롭다운 아이템 텍스트:', buttonText);
-        
-        // SVG 이후의 텍스트만 검사
-        if (buttonText.includes('로그아웃')) {
-            button.addEventListener('click', handleLogout);
-            console.log('로그아웃 버튼 이벤트 핸들러 설정됨');
-        }
-    });
-    
-    // 로그아웃 버튼을 직접 선택해서 이벤트 핸들러 설정 (백업 방식)
-    const logoutLinks = Array.from(document.querySelectorAll('.dropdown-item')).filter(
-        link => link.innerHTML.includes('로그아웃') || 
-               (link.querySelector('svg') && link.textContent.trim().includes('로그아웃'))
-    );
-    
-    console.log('발견된 로그아웃 링크 수:', logoutLinks.length);
-    logoutLinks.forEach(link => {
-        link.removeEventListener('click', handleLogout); // 중복 방지를 위해 기존 핸들러 제거
-        link.addEventListener('click', handleLogout);
-        console.log('로그아웃 링크에 이벤트 핸들러 직접 설정됨');
-    });
-}
-
-// 로그아웃 처리
-async function handleLogout(event) {
-    event.preventDefault();
-    
-    try {
-        console.log("Logging out user...");
-        await auth.signOut();
-        console.log("User logged out successfully");
-        // 로그아웃 후 로그인 페이지로 리다이렉트
-        window.location.href = '/login';
-    } catch (error) {
-        console.error('로그아웃 실패:', error);
-        alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
 }
 
 // 탭 전환 기능 설정
@@ -355,10 +321,10 @@ function setupRemoveButtons() {
                 switch(sortType) {
                     case 'name':
                         return a.querySelector('.item-title').textContent.localeCompare(b.querySelector('.item-title').textContent);
-                    case 'rating':
-                        const ratingA = parseFloat(a.querySelector('.item-rating span')?.textContent || '0');
-                        const ratingB = parseFloat(b.querySelector('.item-rating span')?.textContent || '0');
-                        return ratingB - ratingA;
+                    case 'genre':
+                        const genreA = a.querySelector('.item-genre')?.textContent || '';
+                        const genreB = b.querySelector('.item-genre')?.textContent || '';
+                        return genreA.localeCompare(genreB);
                     case 'duration':
                         if (isWatchHistory) {
                             // 시청 진행률로 정렬
@@ -382,17 +348,9 @@ function setupRemoveButtons() {
 // 콘텐츠 개수 업데이트
 function updateContentCount() {
     const wishlistCount = document.querySelectorAll('#wishlist .content-item').length;
-    const watchHistoryCount = document.querySelectorAll('#watch-history .content-item').length;
-    const statNumber = document.querySelector('.stat-number');
-    
-    if (statNumber) {
-        // 현재 활성화된 탭에 따라 개수 업데이트
-        const activeTab = document.querySelector('.tab-button.active');
-        if (activeTab && activeTab.getAttribute('data-tab') === 'watch-history') {
-            statNumber.textContent = watchHistoryCount;
-        } else {
-            statNumber.textContent = wishlistCount;
-        }
+    const wishlistBadge = document.getElementById('wishlistCountBadge');
+    if (wishlistBadge) {
+        wishlistBadge.textContent = wishlistCount + '개';
     }
 }
 
