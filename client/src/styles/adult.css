@@ -42,6 +42,35 @@
     border-bottom: 1px solid #2a2c35;
   }
   
+  /* 성인관 헤더 특별 효과 */
+  .header.adult-mode {
+    border-bottom: 2px solid #dc2626;
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+    background: linear-gradient(135deg, rgba(15, 17, 22, 0.95) 0%, rgba(220, 38, 38, 0.1) 100%);
+  }
+  
+  .header.adult-mode::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #dc2626, #ef4444, #dc2626);
+    animation: adult-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes adult-glow {
+    0% {
+      opacity: 0.7;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+    }
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+    }
+  }
+  
   .header-content {
     display: flex;
     align-items: center;
@@ -391,6 +420,98 @@
     margin-bottom: 2rem;
   }
   
+  /* Top10 인기작과 최신작 섹션을 위한 가로 슬라이드 스타일 */
+  #top10-section .content-grid,
+  #latest-section .content-grid {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #374151 #1f2937;
+  }
+  
+  #top10-section .content-grid::-webkit-scrollbar,
+  #latest-section .content-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  #top10-section .content-grid::-webkit-scrollbar-track,
+  #latest-section .content-grid::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 4px;
+  }
+  
+  #top10-section .content-grid::-webkit-scrollbar-thumb,
+  #latest-section .content-grid::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+  }
+  
+  #top10-section .content-grid::-webkit-scrollbar-thumb:hover,
+  #latest-section .content-grid::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+  }
+  
+  #top10-section .content-item,
+  #latest-section .content-item {
+    flex: 0 0 200px;
+    min-width: 200px;
+  }
+  
+  /* 슬라이더 컨테이너와 화살표 버튼 스타일 */
+  .slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+  }
+  
+  .slider-nav:hover {
+    background: rgba(0, 0, 0, 0.9);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  .slider-nav.prev {
+    left: -20px;
+  }
+  
+  .slider-nav.next {
+    right: -20px;
+  }
+  
+  .slider-nav svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* 슬라이더가 비어있을 때 화살표 버튼 숨기기 */
+  .content-grid:empty + .slider-nav,
+  .content-grid:empty ~ .slider-nav {
+    display: none;
+  }
+  
   .content-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -603,6 +724,48 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
     }
+    
+    /* Top10 인기작과 최신작 섹션 반응형 */
+    #top10-section .content-item,
+    #latest-section .content-item {
+      flex: 0 0 180px;
+      min-width: 180px;
+    }
+    
+    /* 슬라이더 화살표 버튼 모바일 스타일 */
+    .slider-nav {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .slider-nav.prev {
+      left: -18px;
+    }
+    
+    .slider-nav.next {
+      right: -18px;
+    }
+    
+    .slider-nav svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* 성인관 안내 문구 모바일 스타일 */
+    .adult-notice {
+      padding: 0.5rem 0;
+      margin-bottom: 1.5rem;
+    }
+    
+    .notice-content {
+      font-size: 0.8rem;
+      gap: 0.5rem;
+    }
+    
+    .notice-icon {
+      width: 20px;
+      height: 20px;
+    }
   }
   
   @media (max-width: 640px) {
@@ -651,6 +814,50 @@
       height: 180px;
       margin: 0 auto;
     }
+    
+    /* Top10 인기작과 최신작 섹션 반응형 */
+    #top10-section .content-item,
+    #latest-section .content-item {
+      flex: 0 0 160px;
+      min-width: 160px;
+    }
+    
+    /* 슬라이더 화살표 버튼 모바일 스타일 */
+    .slider-nav {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .slider-nav.prev {
+      left: -16px;
+    }
+    
+    .slider-nav.next {
+      right: -16px;
+    }
+    
+    .slider-nav svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* 성인관 안내 문구 모바일 스타일 */
+    .adult-notice {
+      padding: 0.4rem 0;
+      margin-bottom: 1rem;
+    }
+    
+    .notice-content {
+      font-size: 0.75rem;
+      gap: 0.4rem;
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .notice-icon {
+      width: 18px;
+      height: 18px;
+    }
   }
   
   @media (max-width: 480px) {
@@ -696,6 +903,48 @@
     .item-year,
     .item-country {
       font-size: 0.625rem;
+    }
+    
+    /* Top10 인기작과 최신작 섹션 반응형 */
+    #top10-section .content-item,
+    #latest-section .content-item {
+      flex: 0 0 140px;
+      min-width: 140px;
+    }
+    
+    /* 슬라이더 화살표 버튼 모바일 스타일 */
+    .slider-nav {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .slider-nav.prev {
+      left: -14px;
+    }
+    
+    .slider-nav.next {
+      right: -14px;
+    }
+    
+    .slider-nav svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    /* 성인관 안내 문구 모바일 스타일 */
+    .adult-notice {
+      padding: 0.3rem 0;
+      margin-bottom: 0.75rem;
+    }
+    
+    .notice-content {
+      font-size: 0.7rem;
+      gap: 0.3rem;
+    }
+    
+    .notice-icon {
+      width: 16px;
+      height: 16px;
     }
   }
   
@@ -1043,4 +1292,67 @@
     .rank-card .card-title {
       font-size: 0.75rem;
     }
+  }
+  
+  /* 성인관 안내 문구 */
+  .adult-notice {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    border-bottom: 1px solid #b91c1c;
+    padding: 0.75rem 0;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .adult-notice::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: notice-shine 3s ease-in-out infinite;
+  }
+  
+  @keyframes notice-shine {
+    0% {
+      left: -100%;
+    }
+    50% {
+      left: 100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  .notice-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  .notice-icon {
+    flex-shrink: 0;
+    color: #fbbf24;
+    animation: notice-pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes notice-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  .notice-text {
+    text-align: center;
+    line-height: 1.4;
   }

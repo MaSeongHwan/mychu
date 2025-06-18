@@ -124,7 +124,7 @@
   <div class="password-modal" id="passwordModal">
     <div class="password-container">
       <h2 class="password-title">성인 인증</h2>
-      <input type="password" class="password-input" id="passwordInput" placeholder="비밀번호를 입력하세요">
+      <input type="password" class="password-input" id="passwordInput" placeholder="비밀번호를 입력하세요" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false">
       <button class="password-submit" id="passwordSubmit">확인</button>
       <p class="password-error" id="passwordError">비밀번호가 일치하지 않습니다.</p>
       <p class="password-error empty" id="passwordEmpty" style="display: none;">비밀번호를 입력하세요</p>
@@ -134,51 +134,71 @@
 
   <!-- 메인 콘텐츠 -->
   <main class="main-content" style="display: none;">
+    <!-- 성인관 안내 문구 -->
+    <div class="adult-notice">
+      <div class="container">
+        <div class="notice-content">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notice-icon">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="notice-text">성인관에 입장하셨습니다. 19세 이상만 이용 가능한 콘텐츠입니다.</span>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
 
       <!-- 인기작 추천 슬라이더 섹션 -->
-      <section class="section" id="top10-section">
-        <div class="section-header">
-          <h2>Top10 인기작</h2>
-          <div class="section-controls">
-            <button class="control-btn prev-btn">
-              <span class="icon icon-arrow-left"></span>
-            </button>
-            <button class="control-btn next-btn">
-              <span class="icon icon-arrow-right"></span>
-            </button>
+      <section class="content-section" id="top10-section">
+        <h2>Top10 인기작</h2>
+        <div class="slider-container">
+          <button class="slider-nav prev" id="top10-prev-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="content-grid" id="top10-grid">
+            <!-- Top10 콘텐츠 아이템들 -->
           </div>
+          <button class="slider-nav next" id="top10-next-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
-        <div class="slider" id="top10-slider">
-          <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
-          </div>
-        </div>
-      </section>
-      
-      <!-- 최신작 추천 슬라이더 섹션 -->
-      <section class="section" id="latest-section">
-        <div class="section-header">
-          <h2>최신작</h2>
-          <div class="section-controls">
-            <button class="control-btn prev-btn">
-              <span class="icon icon-arrow-left"></span>
-            </button>
-            <button class="control-btn next-btn">
-              <span class="icon icon-arrow-right"></span>
-            </button>
-          </div>
-        </div>
-        <div class="slider" id="latest-slider">
-          <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
-          </div>
+        <div class="loading-indicator" id="top10-loading-indicator">
+          <div class="loading-spinner"></div>
         </div>
       </section>
       
-      <!-- 추천 콘텐츠 그리드 -->
-      <section class="content-section">
+      <!-- 추천 콘텐츠 슬라이더 섹션 -->
+      <section class="content-section" id="latest-section">
         <h2>추천 콘텐츠</h2>
+        <div class="slider-container">
+          <button class="slider-nav prev" id="latest-prev-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="content-grid" id="latest-grid">
+            <!-- 추천 콘텐츠 아이템들 -->
+          </div>
+          <button class="slider-nav next" id="latest-next-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="loading-indicator" id="latest-loading-indicator">
+          <div class="loading-spinner"></div>
+        </div>
+      </section>
+      
+      <!-- 최신 작품 그리드 -->
+      <section class="content-section">
+        <h2>최신 작품</h2>
         <div class="content-grid" id="content-grid">
           <!-- 콘텐츠 아이템들 -->
         </div>
@@ -199,7 +219,7 @@
   <!-- 헤더 로딩 및 검색 설정 -->
   <script type="module" src="/src/init.js"></script>
   
-  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
+  <!-- 페이지 전용 외부 스크립트 (예: 최신 콘텐츠 슬라이더) -->
   <script type="module" src="/src/main.js"></script> 
    
   <script type="module">
@@ -224,9 +244,9 @@
       initDropdown();
       console.log('드롭다운 초기화 완료');
 
-      // 추천 시스템 초기화 (테스트 API 사용)
+      // 최신작 시스템 초기화 (테스트 API 사용)
       initRecommendationsWithTest();
-      console.log('추천 시스템 초기화 완료');
+      console.log('최신작 시스템 초기화 완료');
 
       // 로그아웃 설정
       setupLogout();
@@ -281,6 +301,90 @@
       let isLoading = false;
       const loadingIndicator = document.getElementById('loading-indicator');
       
+      // Top10 인기작 콘텐츠 생성
+      function generateTop10Content() {
+        const top10Grid = document.getElementById('top10-grid');
+        const top10Titles = [
+          'Top1 성인물', 'Top2 성인물', 'Top3 성인물', 'Top4 성인물', 
+          'Top5 성인물', 'Top6 성인물', 'Top7 성인물', 'Top8 성인물',
+          'Top9 성인물', 'Top10 성인물'
+        ];
+        
+        top10Titles.forEach((title, index) => {
+          const item = document.createElement('div');
+          item.className = 'content-item';
+          const year = 2018 + Math.floor(Math.random() * 6);
+          
+          item.innerHTML = `
+            <div class="item-poster">
+              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <div class="item-overlay">
+                <button class="play-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
+                <button class="wishlist-btn" title="찜하기">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="item-info">
+              <h3 class="item-title">${title}</h3>
+              <div class="item-meta">
+                <span class="item-year">${year}</span>
+                <span class="item-country">한국</span>
+              </div>
+            </div>
+          `;
+          top10Grid.appendChild(item);
+        });
+      }
+
+      // 추천작 콘텐츠 생성
+      function generateLatestContent() {
+        const latestGrid = document.getElementById('latest-grid');
+        const latestTitles = [
+          '추천 성인물1', '추천 성인물2', '추천 성인물3', '추천 성인물4', 
+          '추천 성인물5', '추천 성인물6', '추천 성인물7', '추천 성인물8',
+          '추천 성인물9', '추천 성인물10'
+        ];
+        
+        latestTitles.forEach((title, index) => {
+          const item = document.createElement('div');
+          item.className = 'content-item';
+          const year = 2020 + Math.floor(Math.random() * 4);
+          
+          item.innerHTML = `
+            <div class="item-poster">
+              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <div class="item-overlay">
+                <button class="play-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
+                <button class="wishlist-btn" title="찜하기">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="item-info">
+              <h3 class="item-title">${title}</h3>
+              <div class="item-meta">
+                <span class="item-year">${year}</span>
+                <span class="item-country">한국</span>
+              </div>
+            </div>
+          `;
+          latestGrid.appendChild(item);
+        });
+      }
+      
       function generateContentItems(count) {
         const items = [];
         const titles = [
@@ -329,6 +433,85 @@
       // 초기 콘텐츠 로드
       const initialItems = generateContentItems(itemsPerPage);
       initialItems.forEach(item => contentGrid.appendChild(item));
+
+      // Top10 인기작과 최신작 콘텐츠 생성
+      generateTop10Content();
+      generateLatestContent();
+
+      // 슬라이더 화살표 버튼 기능 초기화
+      function initSliderNavigation() {
+        const sliderConfigs = [
+          { 
+            gridId: 'top10-grid', 
+            prevBtnId: 'top10-prev-btn', 
+            nextBtnId: 'top10-next-btn',
+            scrollAmount: 400
+          },
+          { 
+            gridId: 'latest-grid', 
+            prevBtnId: 'latest-prev-btn', 
+            nextBtnId: 'latest-next-btn',
+            scrollAmount: 400
+          }
+        ];
+
+        sliderConfigs.forEach(config => {
+          const grid = document.getElementById(config.gridId);
+          const prevBtn = document.getElementById(config.prevBtnId);
+          const nextBtn = document.getElementById(config.nextBtnId);
+
+          if (!grid || !prevBtn || !nextBtn) return;
+
+          // 이전 버튼 클릭 이벤트
+          prevBtn.addEventListener('click', () => {
+            grid.scrollBy({
+              left: -config.scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          // 다음 버튼 클릭 이벤트
+          nextBtn.addEventListener('click', () => {
+            grid.scrollBy({
+              left: config.scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          // 스크롤 위치에 따른 버튼 표시/숨김
+          function updateButtonVisibility() {
+            const isAtStart = grid.scrollLeft <= 0;
+            const isAtEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth;
+
+            prevBtn.style.opacity = isAtStart ? '0.3' : '0.8';
+            prevBtn.style.pointerEvents = isAtStart ? 'none' : 'auto';
+            
+            nextBtn.style.opacity = isAtEnd ? '0.3' : '0.8';
+            nextBtn.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+          }
+
+          // 초기 버튼 상태 설정
+          updateButtonVisibility();
+
+          // 스크롤 이벤트 리스너
+          grid.addEventListener('scroll', updateButtonVisibility);
+        });
+      }
+
+      // 슬라이더 네비게이션 초기화
+      initSliderNavigation();
+
+      // 성인관 안내 문구 3초 후 사라지게
+      setTimeout(() => {
+        const notice = document.querySelector('.adult-notice');
+        if (notice) {
+          notice.style.opacity = '0';
+          notice.style.transition = 'opacity 0.5s';
+          setTimeout(() => {
+            notice.style.display = 'none';
+          }, 3000);
+        }
+      }, 500);
 
       // 스크롤 이벤트 처리
       window.addEventListener('scroll', function() {
@@ -413,6 +596,9 @@
           mainContent.style.display = 'block';
           // 세션 스토리지에 인증 상태 저장
           sessionStorage.setItem('adultAuth', 'true');
+          
+          // 성인관 모드 활성화
+          activateAdultMode();
         } else {
           passwordError.style.display = 'block';
           passwordInput.value = '';
@@ -430,8 +616,32 @@
       if (sessionStorage.getItem('adultAuth') === 'true') {
         passwordModal.classList.remove('active');
         mainContent.style.display = 'block';
+        
+        // 성인관 모드 활성화
+        activateAdultMode();
       }
     });
+
+    // 성인관 모드 활성화 함수
+    function activateAdultMode() {
+      // 헤더에 성인관 모드 클래스 추가
+      const header = document.querySelector('.header');
+      if (header) {
+        header.classList.add('adult-mode');
+      }
+      
+      // 페이지 제목 변경
+      document.title = '성인관 - WellList (19+)';
+      
+      // 메타 태그에 성인 콘텐츠 표시
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        const meta = document.createElement('meta');
+        meta.name = 'description';
+        meta.content = '19세 이상만 이용 가능한 성인 콘텐츠';
+        document.head.appendChild(meta);
+      }
+    }
   </script>
 </body>
 </html>
