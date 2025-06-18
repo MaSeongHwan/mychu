@@ -1,468 +1,174 @@
-/* 기본 스타일 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-      "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #0f1116;
-    color: #ffffff;
-    line-height: 1.5;
-    min-height: 100vh;
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-  
-  /* 테스트용 페이지 스타일 */
-  .page-content {
-    padding: 2rem 0;
-  }
-  
-  .test-button {
-    display: inline-block;
-    margin: 0.5rem 1rem 0.5rem 0;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .test-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-  }
-  
-  /* 평가 모달 오버레이 */
-  .rating-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-  
-  .rating-modal-overlay.show {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  /* 평가 모달 */
-  .rating-modal {
-    background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    max-width: 500px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    transform: scale(0.9) translateY(20px);
-    transition: all 0.3s ease;
-  }
-  
-  .rating-modal.animate-in {
-    transform: scale(1) translateY(0);
-  }
-  
-  .rating-modal.animate-out {
-    transform: scale(0.9) translateY(20px);
-    opacity: 0;
-  }
-  
-  /* 모달 헤더 */
-  .modal-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .completion-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-radius: 50%;
-    margin-bottom: 1rem;
-    animation: pulse-success 2s ease-in-out infinite;
-  }
-  
-  .completion-icon svg {
-    color: white;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-  }
-  
-  @keyframes pulse-success {
-    0%,
-    100% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
-    }
-  }
-  
-  .modal-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ffffff, #10b981);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .modal-subtitle {
-    color: #d1d5db;
-    font-size: 1rem;
-  }
-  
-  /* 콘텐츠 정보 */
-  .content-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .content-poster {
-    flex-shrink: 0;
-  }
-  
-  .content-poster .poster-image {
-    width: 60px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 0.5rem;
-    border: 2px solid rgba(16, 185, 129, 0.3);
-  }
-  
-  .content-details {
-    flex: 1;
-  }
-  
-  .content-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    color: #e5e7eb;
-  }
-  
-  .content-message {
-    font-size: 0.875rem;
-    color: #9ca3af;
-  }
-  
-  /* 평가 섹션 */
-  .rating-section {
-    margin-bottom: 2rem;
-  }
-  
-  .rating-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #e5e7eb;
-  }
-  
-  .rating-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .rating-option {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-    width: 100%;
-  }
-  
-  .rating-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .rating-option.selected {
-    transform: scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-  }
-  
-  .rating-option.excellent {
-    border-color: rgba(34, 197, 94, 0.3);
-  }
-  
-  .rating-option.excellent:hover,
-  .rating-option.excellent.selected {
-    border-color: #22c55e;
-    background: rgba(34, 197, 94, 0.1);
-  }
-  
-  .rating-option.excellent .rating-icon {
-    color: #22c55e;
-  }
-  
-  .rating-option.good {
-    border-color: rgba(59, 130, 246, 0.3);
-  }
-  
-  .rating-option.good:hover,
-  .rating-option.good.selected {
-    border-color: #3b82f6;
-    background: rgba(59, 130, 246, 0.1);
-  }
-  
-  .rating-option.good .rating-icon {
-    color: #3b82f6;
-  }
-  
-  .rating-option.poor {
-    border-color: rgba(239, 68, 68, 0.3);
-  }
-  
-  .rating-option.poor:hover,
-  .rating-option.poor.selected {
-    border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
-  }
-  
-  .rating-option.poor .rating-icon {
-    color: #ef4444;
-  }
-  
-  .rating-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-  }
-  
-  .rating-option:hover .rating-icon {
-    transform: scale(1.1);
-  }
-  
-  .rating-text {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #e5e7eb;
-    display: block;
-    margin-bottom: 0.25rem;
-  }
-  
-  .rating-description {
-    font-size: 0.875rem;
-    color: #9ca3af;
-    display: block;
-  }
-  
-  /* 모달 액션 */
-  .modal-actions {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  .skip-button {
-    background: none;
-    border: none;
-    color: #9ca3af;
-    font-size: 0.875rem;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-  }
-  
-  .skip-button:hover {
-    color: #d1d5db;
-    background: rgba(255, 255, 255, 0.05);
-  }
-  
-  /* 닫기 버튼 */
-  .close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 50%;
-    color: #9ca3af;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  
-  .close-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #e5e7eb;
-  }
-  
-  /* 토스트 알림 */
-  .toast-notification {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    z-index: 1100;
-    transform: translateX(100%);
-    transition: all 0.3s ease;
-  }
-  
-  .toast-notification.show {
-    transform: translateX(0);
-  }
-  
-  .toast-content {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .toast-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .toast-message {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  
-  /* 반응형 디자인 */
-  @media (max-width: 640px) {
-    .rating-modal {
-      padding: 1.5rem;
-      margin: 1rem;
-      width: calc(100% - 2rem);
-    }
-  
-    .modal-title {
-      font-size: 1.5rem;
-    }
-  
-    .completion-icon {
-      width: 60px;
-      height: 60px;
-    }
-  
-    .completion-icon svg {
-      width: 32px;
-      height: 32px;
-    }
-  
-    .content-info {
-      flex-direction: column;
-      text-align: center;
-      gap: 0.75rem;
-    }
-  
-    .rating-option {
-      padding: 0.75rem 1rem;
-      gap: 0.75rem;
-    }
-  
-    .rating-icon {
-      width: 40px;
-      height: 40px;
-    }
-  
-    .rating-icon svg {
-      width: 24px;
-      height: 24px;
-    }
-  
-    .rating-text {
-      font-size: 1rem;
-    }
-  
-    .rating-description {
-      font-size: 0.75rem;
-    }
-  
-    .toast-notification {
-      top: 1rem;
-      right: 1rem;
-      left: 1rem;
-      transform: translateY(-100%);
-    }
-  
-    .toast-notification.show {
-      transform: translateY(0);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .rating-modal {
-      padding: 1rem;
-    }
-  
-    .modal-title {
-      font-size: 1.25rem;
-    }
-  
-    .rating-title {
-      font-size: 1.125rem;
-    }
-  
-    .rating-options {
-      gap: 0.5rem;
-    }
-  
-    .rating-option {
-      padding: 0.75rem;
-    }
-  }
+/* ========== 기본 리셋 ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ========== 배경/레이아웃 ========== */
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #0f1116;
+  color: #fff;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ========== 메인/카드/폼 ========== */
+.page-content { padding: 2rem 0; }
+.test-button {
+  display: inline-block;
+  margin: 0.5rem 1rem 0.5rem 0;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.test-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+}
+
+/* ========== 모달/평가/버튼 ========== */
+.rating-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; opacity: 0; visibility: hidden;
+  transition: all 0.3s;
+}
+.rating-modal-overlay.show { opacity: 1; visibility: visible; }
+.rating-modal {
+  background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.3s;
+}
+.rating-modal.animate-in { transform: scale(1) translateY(0); }
+.rating-modal.animate-out { transform: scale(0.9) translateY(20px); opacity: 0; }
+.modal-header { text-align: center; margin-bottom: 2rem; }
+.completion-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%; margin-bottom: 1rem;
+  animation: pulse-success 2s ease-in-out infinite;
+}
+.completion-icon svg { color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+@keyframes pulse-success {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(16,185,129,0); }
+}
+.modal-title {
+  font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fff, #10b981);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.modal-subtitle { color: #d1d5db; font-size: 1rem; }
+.content-info {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 1rem;
+  background: rgba(255,255,255,0.05); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);
+}
+.content-poster { flex-shrink: 0; }
+.content-poster .poster-image {
+  width: 60px; height: 90px; object-fit: cover; border-radius: 0.5rem;
+  border: 2px solid rgba(16,185,129,0.3);
+}
+.content-details { flex: 1; }
+.content-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; color: #e5e7eb; }
+.content-message { font-size: 0.875rem; color: #9ca3af; }
+.rating-section { margin-bottom: 2rem; }
+.rating-title { font-size: 1.25rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; color: #e5e7eb; }
+.rating-options { display: flex; flex-direction: column; gap: 0.75rem; }
+.rating-option {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem;
+  background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 1rem; cursor: pointer; transition: all 0.3s; text-align: left; width: 100%;
+}
+.rating-option:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.rating-option.selected { transform: scale(1.02); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+.rating-option.excellent { border-color: rgba(34,197,94,0.3); }
+.rating-option.excellent:hover, .rating-option.excellent.selected { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+.rating-option.excellent .rating-icon { color: #22c55e; }
+.rating-option.good { border-color: rgba(59,130,246,0.3); }
+.rating-option.good:hover, .rating-option.good.selected { border-color: #3b82f6; background: rgba(59,130,246,0.1); }
+.rating-option.good .rating-icon { color: #3b82f6; }
+.rating-option.poor { border-color: rgba(239,68,68,0.3); }
+.rating-option.poor:hover, .rating-option.poor.selected { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.rating-option.poor .rating-icon { color: #ef4444; }
+.rating-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; background: rgba(255,255,255,0.1);
+  border-radius: 50%; flex-shrink: 0; transition: all 0.3s;
+}
+.rating-option:hover .rating-icon { transform: scale(1.1); }
+.rating-text { font-size: 1.125rem; font-weight: 600; color: #e5e7eb; display: block; margin-bottom: 0.25rem; }
+.rating-description { font-size: 0.875rem; color: #9ca3af; display: block; }
+.modal-actions { text-align: center; margin-bottom: 1rem; }
+.skip-button {
+  background: none; border: none; color: #9ca3af; font-size: 0.875rem; cursor: pointer;
+  padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s;
+}
+.skip-button:hover { color: #d1d5db; background: rgba(255,255,255,0.05); }
+.close-button {
+  position: absolute; top: 1rem; right: 1rem; width: 2.5rem; height: 2.5rem;
+  background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: #9ca3af;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.close-button:hover { background: rgba(255,255,255,0.2); color: #e5e7eb; }
+
+/* ========== 토스트/알림 ========== */
+.toast-notification {
+  position: fixed; top: 2rem; right: 2rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff; padding: 1rem 1.5rem; border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1100;
+  transform: translateX(100%); transition: all 0.3s;
+}
+.toast-notification.show { transform: translateX(0); }
+.toast-content { display: flex; align-items: center; gap: 0.75rem; }
+.toast-icon { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+.toast-message { font-size: 0.875rem; font-weight: 500; }
+
+/* ========== 반응형 ========== */
+@media (max-width: 640px) {
+  .rating-modal { padding: 1.5rem; margin: 1rem; width: calc(100% - 2rem); }
+  .modal-title { font-size: 1.5rem; }
+  .completion-icon { width: 60px; height: 60px; }
+  .completion-icon svg { width: 32px; height: 32px; }
+  .content-info { flex-direction: column; text-align: center; gap: 0.75rem; }
+  .rating-option { padding: 0.75rem 1rem; gap: 0.75rem; }
+  .rating-icon { width: 40px; height: 40px; }
+  .rating-icon svg { width: 24px; height: 24px; }
+  .rating-text { font-size: 1rem; }
+  .rating-description { font-size: 0.75rem; }
+  .toast-notification { top: 1rem; right: 1rem; left: 1rem; transform: translateY(-100%); }
+  .toast-notification.show { transform: translateY(0); }
+}
+@media (max-width: 480px) {
+  .rating-modal { padding: 1rem; }
+  .modal-title { font-size: 1.25rem; }
+  .rating-title { font-size: 1.125rem; }
+  .rating-options { gap: 0.5rem; }
+  .rating-option { padding: 0.75rem; }
+}
   
