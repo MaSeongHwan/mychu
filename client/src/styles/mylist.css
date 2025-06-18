@@ -724,3 +724,32 @@
     width: 2rem;
     height: 2rem;
   }
+
+  .skeleton-item {
+    background: linear-gradient(90deg, #23272f 25%, #1f2227 50%, #23272f 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.2s infinite linear;
+    border-radius: 0.75rem;
+    min-height: 220px;
+    margin-bottom: 0.5rem;
+  }
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .recommend-btn {
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    background: #10b981;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .recommend-btn:hover {
+    background: #059669;
+  }

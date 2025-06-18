@@ -15,14 +15,22 @@ async function initializePage() {
         // init.js에서 이미 헤더와 검색이 초기화되었으므로
         // 마이리스트 페이지 전용 기능만 초기화
         
+        console.log('마이리스트 페이지 초기화 시작...');
+        
         // 1. 사용자 정보 로드
         console.log('사용자 정보 로딩 중...');
         loadUserData();
         
         // 2. UI 이벤트 설정
+        console.log('UI 이벤트 설정 중...');
         setupTabs();
         setupViewToggle();
         setupRemoveButtons();
+        setupBulkControls();
+        
+        // 3. 초기 콘텐츠 개수 업데이트
+        console.log('초기 콘텐츠 개수 업데이트...');
+        updateContentCount();
         
         console.log('마이리스트 페이지 초기화 완료');
     } catch (error) {
@@ -171,7 +179,6 @@ function updateUserInfo(userData) {
     
     // 가입일 포맷팅
     if (userData.created_at) {
-<<<<<<< Updated upstream
         const joinDate = new Date(userData.created_at);
         const joinDateFormatted = `가입일: ${joinDate.getFullYear()}년 ${joinDate.getMonth() + 1}월 ${joinDate.getDate()}일`;
         if (profileJoinDate) {
@@ -181,63 +188,84 @@ function updateUserInfo(userData) {
     } else {
         if (profileJoinDate) {
             profileJoinDate.textContent = '가입일: 정보 없음';
-=======
-        // created_at에서 앞에서부터 4개만 따서 년도만 표시
-        const yearOnly = userData.created_at.substring(0, 4);
-        const joinDateFormatted = `가입일: ${yearOnly}년`;
-        const profileJoinDate = document.querySelector('.profile-join-date');
-        if (profileJoinDate) profileJoinDate.textContent = joinDateFormatted;
-    }
-      // 로그아웃 버튼 이벤트 핸들러 설정
-    document.querySelectorAll('.dropdown-item').forEach(button => {
-        // 버튼 텍스트에서 공백과 줄바꿈 제거
-        const buttonText = button.textContent.replace(/\s+/g, ' ').trim();
-        console.log('드롭다운 아이템 텍스트:', buttonText);
-        
-        // SVG 이후의 텍스트만 검사
-        if (buttonText.includes('로그아웃')) {
-            button.addEventListener('click', handleLogout);
-            console.log('로그아웃 버튼 이벤트 핸들러 설정됨');
->>>>>>> Stashed changes
         }
     }
 }
 
 // 탭 전환 기능 설정
 function setupTabs() {
-    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabNavigation = document.querySelector('.tab-navigation');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            
-            // 모든 탭 버튼 비활성화
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // 모든 탭 콘텐츠 숨기기
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // 선택한 탭 버튼 활성화
-            this.classList.add('active');
-            
-            // 선택한 탭 콘텐츠 표시
-            document.getElementById(tabId).classList.add('active');
-            
-            // 탭 전환 시 통계 업데이트
-            updateContentCount();
-            
-            // 탭에 따른 라벨 업데이트
-            const statLabel = document.querySelector('.stat-label');
-            if (statLabel) {
-                if (tabId === 'watch-history') {
-                    statLabel.textContent = '시청 기록';
-                } else if (tabId === 'wishlist') {
-                    statLabel.textContent = '찜한 콘텐츠';
-                }
-            }
+    console.log('탭 네비게이션 요소:', tabNavigation);
+    console.log('탭 콘텐츠 수:', tabContents.length);
+    
+    if (!tabNavigation) {
+        console.error('탭 네비게이션을 찾을 수 없음');
+        return;
+    }
+    
+    // 이벤트 위임을 사용하여 탭 버튼 클릭 처리
+    tabNavigation.addEventListener('click', function(event) {
+        const tabButton = event.target.closest('.tab-button');
+        if (!tabButton) return;
+        
+        const tabId = tabButton.getAttribute('data-tab');
+        console.log('클릭된 탭:', tabId);
+        
+        // 모든 탭 버튼 비활성화
+        const allTabButtons = tabNavigation.querySelectorAll('.tab-button');
+        allTabButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // 모든 탭 콘텐츠 숨기기
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+            console.log('탭 콘텐츠 비활성화:', content.id);
         });
+        
+        // 선택한 탭 버튼 활성화
+        tabButton.classList.add('active');
+        console.log('탭 버튼 활성화:', tabId);
+        
+        // 선택한 탭 콘텐츠 표시
+        const targetContent = document.getElementById(tabId);
+        if (targetContent) {
+            targetContent.classList.add('active');
+            console.log('탭 콘텐츠 활성화:', tabId);
+        } else {
+            console.error('탭 콘텐츠를 찾을 수 없음:', tabId);
+        }
+        
+        // 탭 전환 시 통계 업데이트
+        updateContentCount();
+        
+        // 탭에 따른 라벨 업데이트
+        const statLabel = document.querySelector('.stat-label');
+        if (statLabel) {
+            if (tabId === 'watch-history') {
+                statLabel.textContent = '시청 기록';
+            } else if (tabId === 'wishlist') {
+                statLabel.textContent = '찜한 콘텐츠';
+            }
+        }
     });
+    
+    // 초기 탭 상태 확인
+    const activeTab = document.querySelector('.tab-button.active');
+    const activeContent = document.querySelector('.tab-content.active');
+    console.log('초기 활성 탭:', activeTab?.getAttribute('data-tab'));
+    console.log('초기 활성 콘텐츠:', activeContent?.id);
+    
+    // 초기 상태가 없으면 첫 번째 탭을 활성화
+    if (!activeTab && !activeContent) {
+        const firstTab = tabNavigation.querySelector('.tab-button');
+        const firstContent = document.querySelector('.tab-content');
+        if (firstTab && firstContent) {
+            firstTab.classList.add('active');
+            firstContent.classList.add('active');
+            console.log('첫 번째 탭을 기본으로 활성화');
+        }
+    }
 }
 
 // 리스트 뷰 타입 전환 기능 설정
@@ -358,10 +386,25 @@ function setupRemoveButtons() {
 
 // 콘텐츠 개수 업데이트
 function updateContentCount() {
-    const wishlistCount = document.querySelectorAll('#wishlist .content-item').length;
-    const wishlistBadge = document.getElementById('wishlistCountBadge');
-    if (wishlistBadge) {
-        wishlistBadge.textContent = wishlistCount + '개';
+    const wishlistItems = document.querySelectorAll('#wishlist .content-item');
+    const watchHistoryItems = document.querySelectorAll('#watch-history .content-item');
+    const wishlistTabBadge = document.getElementById('wishlistTabBadge');
+    
+    console.log('찜한 콘텐츠 개수:', wishlistItems.length);
+    console.log('시청 기록 개수:', watchHistoryItems.length);
+    
+    if (wishlistTabBadge) {
+        wishlistTabBadge.textContent = wishlistItems.length + '개';
+    }
+    
+    // 시청 기록 탭의 기존 배지 제거
+    const watchHistoryTabButton = document.querySelector('.tab-button[data-tab="watch-history"]');
+    if (watchHistoryTabButton) {
+        const existingBadge = watchHistoryTabButton.querySelector('.tab-badge');
+        if (existingBadge) {
+            existingBadge.remove();
+            console.log('시청 기록 탭 배지 제거됨');
+        }
     }
 }
 
@@ -440,4 +483,183 @@ function testUserInterface() {
 if (window.location.search.includes('test=1')) {
     console.log('테스트 모드 활성화됨');
     setTimeout(testUserInterface, 500); // 페이지 로드 후 약간의 지연을 두고 테스트 실행
+}
+
+function renderWatchHistory() {
+    const grid = document.getElementById('watchHistoryGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    // 스켈레톤 UI
+    for (let i = 0; i < 6; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-item';
+        grid.appendChild(skeleton);
+    }
+    setTimeout(() => {
+        grid.innerHTML = '';
+        if (watchHistoryData.length === 0) {
+            grid.innerHTML = `<div class="empty-state">
+                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>
+                <h3>시청 기록이 없습니다</h3>
+                <p>아직 시청한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>
+                <button class="recommend-btn" onclick="window.location.href='/main.html'">추천 콘텐츠 보기</button>
+            </div>`;
+            return;
+        }
+        watchHistoryData.forEach((item, idx) => {
+            const contentItem = document.createElement('div');
+            contentItem.className = 'content-item';
+            contentItem.innerHTML = `
+                <div class="item-checkbox">
+                    <input type="checkbox" class="item-checkbox-input" name="watchHistory" value="${idx}">
+                </div>
+                <div class="item-poster">
+                    <img src="${item.image}" alt="${item.title}" class="poster-image">
+                    <div class="item-overlay">
+                      <button class="play-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      </button>
+                      <button class="remove-btn" title="기록 삭제">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: ${item.progress}%"></div>
+                    </div>
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">${item.title}</h3>
+                    <div class="item-meta">
+                      <span class="item-genre">${item.genre}</span>
+                      <span class="watch-progress${item.progress === 100 ? ' completed' : ''}">${item.progress === 100 ? '완료' : item.progress + '% 시청'}</span>
+                    </div>
+                    <p class="item-added-date">${item.lastWatched}</p>
+                </div>
+            `;
+            grid.appendChild(contentItem);
+        });
+    }, 500);
+}
+
+function renderWishlist() {
+    const grid = document.getElementById('wishlistGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    // 스켈레톤 UI
+    for (let i = 0; i < 6; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-item';
+        grid.appendChild(skeleton);
+    }
+    setTimeout(() => {
+        grid.innerHTML = '';
+        if (wishlistData.length === 0) {
+            grid.innerHTML = `<div class="empty-state">
+                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>
+                <h3>찜한 콘텐츠가 없습니다</h3>
+                <p>아직 찜한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>
+                <button class="recommend-btn" onclick="window.location.href='/main.html'">추천 콘텐츠 보기</button>
+            </div>`;
+            return;
+        }
+        wishlistData.forEach((item, idx) => {
+            const contentItem = document.createElement('div');
+            contentItem.className = 'content-item';
+            contentItem.innerHTML = `
+                <div class="item-checkbox">
+                    <input type="checkbox" class="item-checkbox-input" name="wishlist" value="${idx}">
+                </div>
+                <div class="item-poster">
+                    <img src="${item.image}" alt="${item.title}" class="poster-image">
+                    <div class="item-overlay">
+                      <button class="play-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      </button>
+                      <button class="remove-btn" title="찜 해제">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">${item.title}</h3>
+                    <div class="item-meta">
+                      <span class="item-genre">${item.genre}</span>
+                    </div>
+                    <p class="item-added-date">${item.added}</p>
+                </div>
+            `;
+            grid.appendChild(contentItem);
+        });
+    }, 500);
+}
+
+function setupBulkControls() {
+    // 시청 기록 전체 선택
+    const watchAll = document.getElementById('watchHistorySelectAll');
+    const watchGrid = document.getElementById('watchHistoryGrid');
+    const watchDelete = document.getElementById('watchHistoryBulkDelete');
+    if (watchAll && watchGrid) {
+        watchAll.addEventListener('change', function() {
+            const checkboxes = watchGrid.querySelectorAll('.item-checkbox-input');
+            checkboxes.forEach(cb => {
+                cb.checked = watchAll.checked;
+                cb.closest('.content-item').classList.toggle('selected', cb.checked);
+            });
+        });
+        watchGrid.addEventListener('change', function(e) {
+            if (e.target.classList.contains('item-checkbox-input')) {
+                e.target.closest('.content-item').classList.toggle('selected', e.target.checked);
+                // 전체 선택 체크박스 상태 동기화
+                const all = watchGrid.querySelectorAll('.item-checkbox-input');
+                const checked = watchGrid.querySelectorAll('.item-checkbox-input:checked');
+                watchAll.checked = all.length === checked.length;
+            }
+        });
+        if (watchDelete) {
+            watchDelete.addEventListener('click', function() {
+                const checked = watchGrid.querySelectorAll('.item-checkbox-input:checked');
+                if (checked.length === 0) return alert('삭제할 항목을 선택하세요.');
+                if (!confirm('선택한 시청 기록을 삭제하시겠습니까?')) return;
+                // 실제 데이터에서 제거
+                const idxArr = Array.from(checked).map(cb => Number(cb.value)).sort((a, b) => b - a);
+                idxArr.forEach(idx => watchHistoryData.splice(idx, 1));
+                renderWatchHistory();
+                updateContentCount();
+            });
+        }
+    }
+    // 찜한 콘텐츠 전체 선택
+    const wishAll = document.getElementById('wishlistSelectAll');
+    const wishGrid = document.getElementById('wishlistGrid');
+    const wishDelete = document.getElementById('wishlistBulkDelete');
+    if (wishAll && wishGrid) {
+        wishAll.addEventListener('change', function() {
+            const checkboxes = wishGrid.querySelectorAll('.item-checkbox-input');
+            checkboxes.forEach(cb => {
+                cb.checked = wishAll.checked;
+                cb.closest('.content-item').classList.toggle('selected', cb.checked);
+            });
+        });
+        wishGrid.addEventListener('change', function(e) {
+            if (e.target.classList.contains('item-checkbox-input')) {
+                e.target.closest('.content-item').classList.toggle('selected', e.target.checked);
+                // 전체 선택 체크박스 상태 동기화
+                const all = wishGrid.querySelectorAll('.item-checkbox-input');
+                const checked = wishGrid.querySelectorAll('.item-checkbox-input:checked');
+                wishAll.checked = all.length === checked.length;
+            }
+        });
+        if (wishDelete) {
+            wishDelete.addEventListener('click', function() {
+                const checked = wishGrid.querySelectorAll('.item-checkbox-input:checked');
+                if (checked.length === 0) return alert('삭제할 항목을 선택하세요.');
+                if (!confirm('선택한 찜한 콘텐츠를 삭제하시겠습니까?')) return;
+                // 실제 데이터에서 제거
+                const idxArr = Array.from(checked).map(cb => Number(cb.value)).sort((a, b) => b - a);
+                idxArr.forEach(idx => wishlistData.splice(idx, 1));
+                renderWishlist();
+                updateContentCount();
+            });
+        }
+    }
 }
