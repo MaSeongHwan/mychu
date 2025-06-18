@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>성인관 - WellList</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
   <link rel="stylesheet" href="../src/styles/adult.css">
+
+  <!-- 헤더 로딩 및 검색 설정 -->
+  <script type="module" src="/src/init.js"></script>
+
+  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
+  <script type="module" src="/src/main.js"></script> 
+
   <script type="module" src="/src/pages/mylist.js" defer></script>
   <script type="module">
     import { loadHeader } from '/components/loadHeader.js';
@@ -111,6 +119,7 @@
   </style>
 </head>
 <body>
+
   <!-- 비밀번호 입력 모달 -->
   <div class="password-modal" id="passwordModal">
     <div class="password-container">
@@ -126,34 +135,6 @@
   <!-- 메인 콘텐츠 -->
   <main class="main-content" style="display: none;">
     <div class="container">
-      <!-- 장르 헤더 -->
-      <section class="genre-header">
-        <div class="breadcrumb">
-          <a href="/" class="breadcrumb-link">홈</a>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-          <span class="breadcrumb-current">성인관</span>
-        </div>
-        <h1 class="genre-title">성인관</h1>
-        <p class="genre-description">어린이는 가라.....</p>
-        <div class="genre-stats">
-          <span class="stats-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-              <line x1="7" y1="2" x2="7" y2="22"></line>
-              <line x1="17" y1="2" x2="17" y2="22"></line>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <line x1="2" y1="7" x2="7" y2="7"></line>
-              <line x1="2" y1="17" x2="7" y2="17"></line>
-              <line x1="17" y1="17" x2="22" y2="17"></line>
-              <line x1="17" y1="7" x2="22" y2="7"></line>
-            </svg>
-            총 n개 작품
-           </span> 
-        </div>
-      </section>
-      
 
       <!-- 인기작 추천 슬라이더 섹션 -->
       <section class="section" id="top10-section">
@@ -169,263 +150,14 @@
           </div>
         </div>
         <div class="slider" id="top10-slider">
-          <div class="card-container">
-            <div class="card">
-              <div class="rank-badge">1</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">2</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물2</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">3</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물3</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">4</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물4</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">5</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물5</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">6</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물6</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">7</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물7</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">8</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물8</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">9</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물9</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="rank-badge">10</div>
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물10</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
-
+      
       <!-- 최신작 추천 슬라이더 섹션 -->
-      <section class="section" id="top10-section">
+      <section class="section" id="latest-section">
         <div class="section-header">
           <h2>최신작</h2>
           <div class="section-controls">
@@ -437,248 +169,9 @@
             </button>
           </div>
         </div>
-        <div class="slider" id="top10-slider">
-          <div class="card-container">
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물2</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물3</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물4</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물5</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물6</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물7</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물8</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물9</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/300x450" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="wishlist-btn" title="찜하기">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">나는 성인물10</h3>
-                <div class="item-meta">
-                  <span class="item-year">2024</span>
-                  <span class="item-country">한국</span>
-                </div>
-              </div>
-            </div>
+        <div class="slider" id="latest-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
@@ -695,11 +188,51 @@
       </section>
     </div>
   </main>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 WellList. All rights reserved.</p>
+      </div>
+    </div>    
+  </footer>  
   <!-- 헤더 로딩 및 검색 설정 -->
   <script type="module" src="/src/init.js"></script>
-
-  <script>
+  
+  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
+  <script type="module" src="/src/main.js"></script> 
+   
+  <script type="module">
+    import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
+    import { initializeSearch } from '/src/components/Search.js';
+    // 테스트 추천 API를 사용하는 새 함수 임포트
+    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
+    
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM 로드 완료, 초기화 시작');
+      
+      // 향상된 검색 기능 초기화 - 자동완성 포함
+      initializeSearch();
+      console.log('검색 초기화 완료');
+
+      // 사용자 메뉴 초기화
+      initializeUserMenu();
+      console.log('사용자 메뉴 초기화 완료');
+
+      // 드롭다운 초기화
+      initDropdown();
+      console.log('드롭다운 초기화 완료');
+
+      // 추천 시스템 초기화 (테스트 API 사용)
+      initRecommendationsWithTest();
+      console.log('추천 시스템 초기화 완료');
+
+      // 로그아웃 설정
+      setupLogout();
+      console.log('로그아웃 설정 완료');
+
+      // 성인관 페이지 전용 기능들
       // 사용자 메뉴 드롭다운 토글
       const userMenuButton = document.querySelector('.user-menu-button');
       const userDropdown = document.querySelector('.user-dropdown');
@@ -742,43 +275,9 @@
         });
       });
 
-      // TOP 10 슬라이더 기능
-      const top10Slider = document.querySelector('#top10-slider .card-container');
-      const top10PrevBtn = document.querySelector('#top10-section .prev-btn');
-      const top10NextBtn = document.querySelector('#top10-section .next-btn');
-      let top10CurrentPosition = 0;
-      const cardWidth = document.querySelector('.card').offsetWidth;
-      const cardGap = 16; // 1rem = 16px
-      const cardsPerView = Math.floor(window.innerWidth / (cardWidth + cardGap));
-      const maxPosition = -(10 - cardsPerView) * (cardWidth + cardGap);
-
-      function updateTop10SliderPosition() {
-        top10Slider.style.transform = `translateX(${top10CurrentPosition}px)`;
-      }
-
-      top10PrevBtn.addEventListener('click', () => {
-        top10CurrentPosition = Math.min(top10CurrentPosition + (cardWidth + cardGap), 0);
-        updateTop10SliderPosition();
-      });
-
-      top10NextBtn.addEventListener('click', () => {
-        top10CurrentPosition = Math.max(top10CurrentPosition - (cardWidth + cardGap), maxPosition);
-        updateTop10SliderPosition();
-      });
-
-      // 반응형 대응
-      window.addEventListener('resize', () => {
-        const newCardWidth = document.querySelector('.card').offsetWidth;
-        const newCardsPerView = Math.floor(window.innerWidth / (newCardWidth + cardGap));
-        const newMaxPosition = -(10 - newCardsPerView) * (newCardWidth + cardGap);
-        
-        top10CurrentPosition = Math.max(top10CurrentPosition, newMaxPosition);
-        updateTop10SliderPosition();
-      });
-
       // 무한 스크롤 구현
       let page = 1;
-      const itemsPerPage = 8;
+      const itemsPerPage = 5;
       let isLoading = false;
       const loadingIndicator = document.getElementById('loading-indicator');
       

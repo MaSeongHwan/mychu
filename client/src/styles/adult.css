@@ -393,20 +393,20 @@
   
   .content-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
   
   @media (min-width: 640px) {
     .content-grid {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
     }
   }
   
   @media (min-width: 1024px) {
     .content-grid {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
     }
   }
   
@@ -587,19 +587,21 @@
     }
   
     .filter-controls {
-      gap: 1rem;
+      flex-direction: column;
+      align-items: stretch;
     }
   
     .filter-group {
-      min-width: 100px;
+      width: 100%;
     }
   
     .genre-stats {
-      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
     }
   
     .content-grid {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
     }
   }
   
@@ -631,7 +633,7 @@
     }
   
     .content-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
   
@@ -743,25 +745,31 @@
     position: relative;
     overflow: hidden;
     margin: 0 -1rem;
-    padding: 0 1rem;
+    padding: 3rem 1rem 0 1rem;
+    min-height: 380px;
   }
   
   .card-container {
     display: flex;
     gap: 1.5rem;
     transition: transform 0.3s ease;
+    align-items: flex-start;
   }
   
   .card {
     position: relative;
     flex: 0 0 auto;
     width: 200px;
+    height: 350px;
     background-color: #1f2937;
     border-radius: 0.75rem;
     overflow: hidden;
     border: 1px solid #374151;
     transition: all 0.3s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
   }
   
   .card:hover {
@@ -770,28 +778,76 @@
     border-color: #10b981;
   }
   
-  .rank-badge {
+  .rank-card {
+    position: relative;
+    background: none;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+    flex: 0 0 auto;
+    width: 200px;
+    height: 350px;
+    margin-top: 2rem;
+  }
+  
+  .rank-card .rank-background {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    width: 2rem;
-    height: 2rem;
-    background-color: #10b981;
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.875rem;
+    top: -40px;
+    left: 0;
+    font-size: 10rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.07);
+    z-index: 0;
+    line-height: 1;
+    pointer-events: none;
+  }
+  
+  .rank-card .card-image {
+    position: relative;
     z-index: 1;
+    width: 200px;
+    height: 300px;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .rank-card .card-info {
+    margin-top: 0.5rem;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+  }
+  
+  .rank-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .rank-card .card-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .rank-card .card-year,
+  .rank-card .card-country {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    background-color: #374151;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
   }
   
   .card-image {
     width: 100%;
-    aspect-ratio: 2/3;
+    height: 280px;
     object-fit: cover;
     transition: transform 0.3s;
+    flex-shrink: 0;
   }
   
   .card:hover .card-image {
@@ -800,6 +856,10 @@
   
   .card-info {
     padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .card-title {
@@ -809,7 +869,9 @@
     line-height: 1.3;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
+    color: #ffffff;
   }
   
   .card-meta {
@@ -817,6 +879,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
+    margin-top: auto;
   }
   
   .card-year,
@@ -831,18 +894,75 @@
   @media (min-width: 640px) {
     .card {
       width: 220px;
+      height: 380px;
+    }
+    
+    .card-image {
+      height: 300px;
+    }
+    
+    .slider {
+      min-height: 420px;
+      padding: 3rem 1rem 0 1rem;
+    }
+
+    .rank-card {
+      width: 220px;
+      height: 380px;
+    }
+
+    .rank-card .card-image {
+      width: 220px;
+      height: 300px;
     }
   }
   
   @media (min-width: 1024px) {
     .card {
       width: 240px;
+      height: 400px;
+    }
+    
+    .card-image {
+      height: 320px;
+    }
+    
+    .slider {
+      min-height: 440px;
+      padding: 3rem 1rem 0 1rem;
+    }
+
+    .rank-card {
+      width: 240px;
+      height: 400px;
+    }
+
+    .rank-card .card-image {
+      width: 240px;
+      height: 320px;
     }
   }
   
   @media (max-width: 768px) {
     .card {
       width: 180px;
+      height: 320px;
+    }
+    
+    .card-image {
+      height: 250px;
+    }
+    
+    .slider {
+      min-height: 360px;
+      padding: 2.5rem 1rem 0 1rem;
+    }
+    
+    .rank-badge {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1rem;
+      top: -2rem;
     }
     
     .card-info {
@@ -852,11 +972,43 @@
     .card-title {
       font-size: 0.875rem;
     }
+
+    .rank-card {
+      width: 180px;
+      height: 320px;
+    }
+
+    .rank-card .card-image {
+      width: 180px;
+      height: 250px;
+    }
+
+    .rank-card .rank-background {
+      font-size: 8rem;
+      top: -30px;
+    }
   }
   
   @media (max-width: 640px) {
     .card {
       width: 140px;
+      height: 280px;
+    }
+    
+    .card-image {
+      height: 200px;
+    }
+    
+    .slider {
+      min-height: 320px;
+      padding: 2rem 1rem 0 1rem;
+    }
+    
+    .rank-badge {
+      width: 2rem;
+      height: 2rem;
+      font-size: 0.875rem;
+      top: -1.5rem;
     }
     
     .card-info {
@@ -871,5 +1023,24 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 0.25rem;
+    }
+
+    .rank-card {
+      width: 140px;
+      height: 280px;
+    }
+
+    .rank-card .card-image {
+      width: 140px;
+      height: 200px;
+    }
+
+    .rank-card .rank-background {
+      font-size: 6rem;
+      top: -25px;
+    }
+
+    .rank-card .card-title {
+      font-size: 0.75rem;
     }
   }
