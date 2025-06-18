@@ -662,4 +662,8 @@ function setupBulkControls() {
             });
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 0fb5fe9ed70eb6d592053ca7d14e6a24a9e1644b

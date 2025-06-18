@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WellList - VOD 추천 시스템</title>
+  <title>WellList - 영화 추천 시스템</title>
   <link rel="stylesheet" href="/src/styles/main.css">
 </head>
 
@@ -95,11 +95,11 @@
   <!-- Content Categories -->
   <main class="main-content">
     <div class="container">
-      <h2 class="content-heading">지금 인기 있는 콘텐츠</h2>      
+      <h2 class="content-heading">지금 인기 있는 영화</h2>      
       <!-- 오늘의 인기작 Top 10 슬라이더 섹션 -->
       <section class="section" id="top-section">
         <div class="section-header">
-          <h2>오늘의 인기작</h2>
+          <h2>오늘의 인기 영화</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn">
               <span class="icon icon-arrow-left"></span>
@@ -111,7 +111,7 @@
         </div>        
         <div class="slider" id="top-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            영화를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
@@ -131,7 +131,7 @@
         </div>
         <div class="slider" id="emotion-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            영화를 불러오는데 실패했습니다.
           </div>
           <!-- 슬라이더 컨텐츠는 JavaScript로 동적 생성됩니다 -->
         </div>
@@ -140,7 +140,7 @@
       <!-- 최근 시청 콘텐츠 슬라이더 섹션 -->
       <section class="section" id="recent-section">
         <div class="section-header">
-          <h2>최근 시청 콘텐츠</h2>
+          <h2>최근 시청 영화</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn">
               <span class="icon icon-arrow-left"></span>
@@ -152,7 +152,7 @@
         </div>
         <div class="slider" id="recent-slider">
           <div class="error-message">
-            컨텐츠를 불러오는데 실패했습니다.
+            영화를 불러오는데 실패했습니다.
           </div>
         </div>
       </section>
@@ -204,8 +204,8 @@
       console.log('테스트 추천 API로 콘텐츠 로드 시작');
 
       // Hero 슬라이더 초기화
-      // initHeroSlider(); // 슬라이더 기능을 제거했으므로 주석 처리
-      // console.log('Hero 슬라이더 초기화 완료');
+      initHeroSlider(); // 영화 데이터로 Hero 슬라이더 초기화
+      console.log('Hero 슬라이더 초기화 완료 (영화 데이터)');
 
       // 드롭다운 초기화
       initDropdown();
