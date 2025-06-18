@@ -93,44 +93,13 @@ export function renderSlider(container, items) {
   items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.dataset.id = item.asset_idx;
 
-    // 이미지 추가
+    // 이미지만 추가 (poster_path만 사용)
     const img = document.createElement('img');
     img.src = item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image';
-    img.alt = item.asset_nm || 'No title';
+    img.alt = 'Poster';
     img.loading = 'lazy';
     card.appendChild(img);
-
-    // 카드 정보 추가
-    const cardInfo = document.createElement('div');
-    cardInfo.className = 'card-info';
-
-    const title = document.createElement('h3');
-    title.className = 'card-title';
-    title.textContent = item.asset_nm || 'Unknown';
-    cardInfo.appendChild(title);
-
-    // 추가 정보 (장르, 연도 등) 표시
-    const meta = document.createElement('div');
-    meta.className = 'card-meta';
-    meta.textContent = [
-      item.genre || '',
-      item.release_year ? `${item.release_year}` : ''
-    ].filter(Boolean).join(' · ');
-    
-    if (meta.textContent) {
-      cardInfo.appendChild(meta);
-    }
-
-    card.appendChild(cardInfo);
-    
-    // 카드 클릭 이벤트
-    card.addEventListener('click', () => {
-      if (item.asset_idx) {
-        window.location.href = `/contents?id=${item.asset_idx}`;
-      }
-    });
 
     cardContainer.appendChild(card);
   });

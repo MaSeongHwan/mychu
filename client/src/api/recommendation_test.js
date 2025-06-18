@@ -2,6 +2,17 @@ import { API_BASE_URL } from './config.js';
 import { renderSlider } from '../components/Recommendations.js';
 
 /**
+ * API 응답 데이터에서 poster_path만 남기고 나머지 필드들을 제거하는 함수
+ * @param {Array} items - API에서 받은 콘텐츠 배열
+ * @returns {Array} poster_path만 포함된 배열
+ */
+function filterPosterPathOnly(items) {
+  return items.map(item => ({
+    poster_path: item.poster_path
+  }));
+}
+
+/**
  * 테스트 추천 API를 사용하여 모든 슬라이더를 초기화하는 함수
  * 각 슬라이더마다 다른 파라미터로 API를 호출하여 서로 다른 콘텐츠를 표시
  */
@@ -22,7 +33,9 @@ export async function initRecommendationsWithTest() {
     
     const topItems = topData.items || [];
     if (topItems.length > 0) {
-      renderSlider(document.getElementById('top-slider'), topItems);
+      // poster_path만 필터링
+      const filteredTopItems = filterPosterPathOnly(topItems);
+      renderSlider(document.getElementById('top-slider'), filteredTopItems);
     } else {
       document.querySelector('#top-slider .error-message').style.display = 'block';
       document.querySelector('#top-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';
@@ -46,7 +59,9 @@ export async function initRecommendationsWithTest() {
     
     const emoItems = emoData.items || [];
     if (emoItems.length > 0) {
-      renderSlider(document.getElementById('emotion-slider'), emoItems);
+      // poster_path만 필터링
+      const filteredEmoItems = filterPosterPathOnly(emoItems);
+      renderSlider(document.getElementById('emotion-slider'), filteredEmoItems);
     } else {
       document.querySelector('#emotion-slider .error-message').style.display = 'block';
       document.querySelector('#emotion-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';
@@ -70,7 +85,9 @@ export async function initRecommendationsWithTest() {
     
     const recentItems = recentData.items || [];
     if (recentItems.length > 0) {
-      renderSlider(document.getElementById('recent-slider'), recentItems);
+      // poster_path만 필터링
+      const filteredRecentItems = filterPosterPathOnly(recentItems);
+      renderSlider(document.getElementById('recent-slider'), filteredRecentItems);
     } else {
       document.querySelector('#recent-slider .error-message').style.display = 'block';
       document.querySelector('#recent-slider .error-message').textContent = '추천 콘텐츠가 없습니다.';

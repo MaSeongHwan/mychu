@@ -32,8 +32,13 @@ export function initializeSearch() {
         console.log('검색 결과:', results);
         
         if (results && results.length > 0) {
+          // poster_path만 필터링
+          const filteredResults = results.map(item => ({
+            poster_path: item.poster_path
+          }));
+          
           // 자동완성 결과 표시
-          renderSuggestions(results, suggestionsContainer, query);
+          renderSuggestions(filteredResults, suggestionsContainer, query);
           suggestionsContainer.style.display = 'block';
         } else {
           suggestionsContainer.innerHTML = '<div class="suggestion-item">검색 결과가 없습니다</div>';
@@ -80,18 +85,8 @@ export function initializeSearch() {
     const item = e.target.closest('.suggestion-item');
     if (!item) return;
     
-    const id = item.dataset.id;
-    if (id) {
-      // 콘텐츠 상세 페이지로 이동
-      window.location.href = `/contents?id=${id}`;
-    } else {
-      // 텍스트만 클릭한 경우 - 검색창에 해당 텍스트 채우기
-      const titleEl = item.querySelector('.item-title');
-      if (titleEl) {
-        searchInput.value = titleEl.textContent;
-        suggestionsContainer.style.display = 'none';
-      }
-    }
+    // 이미지만 표시하므로 클릭 시 아무 동작 안함
+    suggestionsContainer.style.display = 'none';
   });
 }
 
@@ -99,22 +94,15 @@ export function initializeSearch() {
 function renderSuggestions(results, container, query) {
   container.innerHTML = '';
   
-  // 각 결과에 대한 HTML 생성
+  // 각 결과에 대한 HTML 생성 (이미지만 표시)
   results.forEach(item => {
     // 썸네일 이미지 또는 기본 이미지
     const thumbnail = item.poster_path || 'https://via.placeholder.com/40x60?text=No+Image';
     
-    // 결과 강조 표시를 위한 제목 하이라이트
-    const title = highlightMatch(item.asset_nm || item.super_asset_nm || '제목 없음', query);
-    
-    // 항목 HTML 생성
+    // 항목 HTML 생성 (이미지만)
     const html = `
-      <div class="suggestion-item" data-id="${item.asset_idx || ''}">
-        <img src="${thumbnail}" alt="${item.asset_nm || ''}" />
-        <div class="item-info">
-          <div class="item-title">${title}</div>
-          <div class="item-meta">${item.genre || ''} ${item.release_year ? `· ${item.release_year}` : ''}</div>
-        </div>
+      <div class="suggestion-item">
+        <img src="${thumbnail}" alt="Poster" />
       </div>
     `;
     
@@ -122,7 +110,7 @@ function renderSuggestions(results, container, query) {
   });
 }
 
-// 검색어와 일치하는 부분 강조 표시
+// 검색어와 일치하는 부분 강조 표시 (사용하지 않음)
 function highlightMatch(text, query) {
   if (!query || !text) return text || '';
   

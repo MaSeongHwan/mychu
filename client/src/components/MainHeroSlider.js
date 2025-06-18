@@ -1,5 +1,16 @@
 import { API_BASE_URL } from '../api/config.js';
 
+/**
+ * API 응답 데이터에서 poster_path만 남기고 나머지 필드들을 제거하는 함수
+ * @param {Array} items - API에서 받은 콘텐츠 배열
+ * @returns {Array} poster_path만 포함된 배열
+ */
+function filterPosterPathOnly(items) {
+  return items.map(item => ({
+    poster_path: item.poster_path
+  }));
+}
+
 export function initMainHeroSlider() {
     console.log('Initializing Main Hero Slider...');
 
@@ -24,7 +35,10 @@ export function initMainHeroSlider() {
             }
             const data = await response.json();
             console.log('Fetched hero content data:', data);
-            populateSlider(data);
+            
+            // poster_path만 필터링
+            const filteredData = filterPosterPathOnly(data.items || []);
+            populateSlider(filteredData);
             startAutoSlide();
         } catch (error) {
             console.error('Error fetching main hero content:', error);
@@ -46,25 +60,23 @@ export function initMainHeroSlider() {
             slideElement.innerHTML = `
                 <div class="hero-poster">
                     <div class="poster-container">
-                        <img src="${item.poster_path}" alt="${item.asset_nm}" class="poster-image" />
+                        <img src="${item.poster_path}" alt="Poster" class="poster-image" />
                         <div class="poster-glow"></div>
                     </div>
                 </div>
                 <div class="hero-info">
                     <span class="badge">오늘의 추천</span>
-                    <h2 class="hero-title">${item.asset_nm}</h2>
+                    <h2 class="hero-title">추천 콘텐츠</h2>
                     <div class="content-meta">
                         <div class="rating">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
-                            <span>4.8</span> <!-- API에 평점 데이터가 없으므로 임시로 4.8 고정 -->
+                            <span>4.8</span>
                         </div>
-                        <span class="release-year">${item.release_year}</span>
-                        <span class="genre">${item.genre}</span>
                     </div>
                     <p class="hero-description">
-                        호킨스를 떠난 지 6개월 후, 친구들은 뿔뿔이 흩어져 있고 고등학교의 공포를 헤쳐나가려 애쓴다. 이런 와중에 새로운 초자연적 공포가 수면 위로 떠오르며 끔찍한 미스터리를 드러낸다.
+                        매력적인 콘텐츠를 만나보세요.
                     </p>
                     <div class="hero-buttons">
                         <button class="btn btn-primary">

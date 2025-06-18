@@ -25,33 +25,16 @@ async function doSearch(keyword) {
       return;
     }
 
-    // 검색 결과 카드 생성
-    grid.innerHTML = items.map(item => `
+    // poster_path만 필터링
+    const filteredItems = items.map(item => ({
+      poster_path: item.poster_path
+    }));
+
+    // 검색 결과 카드 생성 (이미지만)
+    grid.innerHTML = filteredItems.map(item => `
       <div class="content-card">
         <div class="card-image">
-          <img src="${item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${item.asset_nm}" />
-          <div class="card-overlay">
-            <div class="card-buttons">
-              <button class="card-btn play-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-              </button>
-              <button class="card-btn add-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="card-content">
-          <h3 class="card-title">${item.asset_nm}</h3>
-          <div class="card-meta">
-            <span>${item.genre || '장르 정보 없음'}</span>
-            ${item.release_year ? `<span>${item.release_year}</span>` : ''}
-          </div>
+          <img src="${item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="Poster" />
         </div>
       </div>
     `).join('');
