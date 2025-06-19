@@ -7,12 +7,6 @@
   <link rel="stylesheet" href="/src/styles/mylist.css">
   <script type="module" src="/src/init.js"></script>
   <script type="module" src="/src/pages/mylist.js" defer></script>
-  <script type="module">
-    import { loadHeader } from '/components/loadHeader.js';
-    document.addEventListener('DOMContentLoaded', () => {
-      loadHeader();
-    });
-  </script>
 </head>
 <body>
   <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
@@ -64,38 +58,7 @@
       <!-- 시청 기록 탭 -->
       <div class="tab-content active" id="watch-history">
         <div class="content-section">
-          <div class="section-header">
-            <h2 class="section-title">시청 기록</h2>
-            <div class="section-controls">
-              <select class="sort-select">
-                <option value="recent">최근 시청순</option>
-                <option value="name">제목순</option>
-                <option value="duration">시청 시간순</option>
-              </select>
-              <div class="view-toggle">
-                <button class="view-btn active" data-view="grid">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg>
-                </button>
-                <button class="view-btn" data-view="list">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-grid" id="watchHistoryGrid">
+          <div class="content-grid grid-view" id="watchHistoryGrid">
             <!-- JS에서 동적으로 시청 기록 렌더링 -->
           </div>
         </div>
@@ -104,38 +67,7 @@
       <!-- 찜한 콘텐츠 탭 -->
       <div class="tab-content" id="wishlist">
         <div class="content-section">
-          <div class="section-header">
-            <h2 class="section-title">내가 찜한 콘텐츠</h2>
-            <div class="section-controls">
-              <select class="sort-select">
-                <option value="recent">최근 추가순</option>
-                <option value="name">제목순</option>
-                <option value="genre">장르순</option>
-              </select>
-              <div class="view-toggle">
-                <button class="view-btn active" data-view="grid">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg>
-                </button>
-                <button class="view-btn" data-view="list">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-grid" id="wishlistGrid">
+          <div class="content-grid grid-view" id="wishlistGrid">
             <!-- JS에서 동적으로 찜한 콘텐츠 렌더링 -->
           </div>
         </div>
@@ -144,38 +76,7 @@
       <!-- 구매한 상품 탭 -->
       <div class="tab-content" id="purchased">
         <div class="content-section">
-          <div class="section-header">
-            <h2 class="section-title">구매한 상품</h2>
-            <div class="section-controls">
-              <select class="sort-select">
-                <option value="recent">최근 구매순</option>
-                <option value="name">제목순</option>
-                <option value="price">가격순</option>
-              </select>
-              <div class="view-toggle">
-                <button class="view-btn active" data-view="grid">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg>
-                </button>
-                <button class="view-btn" data-view="list">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-grid" id="purchasedGrid">
+          <div class="content-grid grid-view" id="purchasedGrid">
             <!-- JS에서 동적으로 구매한 상품 렌더링 -->
           </div>
         </div>
