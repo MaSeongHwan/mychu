@@ -8,6 +8,7 @@
 import { getHeroMovies, fetchMultipleRecommendations } from '../api/recommendation_test.js';
 import { initHeroSlider } from './HeroSlider.js';
 import { renderSlider } from './Recommendations.js';
+import { initMainPageWithLoadingIndicators } from './components/MainPageLoader.js';
 
 // API 응답 캐시 (세션 지속, 새로고침 시 초기화)
 const apiCache = new Map();
@@ -159,3 +160,8 @@ async function getCachedData(key, fetchFunction, forceRefresh = false) {
     throw error;
   }
 }
+export function renderSlider(container, items) {
+  console.log('renderSlider 호출됨', container, items);
+  // ... 이하 생략 ...
+}
+

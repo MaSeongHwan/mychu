@@ -97,15 +97,26 @@ export function initMainHeroSlider() {
                 </div>
             `;
             
-            // 클릭 이벤트 추가
-            if (item.asset_idx) {
-                const card = slideElement.querySelector('.hero-slide');
-                card.addEventListener('click', (event) => {
+            // 카드 전체 클릭 → 상세페이지 이동
+            slideElement.addEventListener('click', (event) => {
+                window.location.href = `/contents?id=${item.idx || item.asset_idx}`;
+            });
+            slideElement.style.cursor = 'pointer';
+
+            // 내부 버튼 클릭 → 상세페이지 이동 막고, 버튼 동작만
+            const playBtn = slideElement.querySelector('.btn-primary');
+            if (playBtn) {
+                playBtn.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    console.log('카드 클릭!', item.idx || item.asset_idx);
-                    window.location.href = `/contents?id=${item.idx || item.asset_idx}`;
+                    // 재생 동작
                 });
-                slideElement.style.cursor = 'pointer';
+            }
+            const likeBtn = slideElement.querySelector('.btn-outline');
+            if (likeBtn) {
+                likeBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    // 찜하기 동작
+                });
             }
             
             sliderTrack.appendChild(slideElement);

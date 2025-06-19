@@ -41,12 +41,29 @@ export async function initHeroSlider() {
           }
 
           if (movie.asset_idx) {
+            // 슬라이드 전체 클릭 시 상세페이지로 이동
             slide.addEventListener('click', (event) => {
-              event.stopPropagation();
-              console.log('카드 클릭!', movie.idx || movie.asset_idx);
+              // 내부 버튼 클릭 시 상세페이지 이동 막기
+              if (event.target.closest('.btn')) return;
               window.location.href = `/contents?id=${movie.idx || movie.asset_idx}`;
             });
             slide.style.cursor = 'pointer';
+
+            // 내부 버튼 클릭 시 상세페이지 이동 막기
+            const playBtn = slide.querySelector('.btn-primary');
+            if (playBtn) {
+              playBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // 재생 동작 구현 (필요시)
+              });
+            }
+            const likeBtn = slide.querySelector('.btn-outline');
+            if (likeBtn) {
+              likeBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // 찜하기 동작 구현 (필요시)
+              });
+            }
           }
         }
       });

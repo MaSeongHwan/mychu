@@ -1,6 +1,5 @@
-// /src/components/loadHeader.js
-// 올바른 경로로 Search.js의 initializeSearch 함수 import
-import { initializeSearch } from '/src/components/Search.js';
+// /components/loadHeader.js
+// 헤더 동적 로딩 및 삽입 함수만 export (자동 실행 X)
 
 export async function loadHeader() {
   try {
@@ -36,9 +35,6 @@ export async function loadHeader() {
       console.log('헤더 CSS 로드 완료');
     }
 
-    // 검색 및 사용자 메뉴 기능 초기화
-    initHeaderFunctions();
-    console.log('헤더 기능 초기화 완료');
     return true;
   } catch (err) {
     console.error('헤더 로드 중 오류 발생:', err);

@@ -211,6 +211,14 @@
       initDropdown();
       console.log('드롭다운 초기화 완료');      
       console.log('모든 초기화 완료');
+
+      if (headerElement) {
+        document.body.insertBefore(headerElement, document.body.firstChild);
+        console.log('헤더 요소 삽입 완료', headerElement);
+      } else {
+        console.error('헤더 요소를 찾을 수 없습니다.');
+        return false;
+      }
     });
   </script>
 </body>
