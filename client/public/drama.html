@@ -1,55 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WellList - 드라마 추천 시스템</title>
-  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css"/>
 </head>
 
 <body>
-  <!-- Header -->
-  <!-- ✅ 여기에는 아무것도 넣지 않음! 헤더는 JS로 삽입됩니다 -->
+  <!-- ✅ 헤더와 드롭다운은 JS(init.js)로 삽입됩니다 -->
 
-  <!-- 드롭다운 메뉴 추가 -->
-  <div class="dropdown-container">
-    <button class="dropdown-btn">장르 
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="6 9 12 15 18 9"></polyline></svg></button>
-    <div class="dropdown-content">
-      <a href="#">드라마</a>
-      <a href="#">예능/오락</a>
-      <a href="#">키즈/어린이</a>
-      <a href="#">액션/무협</a>
-      <a href="#">애니메이션</a>
-      <a href="#">시사/교양</a>
-      <a href="#">로맨스</a>
-      <a href="#">공포/스릴러</a>
-      <a href="#">코미디</a>
-      <a href="#">다큐/교양</a>
-      <a href="#">SF/판타지</a>
-      <a href="#">스포츠</a>
-      <a href="#">건강/생활정보</a>
-      <a href="#">교육/학습</a>
-      <a href="#">음악/공연</a>
-      <a href="#">기타</a>
-    </div>
-  </div>
-
-  <!-- Header Section -->
+  <!-- Hero Section (오늘의 추천) -->
   <section class="hero">
-    <div class="hero-background">
-      <img src="https://via.placeholder.com/1200x600" alt="배경 이미지" class="hero-image">
-      <div class="hero-overlay"></div>
-    </div>
-
-    <div class="container">
+    <div class="hero-slider-view">
       <div class="hero-slider-track" id="mainHeroSliderTrack">
-        <!-- 슬라이드는 JavaScript로 동적으로 추가됩니다 -->
+        <!-- 슬라이드 1 -->
         <div class="hero-slide hero-content">
           <div class="hero-poster">
             <div class="poster-container">
-              <img id="main-hero-poster-img" src="" alt="콘텐츠 포스터" class="poster-image" />
+              <img class="poster-image main-hero-poster-img-0" src="" alt="포스터" />
               <div class="poster-glow"></div>
             </div>
           </div>
@@ -58,102 +27,85 @@
             <h2 class="hero-title"></h2>
             <div class="content-meta">
               <div class="rating">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
+                <svg><!-- 별 아이콘 --></svg>
                 <span>4.8</span>
               </div>
               <span class="release-year"></span>
               <span class="genre"></span>
             </div>
-            <p class="hero-description">
-              호킨스를 떠난 지 6개월 후, 친구들은 뿔뿔이 흩어져 있고 고등학교의 공포를 헤쳐나가려 애쓴다. 이런 와중에 새로운 초자연적 공포가 수면 위로 떠오르며 끔찍한 미스터리를 드러낸다.
-            </p>
+            <p class="hero-description"></p>
             <div class="hero-buttons">
-              <button class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-                재생
-              </button>
-              <button class="btn btn-outline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                찜하기
-              </button>
+              <button class="btn btn-primary">재생</button>
+              <button class="btn btn-outline">찜하기</button>
             </div>
           </div>
         </div>
+
+        <!-- 슬라이드 2~5 -->
+        <div class="hero-slide hero-content"></div>
+        <div class="hero-slide hero-content"></div>
+        <div class="hero-slide hero-content"></div>
+        <div class="hero-slide hero-content"></div>
       </div>
-      <button class="hero-slider-nav prev" id="mainHeroPrevBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-      <button class="hero-slider-nav next" id="mainHeroNextBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <!-- 좌우 버튼 -->
+      <button class="hero-slider-nav prev" id="mainHeroPrevBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="hero-slider-nav next" id="mainHeroNextBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
     </div>
   </section>
 
-  <!-- Content Categories -->
+  <!-- 메인 콘텐츠 -->
   <main class="main-content">
     <div class="container">
-      <h2 class="content-heading">지금 인기 있는 드라마</h2>      
-      <!-- 오늘의 인기작 Top 10 슬라이더 섹션 -->
+      <!-- 인기 드라마 -->
       <section class="section" id="top-section">
         <div class="section-header">
           <h2>오늘의 인기 드라마</h2>
           <div class="section-controls">
-            <button class="control-btn prev-btn">
-              <span class="icon icon-arrow-left"></span>
-            </button>
-            <button class="control-btn next-btn">
-              <span class="icon icon-arrow-right"></span>
-            </button>
+            <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
+            <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
-        </div>        
-        <div class="slider" id="top-slider">
-          <div class="error-message">
-            드라마를 불러오는데 실패했습니다.
-          </div>
+        </div>
+        <div class="slider" id="popular-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
 
-      <!-- 개인화된 추천 슬라이더 섹션 -->
-      <section class="section" id="emotion-section">
+      <!-- 장르별 개인화 추천 -->
+      <section class="section" id="genre-section">
         <div class="section-header">
-          <h2>소금님, 오늘은 따듯한 로맨스 드라마가 어울려요</h2>
+          <h2 id="genre-drama-heading">소금님, 오늘은 따듯한 힐링 드라마가 어울려요</h2>
           <div class="section-controls">
-            <button class="control-btn prev-btn">
-              <span class="icon icon-arrow-left"></span>
-            </button>
-            <button class="control-btn next-btn">
-              <span class="icon icon-arrow-right"></span>
-            </button>
+            <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
+            <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
         </div>
-        <div class="slider" id="emotion-slider">
-          <div class="error-message">
-            드라마를 불러오는데 실패했습니다.
-          </div>
-          <!-- 슬라이더 컨텐츠는 JavaScript로 동적 생성됩니다 -->
+        <div class="slider" id="genre-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
 
-      <!-- 최근 시청 콘텐츠 슬라이더 섹션 -->
+      <!-- 최근 시청 -->
       <section class="section" id="recent-section">
         <div class="section-header">
           <h2>최근 시청 드라마</h2>
           <div class="section-controls">
-            <button class="control-btn prev-btn">
-              <span class="icon icon-arrow-left"></span>
-            </button>
-            <button class="control-btn next-btn">
-              <span class="icon icon-arrow-right"></span>
-            </button>
+            <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
+            <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
         </div>
-        <div class="slider" id="recent-slider">
-          <div class="error-message">
-            드라마를 불러오는데 실패했습니다.
-          </div>
+        <div class="slider" id="recent-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
     </div>
@@ -165,53 +117,12 @@
       <div class="footer-content">
         <p>&copy; 2025 WellList. All rights reserved.</p>
       </div>
-    </div>    
-  </footer>  
-  <!-- 헤더 로딩 및 검색 설정 -->
+    </div>
+  </footer>
+
+  <!-- 공통 스크립트 -->
   <script type="module" src="/src/init.js"></script>
-  
-  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
-  <script type="module" src="/src/main.js"></script> 
-   
-  <script type="module">
-    import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
-    import { initializeSearch } from '/src/components/Search.js';
-    // drama.html용 드라마 전용 추천 API 함수 임포트
-    import { initRecommendationsForDrama } from '/src/api/recommendation_test.js';
-    import { initHeroSlider } from '/src/components/HeroSlider.js'; // HeroSlider 임포트
-    import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM 로드 완료, 초기화 시작');
-      
-      // 로고 클릭 시 홈으로 이동
-      // const logoLink = document.querySelector('.logo-link');
-      // logoLink.addEventListener('click', function(e) {
-      //   e.preventDefault();
-      //   window.location.href = '/main';
-      // });
-      
-      // 향상된 검색 기능 초기화 - 자동완성 포함
-      initializeSearch();
-      console.log('검색 초기화 완료');
-
-      // 사용자 메뉴 초기화
-      initializeUserMenu();
-      setupLogout();
-
-      // drama.html용 드라마 전용 추천 API를 사용하여 모든 슬라이더 초기화
-      initRecommendationsForDrama();
-      console.log('drama.html용 드라마 전용 추천 API로 콘텐츠 로드 시작');
-
-      // Hero 슬라이더 초기화
-      // initHeroSlider(); // 슬라이더 기능을 제거했으므로 주석 처리
-      // console.log('Hero 슬라이더 초기화 완료');
-
-      // 드롭다운 초기화
-      initDropdown();
-      console.log('드롭다운 초기화 완료');      
-      console.log('모든 초기화 완료');
-    });
-  </script>
+  <!-- 페이지 전용 스크립트 -->
+  <script type="module" src="/src/pages/drama.js"></script>
 </body>
 </html>

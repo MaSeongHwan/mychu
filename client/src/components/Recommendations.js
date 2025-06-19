@@ -108,37 +108,11 @@ export function renderSlider(container, items) {
 
     // 포스터 이미지를 클릭하면 상세페이지로 이동
     if (item.asset_idx) {
-      img.style.cursor = 'pointer';
-      img.addEventListener('click', (event) => {
-        event.stopPropagation();
-        window.location.href = `/contents?id=${item.asset_idx}`;
-      });
-    }
-
-    // 클릭 이벤트 추가
-    if (item.asset_idx) {
       card.addEventListener('click', (event) => {
         // 내부 버튼 클릭 시 상세페이지 이동 막기
         if (event.target.closest('.btn')) return;
         window.location.href = `/contents?id=${item.asset_idx}`;
       });
-      card.style.cursor = 'pointer';
-
-      // 내부 버튼 클릭 시 상세페이지 이동 막기 (예시)
-      const playBtn = card.querySelector('.btn-primary');
-      if (playBtn) {
-        playBtn.addEventListener('click', (event) => {
-          event.stopPropagation();
-          // 재생 동작 구현 (필요시)
-        });
-      }
-      const likeBtn = card.querySelector('.btn-outline');
-      if (likeBtn) {
-        likeBtn.addEventListener('click', (event) => {
-          event.stopPropagation();
-          // 찜하기 동작 구현 (필요시)
-        });
-      }
     }
 
     cardContainer.appendChild(card);

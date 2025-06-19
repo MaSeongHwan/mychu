@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WellList - 추천 홈</title>
+  <title>WellList - 드라마 추천 시스템</title>
   <link rel="stylesheet" href="/src/styles/main.css"/>
 </head>
 
 <body>
-  <!-- ✅ 헤더와 드롭다운은 init.js에서 동적으로 삽입됩니다 -->
+  <!-- ✅ 메인 슬라이더 안 불러와짐 -->
+  <!-- ✅ 헤더와 드롭다운은 JS(init.js)로 삽입됩니다 -->
 
-  <!-- Hero 슬라이더 -->
+  <!-- Hero Section (오늘의 추천) -->
   <section class="hero">
     <div class="hero-slider-view">
       <div class="hero-slider-track" id="mainHeroSliderTrack">
-        <!-- 첫 슬라이드 -->
+        <!-- 슬라이드 1 -->
         <div class="hero-slide hero-content">
           <div class="hero-poster">
             <div class="poster-container">
@@ -40,14 +41,15 @@
             </div>
           </div>
         </div>
-        <!-- 나머지 4개 슬라이드 -->
+
+        <!-- 슬라이드 2~5 -->
         <div class="hero-slide hero-content"></div>
         <div class="hero-slide hero-content"></div>
         <div class="hero-slide hero-content"></div>
         <div class="hero-slide hero-content"></div>
       </div>
 
-      <!-- 좌우 화살표 -->
+      <!-- 좌우 버튼 -->
       <button class="hero-slider-nav prev" id="mainHeroPrevBtn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,52 +65,50 @@
     </div>
   </section>
 
-  <!-- 추천 콘텐츠 섹션 -->
+  <!-- 메인 콘텐츠 -->
   <main class="main-content">
     <div class="container">
-
-      <!-- 1. 인기 콘텐츠 -->
+      <!-- 인기 드라마 -->
       <section class="section" id="top-section">
         <div class="section-header">
-          <h2>오늘의 인기 콘텐츠</h2>
+          <h2>오늘의 인기 드라마</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
             <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
         </div>
-        <div class="slider" id="popular-main-slider">
-          <div class="error-message">콘텐츠를 불러오는데 실패했습니다.</div>
+        <div class="slider" id="popular-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
 
-      <!-- 2. 감정 기반 or 장르 기반 추천 -->
+      <!-- 장르별 개인화 추천 -->
       <section class="section" id="genre-section">
         <div class="section-header">
-          <h2 id="genre-main-heading">소금님, 오늘은 기분 전환이 필요해 보여요</h2>
+          <h2 id="genre-drama-heading">소금님, 오늘은 따듯한 힐링 드라마가 어울려요</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
             <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
         </div>
-        <div class="slider" id="genre-main-slider">
-          <div class="error-message">콘텐츠를 불러오는데 실패했습니다.</div>
+        <div class="slider" id="genre-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
 
-      <!-- 3. 최근 시청 -->
+      <!-- 최근 시청 -->
       <section class="section" id="recent-section">
         <div class="section-header">
-          <h2>최근 시청 콘텐츠</h2>
+          <h2>최근 시청 드라마</h2>
           <div class="section-controls">
             <button class="control-btn prev-btn"><span class="icon icon-arrow-left"></span></button>
             <button class="control-btn next-btn"><span class="icon icon-arrow-right"></span></button>
           </div>
         </div>
-        <div class="slider" id="recent-main-slider">
-          <div class="error-message">콘텐츠를 불러오는데 실패했습니다.</div>
+        <div class="slider" id="recent-drama-slider">
+          <div class="error-message">드라마를 불러오는데 실패했습니다.</div>
         </div>
       </section>
-
     </div>
   </main>
 
@@ -121,9 +121,9 @@
     </div>
   </footer>
 
-  <!-- 공통 헤더 및 초기화 스크립트 -->
+  <!-- 공통 스크립트 -->
   <script type="module" src="/src/init.js"></script>
-  <!-- 메인 페이지 전용 스크립트 -->
-  <script type="module" src="/src/pages/main.js"></script>
+  <!-- 페이지 전용 스크립트 -->
+  <script type="module" src="/src/pages/drama.js"></script>
 </body>
 </html>

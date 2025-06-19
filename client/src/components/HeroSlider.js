@@ -1,10 +1,31 @@
 import { getHeroMovies } from '../api/recommendation_test.js';
 
 export async function initHeroSlider() {
+  console.log('Hero 슬라이더 초기화 시작');
+  
+  // DOM 요소 가져오기
   const sliderTrack = document.querySelector('.hero-slider-track');
   const slides = Array.from(document.querySelectorAll('.hero-slide'));
   const nextBtn = document.getElementById('mainHeroNextBtn');
   const prevBtn = document.getElementById('mainHeroPrevBtn');
+  
+  // 디버깅을 위한 DOM 요소 체크
+  console.log('슬라이더 요소 확인:', {
+    sliderTrack: sliderTrack,
+    slides: slides.length,
+    nextBtn: nextBtn !== null,
+    prevBtn: prevBtn !== null
+  });
+  
+  if (!sliderTrack || slides.length === 0 || !nextBtn || !prevBtn) {
+    console.error('슬라이더 필수 요소를 찾을 수 없습니다', {
+      sliderTrack: !!sliderTrack,
+      slides: slides.length,
+      nextBtn: !!nextBtn,
+      prevBtn: !!prevBtn
+    });
+  }
+  
   let currentSlideIndex = 0;
   let autoSlideInterval;
 
@@ -34,7 +55,7 @@ export async function initHeroSlider() {
           if (descriptionElement) descriptionElement.textContent = movie.smry || '영화 설명이 없습니다.';
           
           // 포스터 이미지 업데이트
-          const posterImg = slide.querySelector('#main-hero-poster-img');
+          const posterImg = slide.querySelector('.main-hero-poster-img');
           if (posterImg && movie.poster_path) {
             posterImg.src = movie.poster_path;
             posterImg.alt = movie.asset_nm || '영화 포스터';
@@ -68,7 +89,7 @@ export async function initHeroSlider() {
         }
       });
     } else {
-      // 영화 데이터가 없을 경우 기본 이미지 사용
+      // 데이터가 없을 경우 기본 이미지 사용
       const imageUrls = [
         'https://via.placeholder.com/1920x1080/0d1117/ffffff?text=Slide+1',
         'https://via.placeholder.com/1920x1080/2f1b67/ffffff?text=Slide+2',
@@ -98,7 +119,17 @@ export async function initHeroSlider() {
   }
 
   const updateSliderPosition = () => {
-    sliderTrack.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    // CSS 클래스 토글 방식
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentSlideIndex);
+    });
+    
+    // translateX 트랜스폼 방식 (movie.html에 맞춤)
+    if (sliderTrack) {
+      const offset = -currentSlideIndex * 100; // 각 슬라이드를 100% 너비로 가정
+      sliderTrack.style.transform = `translateX(${offset}%)`;
+      console.log(`슬라이드 이동: ${currentSlideIndex}, 오프셋: ${offset}%`);
+    }
   };
 
   const goToSlide = (index) => {
@@ -110,6 +141,7 @@ export async function initHeroSlider() {
       currentSlideIndex = index;
     }
     updateSliderPosition();
+    console.log(`슬라이드 변경: ${currentSlideIndex}`);
   };
 
   const nextSlide = () => {
