@@ -9,6 +9,113 @@ const auth = getAuth(app);
 
 console.log('마이리스트 스크립트 로드됨');
 
+// ===== 더미 데이터 선언 (실제 서버 연동 전용) =====
+const watchHistoryData = [
+  {
+    title: "오징어 게임",
+    genre: "스릴러, 드라마",
+    description: "456억 원의 상금을 차지하기 위해 목숨을 건 서바이벌 게임에 참가한 사람들의 이야기.",
+    year: 2021,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/yACIAqAkSLkX4coHafpyLWAtQjw.jpg",
+    actors: ["이정재", "박해수", "정호연", "위하준"],
+    director: "황동혁",
+    lastWatched: "2024.04.18 마지막 시청"
+  },
+  {
+    title: "사랑의 불시착",
+    genre: "로맨스, 코미디",
+    description: "대한민국 재벌 상속녀와 북한 장교의 국경을 넘은 사랑 이야기.",
+    year: 2020,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/mvy18bPg93JNLwTQHHP2ZjPYP0A.jpg",
+    actors: ["현빈", "손예진", "서지혜", "김정현"],
+    director: "이정효",
+    lastWatched: "2024.04.10 마지막 시청"
+  },
+  {
+    title: "이태원 클라쓰",
+    genre: "드라마",
+    description: "불의에 맞서며 이태원에서 자신의 꿈을 펼치는 청춘들의 성장기.",
+    year: 2020,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/2tTMci6Hq99gkagpYe19RulNXRr.jpg",
+    actors: ["박서준", "김다미", "유재명", "권나라"],
+    director: "김성윤",
+    lastWatched: "2024.04.08 마지막 시청"
+  },
+  {
+    title: "슬기로운 의사생활",
+    genre: "드라마, 의학",
+    description: "20년 지기 친구인 5명의 의사들이 병원에서 펼치는 따뜻한 이야기.",
+    year: 2020,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/cfI8eRuOqJpVnIro5GSEvbSlbph.jpg",
+    actors: ["조정석", "유연석", "정경호", "김대명", "전미도"],
+    director: "신원호",
+    lastWatched: "2024.04.06 마지막 시청"
+  },
+  {
+    title: "어벤져스: 엔드게임",
+    genre: "액션, SF",
+    description: "마블 히어로들이 인류의 운명을 걸고 타노스와 마지막 전투를 벌인다.",
+    year: 2019,
+    imageUrl: "https://image.tmdb.org/t/p/w500/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg",
+    actors: ["로버트 다우니 주니어", "크리스 에반스", "스칼렛 요한슨"],
+    director: "앤서니 루소, 조 루소",
+    lastWatched: "2024.04.02 마지막 시청"
+  },
+  {
+    title: "마이 네임",
+    genre: "액션, 느와르",
+    description: "아버지의 죽음에 대한 복수를 위해 조직에 들어가 경찰에 잠입한 여성의 이야기.",
+    year: 2021,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/ncAKKmr1sfFhQvn6LeGTY2QBge.jpg",
+    actors: ["한소희", "박희순", "안보현"],
+    director: "김진민",
+    lastWatched: "2024.03.30 마지막 시청"
+  }
+];
+
+const wishlistData = [
+  {
+    title: "오징어 게임",
+    genre: "스릴러, 드라마",
+    description: "456억 원의 상금을 차지하기 위해 목숨을 건 서바이벌 게임에 참가한 사람들의 이야기.",
+    year: 2021,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/yACIAqAkSLkX4coHafpyLWAtQjw.jpg",
+    actors: ["이정재", "박해수", "정호연", "위하준"],
+    director: "황동혁",
+    lastWatched: "2024.04.18 마지막 시청"
+  },
+  {
+    title: "D.P.",
+    genre: "드라마, 군대",
+    description: "군무이탈 체포조(D.P.)가 군대 내 탈영병을 쫓으며 겪는 현실과 고뇌.",
+    year: 2021,
+    imageUrl: "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/ufovksqVTNogMdU5LlCVbJSiMVa.jpg",
+    actors: ["정해인", "구교환", "김성균", "손석구"],
+    director: "한준희",
+    added: "2024.04.01 추가"
+  },
+  {
+    title: "미스터 션샤인",
+    genre: "드라마, 멜로",
+    description: "신미양요 때 조선에서 미국으로 건너간 소년이 훗날 군인으로 돌아와 벌어지는 이야기.",
+    year: 2018,
+    imageUrl: "	https://media.themoviedb.org/t/p/w600_and_h900_bestv2/uSavP0BSfnyUaJe62f0ZTXIHLs8.jpg",
+    actors: ["이병헌", "김태리", "유연석", "변요한", "김민정"],
+    director: "이응복",
+    added: "2024.03.29 추가"
+  },
+  {
+    title: "인간수업",
+    genre: "범죄, 드라마",
+    description: "평범한 고등학생이 돈을 벌기 위해 범죄에 손을 대며 벌어지는 충격적인 이야기.",
+    year: 2020,
+    imageUrl: "	https://media.themoviedb.org/t/p/w600_and_h900_bestv2/2LTSggPYwuLvekQgvQfJ310auvP.jpg",
+    actors: ["김동희", "정다빈", "박주현", "남윤수"],
+    director: "김진민",
+    added: "2024.03.27 추가"
+  }
+];
+
 // 페이지 초기화 함수
 async function initializePage() {
     try {
@@ -26,7 +133,6 @@ async function initializePage() {
         setupTabs();
         setupViewToggle();
         setupRemoveButtons();
-        setupBulkControls();
         
         // 3. 초기 콘텐츠 개수 업데이트
         console.log('초기 콘텐츠 개수 업데이트...');
@@ -40,8 +146,12 @@ async function initializePage() {
 
 // DOM이 로드된 후 초기화 (init.js 이후에 실행됨)
 document.addEventListener('DOMContentLoaded', () => {
-    // init.js가 완료된 후 실행되도록 약간의 지연 추가
-    setTimeout(initializePage, 100);
+    setTimeout(() => {
+        initializePage();
+        renderWatchHistory();
+        renderWishlist();
+        setupRemoveButtons();
+    }, 100);
 });
 
 // 사용자 인증 상태 확인 및 사용자 데이터 로드
@@ -313,19 +423,24 @@ function setupRemoveButtons() {
             const contentItem = this.closest('.content-item');
             const title = contentItem.querySelector('.item-title').textContent;
             const isWatchHistory = contentItem.closest('#watch-history') !== null;
-            
+            const grid = contentItem.closest('.content-grid');
+
             const confirmMessage = isWatchHistory 
                 ? `"${title}" 시청 기록을 삭제하시겠습니까?`
                 : `"${title}"을(를) 찜 목록에서 제거하시겠습니까?`;
             
             if (confirm(confirmMessage)) {
-                // 실제 서버 요청 구현 필요
-                console.log(isWatchHistory ? '시청 기록 삭제:' : '찜 해제:', title);
-                contentItem.style.animation = 'fadeOut 0.3s ease-out forwards';
-                setTimeout(() => {
-                    contentItem.remove();
-                    updateContentCount();
-                }, 300);
+                // 실제 데이터에서도 삭제
+                if (isWatchHistory) {
+                    const idx = watchHistoryData.findIndex(item => item.title === title);
+                    if (idx !== -1) watchHistoryData.splice(idx, 1);
+                    renderWatchHistory();
+                } else {
+                    const idx = wishlistData.findIndex(item => item.title === title);
+                    if (idx !== -1) wishlistData.splice(idx, 1);
+                    renderWishlist();
+                }
+                updateContentCount();
             }
         });
     });
@@ -498,42 +613,37 @@ function renderWatchHistory() {
     setTimeout(() => {
         grid.innerHTML = '';
         if (watchHistoryData.length === 0) {
-            grid.innerHTML = `<div class="empty-state">
-                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>
-                <h3>시청 기록이 없습니다</h3>
-                <p>아직 시청한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>
-                <button class="recommend-btn" onclick="window.location.href='/main.html'">추천 콘텐츠 보기</button>
-            </div>`;
+            grid.innerHTML = `<div class=\"empty-state\">\n                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>\n                <h3>시청 기록이 없습니다</h3>\n                <p>아직 시청한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>\n                <button class=\"recommend-btn\" onclick=\"window.location.href='/main.html'\">추천 콘텐츠 보기</button>\n            </div>`;
             return;
         }
         watchHistoryData.forEach((item, idx) => {
             const contentItem = document.createElement('div');
             contentItem.className = 'content-item';
             contentItem.innerHTML = `
-                <div class="item-checkbox">
-                    <input type="checkbox" class="item-checkbox-input" name="watchHistory" value="${idx}">
-                </div>
-                <div class="item-poster">
-                    <img src="${item.image}" alt="${item.title}" class="poster-image">
-                    <div class="item-overlay">
-                      <button class="play-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <div class=\"item-poster\">
+                    <img src=\"${item.imageUrl}\" alt=\"${item.title}\" class=\"poster-image\">
+                    <div class=\"item-overlay\">
+                      <button class=\"play-btn\">
+                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"5 3 19 12 5 21 5 3\"></polygon></svg>
                       </button>
-                      <button class="remove-btn" title="기록 삭제">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      <button class=\"remove-btn\" title=\"기록 삭제\">
+                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg>
                       </button>
                     </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: ${item.progress}%"></div>
+                    <div class=\"progress-bar\">
+                      <div class=\"progress-fill\" style=\"width: ${item.progress ? item.progress : 100}%\"></div>
                     </div>
                 </div>
-                <div class="item-info">
-                    <h3 class="item-title">${item.title}</h3>
-                    <div class="item-meta">
-                      <span class="item-genre">${item.genre}</span>
-                      <span class="watch-progress${item.progress === 100 ? ' completed' : ''}">${item.progress === 100 ? '완료' : item.progress + '% 시청'}</span>
+                <div class=\"item-info\">
+                    <h3 class=\"item-title\">${item.title} <span style='font-weight:400;font-size:0.95em;color:#aaa'>(${item.year})</span></h3>
+                    <div class=\"item-meta\">
+                      <span class=\"item-genre\">${item.genre}</span>
+                      <span class=\"watch-progress${item.progress === 100 ? ' completed' : ''}\">${item.progress === 100 ? '완료' : (item.progress ? item.progress + '% 시청' : '완료')}</span>
                     </div>
-                    <p class="item-added-date">${item.lastWatched}</p>
+                    <p class=\"item-desc\" style='margin:0.3em 0 0.5em 0;font-size:0.92em;color:#ccc;'>${item.description}</p>
+                    <div style='font-size:0.88em;color:#b5b5b5;margin-bottom:0.2em;'>감독: <b>${item.director}</b></div>
+                    <div style='font-size:0.88em;color:#b5b5b5;'>출연: ${item.actors.join(', ')}</div>
+                    <p class=\"item-added-date\">${item.lastWatched}</p>
                 </div>
             `;
             grid.appendChild(contentItem);
@@ -554,116 +664,36 @@ function renderWishlist() {
     setTimeout(() => {
         grid.innerHTML = '';
         if (wishlistData.length === 0) {
-            grid.innerHTML = `<div class="empty-state">
-                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>
-                <h3>찜한 콘텐츠가 없습니다</h3>
-                <p>아직 찜한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>
-                <button class="recommend-btn" onclick="window.location.href='/main.html'">추천 콘텐츠 보기</button>
-            </div>`;
+            grid.innerHTML = `<div class=\"empty-state\">\n                <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' stroke='#6b7280' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='M3 9h18M9 21V9'/></svg>\n                <h3>찜한 콘텐츠가 없습니다</h3>\n                <p>아직 찜한 콘텐츠가 없습니다.<br>지금 추천 콘텐츠를 확인해보세요!</p>\n                <button class=\"recommend-btn\" onclick=\"window.location.href='/main.html'\">추천 콘텐츠 보기</button>\n            </div>`;
             return;
         }
         wishlistData.forEach((item, idx) => {
             const contentItem = document.createElement('div');
             contentItem.className = 'content-item';
             contentItem.innerHTML = `
-                <div class="item-checkbox">
-                    <input type="checkbox" class="item-checkbox-input" name="wishlist" value="${idx}">
-                </div>
-                <div class="item-poster">
-                    <img src="${item.image}" alt="${item.title}" class="poster-image">
-                    <div class="item-overlay">
-                      <button class="play-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <div class=\"item-poster\">
+                    <img src=\"${item.imageUrl}\" alt=\"${item.title}\" class=\"poster-image\">
+                    <div class=\"item-overlay\">
+                      <button class=\"play-btn\">
+                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"5 3 19 12 5 21 5 3\"></polygon></svg>
                       </button>
-                      <button class="remove-btn" title="찜 해제">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      <button class=\"remove-btn\" title=\"찜 해제\">
+                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg>
                       </button>
                     </div>
                 </div>
-                <div class="item-info">
-                    <h3 class="item-title">${item.title}</h3>
-                    <div class="item-meta">
-                      <span class="item-genre">${item.genre}</span>
+                <div class=\"item-info\">
+                    <h3 class=\"item-title\">${item.title} <span style='font-weight:400;font-size:0.95em;color:#aaa'>(${item.year})</span></h3>
+                    <div class=\"item-meta\">
+                      <span class=\"item-genre\">${item.genre}</span>
                     </div>
-                    <p class="item-added-date">${item.added}</p>
+                    <p class=\"item-desc\" style='margin:0.3em 0 0.5em 0;font-size:0.92em;color:#ccc;'>${item.description}</p>
+                    <div style='font-size:0.88em;color:#b5b5b5;margin-bottom:0.2em;'>감독: <b>${item.director}</b></div>
+                    <div style='font-size:0.88em;color:#b5b5b5;'>출연: ${item.actors.join(', ')}</div>
+                    <p class=\"item-added-date\">${item.added}</p>
                 </div>
             `;
             grid.appendChild(contentItem);
         });
     }, 500);
 }
-
-function setupBulkControls() {
-    // 시청 기록 전체 선택
-    const watchAll = document.getElementById('watchHistorySelectAll');
-    const watchGrid = document.getElementById('watchHistoryGrid');
-    const watchDelete = document.getElementById('watchHistoryBulkDelete');
-    if (watchAll && watchGrid) {
-        watchAll.addEventListener('change', function() {
-            const checkboxes = watchGrid.querySelectorAll('.item-checkbox-input');
-            checkboxes.forEach(cb => {
-                cb.checked = watchAll.checked;
-                cb.closest('.content-item').classList.toggle('selected', cb.checked);
-            });
-        });
-        watchGrid.addEventListener('change', function(e) {
-            if (e.target.classList.contains('item-checkbox-input')) {
-                e.target.closest('.content-item').classList.toggle('selected', e.target.checked);
-                // 전체 선택 체크박스 상태 동기화
-                const all = watchGrid.querySelectorAll('.item-checkbox-input');
-                const checked = watchGrid.querySelectorAll('.item-checkbox-input:checked');
-                watchAll.checked = all.length === checked.length;
-            }
-        });
-        if (watchDelete) {
-            watchDelete.addEventListener('click', function() {
-                const checked = watchGrid.querySelectorAll('.item-checkbox-input:checked');
-                if (checked.length === 0) return alert('삭제할 항목을 선택하세요.');
-                if (!confirm('선택한 시청 기록을 삭제하시겠습니까?')) return;
-                // 실제 데이터에서 제거
-                const idxArr = Array.from(checked).map(cb => Number(cb.value)).sort((a, b) => b - a);
-                idxArr.forEach(idx => watchHistoryData.splice(idx, 1));
-                renderWatchHistory();
-                updateContentCount();
-            });
-        }
-    }
-    // 찜한 콘텐츠 전체 선택
-    const wishAll = document.getElementById('wishlistSelectAll');
-    const wishGrid = document.getElementById('wishlistGrid');
-    const wishDelete = document.getElementById('wishlistBulkDelete');
-    if (wishAll && wishGrid) {
-        wishAll.addEventListener('change', function() {
-            const checkboxes = wishGrid.querySelectorAll('.item-checkbox-input');
-            checkboxes.forEach(cb => {
-                cb.checked = wishAll.checked;
-                cb.closest('.content-item').classList.toggle('selected', cb.checked);
-            });
-        });
-        wishGrid.addEventListener('change', function(e) {
-            if (e.target.classList.contains('item-checkbox-input')) {
-                e.target.closest('.content-item').classList.toggle('selected', e.target.checked);
-                // 전체 선택 체크박스 상태 동기화
-                const all = wishGrid.querySelectorAll('.item-checkbox-input');
-                const checked = wishGrid.querySelectorAll('.item-checkbox-input:checked');
-                wishAll.checked = all.length === checked.length;
-            }
-        });
-        if (wishDelete) {
-            wishDelete.addEventListener('click', function() {
-                const checked = wishGrid.querySelectorAll('.item-checkbox-input:checked');
-                if (checked.length === 0) return alert('삭제할 항목을 선택하세요.');
-                if (!confirm('선택한 찜한 콘텐츠를 삭제하시겠습니까?')) return;
-                // 실제 데이터에서 제거
-                const idxArr = Array.from(checked).map(cb => Number(cb.value)).sort((a, b) => b - a);
-                idxArr.forEach(idx => wishlistData.splice(idx, 1));
-                renderWishlist();
-                updateContentCount();
-            });
-        }
-    }
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> 0fb5fe9ed70eb6d592053ca7d14e6a24a9e1644b
