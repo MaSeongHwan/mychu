@@ -191,6 +191,31 @@
         </div>
       </section>
     </div>
+    <!-- 비슷한 콘텐츠 추천 슬라이드 -->
+    <div class="container">
+      <section class="related-products" id="similar-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            비슷한 콘텐츠 추천
+          </h2>
+        </div>
+        <div class="products-slider" id="similar-slider">
+          <button class="slider-btn prev-btn" id="similar-prev-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          <button class="slider-btn next-btn" id="similar-next-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+          <div class="products-track" id="similar-track">
+            <!-- JS로 포스터 이미지 카드가 들어감 -->
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
   <!-- 헤더 로딩 및 검색 설정 -->
   <script type="module" src="/src/init.js"></script>
@@ -229,6 +254,82 @@
       console.error("Failed to fetch content info", err);
     }
   });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // 비슷한 콘텐츠 더미 세로 포스터 이미지 (예시)
+  const similarPosters = [
+    "https://media.themoviedb.org/t/p/w440_and_h660_face/uRzJaOysinMti88BGuu8m8shVCp.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/kHosEyMUhgrAKu3TsuBIepP5vCN.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/7PPMBnoylG1eKv2WOQ3FVjgoaUO.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/2YxlQvaUNkVVitAOhnmZ4xgD8SS.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/3G1gdQ9VYEjnWNRX5J8vtDRWJCs.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/xSwQTkFErWexFMyPwBeFG65xkEt.jpg"
+  ];
+
+  const track = document.getElementById("similar-track");
+  const prevBtn = document.getElementById("similar-prev-btn");
+  const nextBtn = document.getElementById("similar-next-btn");
+
+  // 카드 렌더링 (세로 포스터만)
+  similarPosters.forEach(src => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.style.minWidth = "200px";
+    card.style.maxWidth = "200px";
+    card.style.padding = "0";
+    card.style.display = "flex";
+    card.style.flexDirection = "column";
+    card.style.alignItems = "center";
+    card.style.justifyContent = "center";
+    card.style.background = "#1f2937";
+    card.style.border = "1px solid #374151";
+    card.style.borderRadius = "1rem";
+    card.style.overflow = "hidden";
+    card.style.boxSizing = "border-box";
+    const imgDiv = document.createElement("div");
+    imgDiv.className = "product-image";
+    imgDiv.style.width = "100%";
+    imgDiv.style.height = "300px";
+    imgDiv.style.aspectRatio = "2/3";
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = "비슷한 콘텐츠 포스터";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    imgDiv.appendChild(img);
+    card.appendChild(imgDiv);
+    track.appendChild(card);
+  });
+
+  // 슬라이드 로직
+  let currentSlide = 0;
+  const cardsPerView = window.innerWidth <= 768 ? 1 : 3;
+  const totalCards = similarPosters.length;
+  const maxSlides = Math.ceil(totalCards / cardsPerView) - 1;
+
+  function updateSlide() {
+    const cardWidth = 200 + 24; // 카드 너비 + gap
+    const translateX = -currentSlide * cardWidth * cardsPerView;
+    track.style.transform = `translateX(${translateX}px)`;
+  }
+
+  prevBtn.addEventListener("click", function() {
+    currentSlide = currentSlide <= 0 ? maxSlides : currentSlide - 1;
+    updateSlide();
+  });
+
+  nextBtn.addEventListener("click", function() {
+    currentSlide = currentSlide >= maxSlides ? 0 : currentSlide + 1;
+    updateSlide();
+  });
+
+  // 반응형 대응
+  window.addEventListener("resize", function() {
+    updateSlide();
+  });
+});
 </script>
 </body>
 </html>
