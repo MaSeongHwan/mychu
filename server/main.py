@@ -13,6 +13,8 @@ from server.api.routes.search import router as search_router
 from server.api.routes.user import router as user_router
 from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
+from server.api.routes.log import router as log_router
+
 
 # 설정 및 초기화
 from server.config.settings import CORS_ORIGINS
@@ -66,8 +68,9 @@ else:
     logger.error(f"CSS file NOT found at: {css_path}")
 
 # 라우터 등록
-app.include_router(user_router,       prefix="/users", tags=["users"])
+app.include_router(user_router,       prefix="/users",  tags=["users"])
 app.include_router(asset_router,      prefix="/assets", tags=["assets"])
+app.include_router(log_router,        prefix="/logs",   tags=["logs"])
 app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
