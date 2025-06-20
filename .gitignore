@@ -4,7 +4,9 @@ client/src/firebase/config.js
 
 # 환경 변수 파일
 .env
-**/.env.*
+.env.*
+*/.env
+*/.env.*
 
 # 캐시 및 컴파일된 파일
 __pycache__/
@@ -36,6 +38,10 @@ yarn-error.log*
 venv/
 .venv/
 node_modules/
+
+# 모델 파일
+server/core/recommender_assets/*.npy
+
 
 # 예외 (예제 파일은 Git에 포함)
 !.env.example
