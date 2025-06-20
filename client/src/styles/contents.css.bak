@@ -144,7 +144,7 @@ ul { list-style: none; }
   .content-title { font-size: 1.75rem; }
 }
 
-/* ========== 섹션 공통 스타일 ========== */
+/* 관련 상품 섹션 */
 .related-products {
   margin-top: 4rem;
   margin-bottom: 4rem;
@@ -154,22 +154,6 @@ ul { list-style: none; }
   margin-bottom: 1.5rem;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #e5e7eb;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.section-subtitle {
-  color: #9ca3af;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-}
-
-/* ========== 슬라이더 공통 스타일 ========== */
 .products-slider {
   position: relative;
   overflow: hidden;
@@ -183,7 +167,6 @@ ul { list-style: none; }
   padding: 1rem 0;
 }
 
-/* ========== 상품 카드 공통 스타일 ========== */
 .product-card {
   background-color: #1f2937;
   border-radius: 1rem;
@@ -232,16 +215,6 @@ ul { list-style: none; }
   font-size: 0.75rem;
   font-weight: 600;
   z-index: 10;
-}
-
-.product-badge.new {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #fff;
-}
-
-.product-badge.sale {
-  background: #ef4444;
-  color: #fff;
 }
 
 .product-overlay {
@@ -298,7 +271,6 @@ ul { list-style: none; }
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #e5e7eb;
 }
 
 .product-price {
@@ -341,7 +313,6 @@ ul { list-style: none; }
   border-radius: 0.25rem;
 }
 
-/* ========== 슬라이더 컨트롤 ========== */
 .slider-indicators {
   display: flex;
   justify-content: center;
@@ -378,118 +349,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
-}
-
-.slider-btn:hover {
-  background: rgba(0,0,0,0.6);
 }
 
 .slider-btn.prev-btn { left: 8px; }
 .slider-btn.next-btn { right: 8px; }
-
-/* ========== 감정 태그 ========== */
-.emotion-tags {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.emotion-tag {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #fff;
-}
-
-.emotion-tag.heart {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-}
-
-.emotion-tag.mystery {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-}
-
-.emotion-tag.time {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-}
-
-.emotion-tag.tear {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-
-/* ========== 줄거리 ========== */
-.content-synopsis {
-  color: #d1d5db;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-/* ========== 출연진 ========== */
-.cast-section {
-  margin-bottom: 1.5rem;
-}
-
-.cast-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #9ca3af;
-  margin-bottom: 0.5rem;
-}
-
-.cast-list {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.cast-item {
-  padding: 0.25rem 0.5rem;
-  background: rgba(255,255,255,0.1);
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  color: #e5e7eb;
-}
-
-/* ========== 액션 버튼 ========== */
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.play-button {
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.play-button:hover {
-  transform: scale(1.05);
-}
-
-.action-button {
-  padding: 0.75rem 1.5rem;
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-button:hover {
-  background: rgba(255,255,255,0.2);
-  transform: scale(1.05);
-}
