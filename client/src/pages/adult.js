@@ -39,18 +39,25 @@ function initAdultPageFeatures() {
     const cardGap = 16; // 카드 간격
     const cardsPerView = Math.floor(window.innerWidth / (cardWidth + cardGap));
     
-    // 더미 데이터 생성
+    // 제공된 이미지 링크들
+    const imageUrls = [
+      'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+      'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+      'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+    ];
+    
+    // 더미 데이터 생성 (이미지 링크 포함)
     const dummyData = [
-      { title: '나는 성인물', year: '2024', country: '한국', rank: 1 },
-      { title: '나는 성인물2', year: '2024', country: '한국', rank: 2 },
-      { title: '나는 성인물3', year: '2024', country: '한국', rank: 3 },
-      { title: '나는 성인물4', year: '2024', country: '한국', rank: 4 },
-      { title: '나는 성인물5', year: '2024', country: '한국', rank: 5 },
-      { title: '나는 성인물6', year: '2024', country: '한국', rank: 6 },
-      { title: '나는 성인물7', year: '2024', country: '한국', rank: 7 },
-      { title: '나는 성인물8', year: '2024', country: '한국', rank: 8 },
-      { title: '나는 성인물9', year: '2024', country: '한국', rank: 9 },
-      { title: '나는 성인물10', year: '2024', country: '한국', rank: 10 }
+      { title: '나는 성인물', year: '2024', country: '한국', rank: 1, image: imageUrls[0] },
+      { title: '나는 성인물2', year: '2024', country: '한국', rank: 2, image: imageUrls[1] },
+      { title: '나는 성인물3', year: '2024', country: '한국', rank: 3, image: imageUrls[2] },
+      { title: '나는 성인물4', year: '2024', country: '한국', rank: 4, image: imageUrls[0] },
+      { title: '나는 성인물5', year: '2024', country: '한국', rank: 5, image: imageUrls[1] },
+      { title: '나는 성인물6', year: '2024', country: '한국', rank: 6, image: imageUrls[2] },
+      { title: '나는 성인물7', year: '2024', country: '한국', rank: 7, image: imageUrls[0] },
+      { title: '나는 성인물8', year: '2024', country: '한국', rank: 8, image: imageUrls[1] },
+      { title: '나는 성인물9', year: '2024', country: '한국', rank: 9, image: imageUrls[2] },
+      { title: '나는 성인물10', year: '2024', country: '한국', rank: 10, image: imageUrls[0] }
     ];
 
     // 카드 컨테이너 생성
@@ -66,7 +73,7 @@ function initAdultPageFeatures() {
       
       card.innerHTML = `
         ${rankBadge}
-        <img src="https://via.placeholder.com/200x300" alt="${item.title}" class="card-image">
+        <img src="${item.image}" alt="${item.title}" class="card-image">
         <div class="card-info">
           <h3 class="card-title">${item.title}</h3>
           <div class="card-meta">
@@ -124,6 +131,13 @@ function initAdultPageFeatures() {
   const loadingIndicator = document.getElementById('loading-indicator');
   const contentGrid = document.getElementById('content-grid');
   
+  // 제공된 이미지 링크들
+  const imageUrls = [
+    'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+    'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+    'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+  ];
+  
   function generateContentItems(count) {
     const items = [];
     const titles = [
@@ -139,10 +153,11 @@ function initAdultPageFeatures() {
       const titleIndex = ((page - 1) * count + i) % titles.length;
       const title = titles[titleIndex];
       const year = 2018 + Math.floor(Math.random() * 6);
+      const imageIndex = i % imageUrls.length; // 이미지를 순환하여 사용
       
       item.innerHTML = `
         <div class="item-poster">
-          <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+          <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
           <div class="item-overlay">
             <button class="play-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
