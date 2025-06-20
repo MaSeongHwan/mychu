@@ -1,162 +1,122 @@
-/**
- * 메인 페이지 전용 스크립트
- * - 메인 페이지 슬라이더 및 추천 초기화
- * - 헤더는 init.js에서 이미 로드됨
- */
+// 📁 client/src/pages/main.js
 
 import { renderSlider } from '../components/Recommendations.js';
 import { API_BASE_URL } from '../api/config.js';
+import { initHeroSlider } from '../components/HeroSlider.js';
+import { initMainPageWithLoadingIndicators } from '../components/MainPageLoader.js';
 
-// 페이지 로드 시 실행
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('메인 페이지 초기화 시작');
+// 슬라이더 초기화를 위한 함수
+async function fetchRecommendationsForMainPage() {
+  console.log('메인 페이지용 추천 데이터 요청 시작');
   
-  // 성능 측정 시작
-  console.time('main-page-initialization');
+  // 기본 옵션 설정
+  const options = {
+    n: 10,
+    is_adult: false
+  };
   
-  // 메인 페이지 추천 슬라이더 초기화
-  initMainPageSliders();
-  
-  // 장르 필터링 이벤트 처리
-  // 드롭다운은 init.js에서 초기화됩니다
-  initGenreFilters();
-  
-  console.timeEnd('main-page-initialization');
-  console.log('메인 페이지 초기화 완료');
-});
-
-/**
- * 메인 페이지 장르 필터링 이벤트 설정
- */
-function initGenreFilters() {
-  const genreLinks = document.querySelectorAll('.dropdown-content a');
-  
-  genreLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const genre = this.textContent.trim();
-      console.log(`메인: 장르 필터 선택: ${genre}`);
+  try {
+    // 세 가지 요청을 병렬로 실행
+    const [popularPromise, emotionPromise, recentPromise] = await Promise.all([
+      // 인기 콘텐츠
+      fetch(`${API_BASE_URL}/recommendation/popular?n=${options.n}&is_adult=${options.is_adult}`)
+        .then(res => res.ok ? res.json() : { items: [] })
+        .then(data => data.items || []),
       
-      // 영화 페이지로 장르 필터링과 함께 이동
+      // 감정 기반 (코미디 장르로 필터링)
+      fetch(`${API_BASE_URL}/recommendation/test?n=${options.n}&is_main=true&genre=코미디`)
+        .then(res => res.ok ? res.json() : { items: [] })
+        .then(data => data.items || []),
+      
+      // 최근 시청
+      fetch(`${API_BASE_URL}/recommendation/recent?n=${options.n}`)
+        .then(res => res.ok ? res.json() : { items: [] })
+        .then(data => data.items || [])
+    ]);
+    
+    return {
+      popular: popularPromise,
+      emotion: emotionPromise,
+      recent: recentPromise
+    };
+    
+  } catch (error) {
+    console.error('추천 데이터 요청 중 오류:', error);
+    return {
+      popular: [],
+      emotion: [],
+      recent: []
+    };
+  }
+}
+
+// ✅ 이벤트 위임 방식 장르 필터링 함수 (전역 위치에 선언)
+function initGenreFilters() {
+  document.body.addEventListener('click', function (e) {
+    const genreLink = e.target.closest('.dropdown-content a');
+    if (genreLink) {
+      e.preventDefault();
+      const genre = genreLink.textContent.trim();
+      console.log(`메인: 장르 필터 선택: ${genre}`);
       window.location.href = `/movie?genre=${encodeURIComponent(genre)}`;
-    });
+    }
   });
 }
 
-/**
- * 메인 페이지 슬라이더 초기화
- */
-async function initMainPageSliders() {
+// 슬라이더 초기화 함수 정의 (이전에 누락되었던 함수)
+function initMainPageSliders() {
+  console.log('메인 페이지 슬라이더 초기화 시작');
+  
   try {
-    console.log('메인 페이지 슬라이더 초기화 시작');
-    
-    // URL에서 장르 파라미터 가져오기
-    const urlParams = new URLSearchParams(window.location.search);
-    const genreFilter = urlParams.get('genre');
-    
-    // 1. 인기 콘텐츠 슬라이더
-    await fetchAndRenderSlider('top-slider', '/recommendation/popular', {
-      n: 10, 
-      is_adult: false,
-      is_main: true
-    });
-    
-    // 2. 감정 기반 추천 슬라이더
-    await fetchAndRenderSlider('emotion-slider', '/recommendation/test', {
-      n: 10, 
-      is_adult: false,
-      genre: '코미디',
-      is_main: true
-    });
-    
-    // 3. 최근 시청 콘텐츠 슬라이더
-    await fetchAndRenderSlider('recent-slider', '/recommendation/recent', {
-      n: 10,
-      is_adult: false,
-      is_main: true
-    });
-    
-    console.log('메인 페이지 슬라이더 초기화 완료');
-    
+    // MainPageLoader의 초기화 함수 호출
+    initMainPageWithLoadingIndicators();
   } catch (error) {
-    console.error('메인 페이지 슬라이더 초기화 오류:', error);
+    console.error('슬라이더 초기화 중 오류 발생:', error);
     
-    // 오류 표시
-    document.querySelectorAll('.error-message').forEach(el => {
-      el.style.display = 'block';
-      el.textContent = '콘텐츠를 불러오는데 실패했습니다.';
+    // 오류 발생 시 기본 로딩 메시지 표시
+    const sliders = ['#popular-main-slider', '#genre-main-slider', '#recent-main-slider'];
+    sliders.forEach(selector => {
+      const sliderEl = document.querySelector(selector);
+      if (sliderEl) {
+        sliderEl.innerHTML = '<div class="error-message">콘텐츠를 불러오는데 실패했습니다. 새로고침을 시도해보세요.</div>';
+      }
+    });
+    
+    // 백업 직접 호출 방식 시도
+    console.log('직접 추천 데이터 로드 시도...');
+    fetchRecommendationsForMainPage().then(data => {
+      console.log('직접 추천 데이터 로드 완료:', data);
+      
+      // 각 슬라이더에 데이터 적용
+      if (data.popular && data.popular.length > 0) {
+        renderSlider(document.getElementById('popular-main-slider'), data.popular);
+      }
+      
+      if (data.emotion && data.emotion.length > 0) {
+        renderSlider(document.getElementById('genre-main-slider'), data.emotion);
+      }
+      
+      if (data.recent && data.recent.length > 0) {
+        renderSlider(document.getElementById('recent-main-slider'), data.recent);
+      }
     });
   }
+  
+  console.log('메인 페이지 슬라이더 초기화 완료');
 }
 
-/**
- * API 호출 및 슬라이더 렌더링 헬퍼 함수
- */
-async function fetchAndRenderSlider(elementId, endpoint, params = {}) {
-  try {
-    // 파라미터 문자열 생성
-    const queryParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(params)) {
-      if (value !== undefined && value !== null) {
-        queryParams.append(key, value);
-      }
-    }
-    
-    // API 호출
-    const url = `${API_BASE_URL}${endpoint}?${queryParams.toString()}`;
-    console.log(`슬라이더 데이터 요청: ${url}`);
-    
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`API 오류: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    const items = data.items || [];
-    
-    if (items.length > 0) {
-      // 데이터 가공 (필요한 필드만 추출)
-      const processedItems = items.map(item => ({
-        poster_path: item.poster_path,
-        asset_idx: item.idx || item.asset_idx // 두 가지 가능한 필드명을 모두 처리
-      }));
-      
-      // 슬라이더 렌더링
-      const sliderElement = document.getElementById(elementId);
-      if (sliderElement) {
-        renderSlider(sliderElement, processedItems);
-        console.log(`${elementId} 슬라이더 렌더링 완료:`, processedItems.length);
-      } else {
-        console.error(`${elementId} 슬라이더 요소를 찾을 수 없음`);
-      }
-    } else {
-      // 데이터가 없는 경우
-      const sliderElement = document.getElementById(elementId);
-      if (sliderElement) {
-        const errorMsg = sliderElement.querySelector('.error-message') || document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = '추천 콘텐츠가 없습니다.';
-        errorMsg.style.display = 'block';
-        
-        if (!sliderElement.contains(errorMsg)) {
-          sliderElement.appendChild(errorMsg);
-        }
-      }
-    }
-    
-  } catch (error) {
-    console.error(`${elementId} 슬라이더 데이터 로드 실패:`, error);
-    const sliderElement = document.getElementById(elementId);
-    if (sliderElement) {
-      const errorMsg = sliderElement.querySelector('.error-message') || document.createElement('div');
-      errorMsg.className = 'error-message';
-      errorMsg.textContent = '콘텐츠를 불러오는데 실패했습니다.';
-      errorMsg.style.display = 'block';
-      
-      if (!sliderElement.contains(errorMsg)) {
-        sliderElement.appendChild(errorMsg);
-      }
-    }
-  }
-}
+// ✅ 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('메인 페이지 초기화 시작');
+
+  // Hero 슬라이더 초기화
+  initHeroSlider();
+  
+  // 모든 콘텐츠 슬라이더 초기화
+  initMainPageSliders();
+
+  // 장르 필터 초기화
+  initGenreFilters();
+
+  console.log('메인 페이지 초기화 완료');
+});

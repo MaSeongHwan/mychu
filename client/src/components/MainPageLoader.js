@@ -8,7 +8,6 @@
 import { getHeroMovies, fetchMultipleRecommendations } from '../api/recommendation_test.js';
 import { initHeroSlider } from './HeroSlider.js';
 import { renderSlider } from './Recommendations.js';
-import { initMainPageWithLoadingIndicators } from './components/MainPageLoader.js';
 
 // API 응답 캐시 (세션 지속, 새로고침 시 초기화)
 const apiCache = new Map();
@@ -49,27 +48,27 @@ export async function initMainPageWithLoadingIndicators() {
       
       // 각 슬라이더별 데이터 적용
       if (allRecommendations.popular && allRecommendations.popular.length > 0) {
-        renderSlider(document.getElementById('top-slider'), allRecommendations.popular);
+        renderSlider(document.getElementById('popular-main-slider'), allRecommendations.popular);
       } else {
-        showSliderError('top-slider', '인기 콘텐츠 데이터를 불러올 수 없습니다.');
+        showSliderError('popular-main-slider', '인기 콘텐츠 데이터를 불러올 수 없습니다.');
       }
       
       if (allRecommendations.emotion && allRecommendations.emotion.length > 0) {
-        renderSlider(document.getElementById('emotion-slider'), allRecommendations.emotion);
+        renderSlider(document.getElementById('genre-main-slider'), allRecommendations.emotion);
       } else {
-        showSliderError('emotion-slider', '감정 기반 추천 데이터를 불러올 수 없습니다.');
+        showSliderError('genre-main-slider', '감정 기반 추천 데이터를 불러올 수 없습니다.');
       }
       
       if (allRecommendations.recent && allRecommendations.recent.length > 0) {
-        renderSlider(document.getElementById('recent-slider'), allRecommendations.recent);
+        renderSlider(document.getElementById('recent-main-slider'), allRecommendations.recent);
       } else {
-        showSliderError('recent-slider', '최근 시청 데이터를 불러올 수 없습니다.');
+        showSliderError('recent-main-slider', '최근 시청 데이터를 불러올 수 없습니다.');
       }
       
     } else {
       console.error('추천 데이터 로드 실패:', recommendationsPromise.reason);
       // 각 슬라이더에 오류 메시지 표시
-      ['top-slider', 'emotion-slider', 'recent-slider'].forEach(id => {
+      ['popular-main-slider', 'genre-main-slider', 'recent-main-slider'].forEach(id => {
         showSliderError(id, '데이터를 불러올 수 없습니다.');
       });
     }
@@ -96,7 +95,7 @@ function showSectionLoadingIndicators() {
   }
   
   // 각 슬라이더 로딩 표시
-  ['top-slider', 'emotion-slider', 'recent-slider'].forEach(id => {
+  ['popular-main-slider', 'genre-main-slider', 'recent-main-slider'].forEach(id => {
     const slider = document.getElementById(id);
     if (slider) {
       slider.innerHTML = `

@@ -1,6 +1,6 @@
 /**
- * 드라마 페이지 전용 스크립트
- * - 드라마 페이지 슬라이더 및 추천 초기화
+ * 메인 페이지 전용 스크립트
+ * - 메인 페이지 슬라이더 및 추천 초기화
  * - 헤더는 init.js에서 이미 로드됨
  */
 
@@ -9,86 +9,77 @@ import { API_BASE_URL } from '../api/config.js';
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('드라마 페이지 초기화 시작');
+  console.log('메인 페이지 초기화 시작');
   
-  // 드라마 전용 추천 API 호출 및 슬라이더 초기화
-  initDramaPageSliders();
-
-  // 메인 슬라이더 초기화
-  initHeroSlider();
+  // 성능 측정 시작
+  console.time('main-page-initialization');
   
-  // 드라마 장르별 필터링 이벤트 처리
-  initDramaGenreFilters();
+  // 메인 페이지 추천 슬라이더 초기화
+  initMainPageSliders();
   
-  console.log('드라마 페이지 초기화 완료');
+  // 장르 필터링 이벤트 처리
+  // 드롭다운은 init.js에서 초기화됩니다
+  initGenreFilters();
+  
+  console.timeEnd('main-page-initialization');
+  console.log('메인 페이지 초기화 완료');
 });
 
 /**
- * 드라마 장르 필터 초기화
+ * 메인 페이지 장르 필터링 이벤트 설정
  */
-function initDramaGenreFilters() {
+function initGenreFilters() {
   const genreLinks = document.querySelectorAll('.dropdown-content a');
   
   genreLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const genre = this.textContent.trim();
-      console.log(`드라마 장르 필터 선택: ${genre}`);
+      console.log(`메인: 장르 필터 선택: ${genre}`);
       
-      // 장르 필터링된 페이지로 이동 또는 현재 페이지에서 필터링
-      window.location.href = `/drama?genre=${encodeURIComponent(genre)}`;
+      // 영화 페이지로 장르 필터링과 함께 이동
+      window.location.href = `/movie?genre=${encodeURIComponent(genre)}`;
     });
   });
 }
 
 /**
- * 드라마 페이지 슬라이더 초기화
+ * 메인 페이지 슬라이더 초기화
  */
-async function initDramaPageSliders() {
+async function initMainPageSliders() {
   try {
-    console.log('드라마 페이지 슬라이더 초기화 시작');
+    console.log('메인 페이지 슬라이더 초기화 시작');
     
     // URL에서 장르 파라미터 가져오기
     const urlParams = new URLSearchParams(window.location.search);
     const genreFilter = urlParams.get('genre');
     
-    // 각 슬라이더 섹션 초기화 (인기 드라마, 장르별 드라마, 최신 드라마)
-    
-    // 1. 인기 드라마 슬라이더
-    await fetchAndRenderSlider('popular-drama-slider', '/recommendation/popular', {
+    // 1. 인기 콘텐츠 슬라이더
+    await fetchAndRenderSlider('top-slider', '/recommendation/popular', {
       n: 10, 
       is_adult: false,
-      is_drama: true,
-      is_main: true,
-      genre: genreFilter
-    });
-      // 2. 감정 기반/장르별 드라마 슬라이더 (항상 표시)
-    if (genreFilter) {
-      document.querySelector('#genre-drama-heading').textContent = `${genreFilter} 장르 드라마`;
-    } else {
-      document.querySelector('#genre-drama-heading').textContent = `소금님, 오늘은 따듯한 힐링 드라마가 어울려요`;
-    }
-    
-    await fetchAndRenderSlider('genre-drama-slider', '/recommendation/test', {
-      n: 10, 
-      is_adult: false,
-      is_drama: true,
-      is_main: true,
-      genre: genreFilter || '코미디' // 장르 필터가 없으면 기본적으로 코미디 장르 표시
-    });
-    
-    // 3. 최신 드라마 슬라이더
-    await fetchAndRenderSlider('recent-drama-slider', '/recommendation/recent', {
-      n: 10,
-      is_adult: false,
-      is_drama: true,      
       is_main: true
     });
     
-    console.log('드라마 페이지 슬라이더 초기화 완료');
+    // 2. 감정 기반 추천 슬라이더
+    await fetchAndRenderSlider('emotion-slider', '/recommendation/test', {
+      n: 10, 
+      is_adult: false,
+      genre: '코미디',
+      is_main: true
+    });
+    
+    // 3. 최근 시청 콘텐츠 슬라이더
+    await fetchAndRenderSlider('recent-slider', '/recommendation/recent', {
+      n: 10,
+      is_adult: false,
+      is_main: true
+    });
+    
+    console.log('메인 페이지 슬라이더 초기화 완료');
     
   } catch (error) {
-    console.error('드라마 페이지 슬라이더 초기화 오류:', error);
+    console.error('메인 페이지 슬라이더 초기화 오류:', error);
     
     // 오류 표시
     document.querySelectorAll('.error-message').forEach(el => {
@@ -128,7 +119,7 @@ async function fetchAndRenderSlider(elementId, endpoint, params = {}) {
       // 데이터 가공 (필요한 필드만 추출)
       const processedItems = items.map(item => ({
         poster_path: item.poster_path,
-        asset_idx: item.idx
+        asset_idx: item.idx || item.asset_idx // 두 가지 가능한 필드명을 모두 처리
       }));
       
       // 슬라이더 렌더링
@@ -168,38 +159,4 @@ async function fetchAndRenderSlider(elementId, endpoint, params = {}) {
       }
     }
   }
-}
-
-// 검색 핸들러
-async function handleSearch(query) {
-  try {
-    const results = await searchContent(query);
-    const searchResultsContainer = document.querySelector('.search-results');
-    if (searchResultsContainer) {
-      renderSearchResults(results, searchResultsContainer);
-    }
-  } catch (error) {
-    console.error('검색 오류:', error);
-  }
-}
-
-function updateUIWithUserData(userData) {
-    // 사용자 정보로 UI 업데이트
-    const userNameElement = document.getElementById('userName');
-    if (userNameElement) {
-        userNameElement.textContent = userData.nickname;
-    }
-
-    // 데이터셋 정보가 있으면 추천 슬라이더 업데이트
-    if (userData.dataset) {
-        updateRecommendations(userData.dataset);
-    }
-}
-
-function handleLoggedOutState() {
-    // 로그아웃 상태 UI 처리
-    const userNameElement = document.getElementById('userName');
-    if (userNameElement) {
-        userNameElement.textContent = '게스트';
-    }
 }

@@ -29,19 +29,44 @@ if (!/^\/(login|index)\/?$/.test(path)) {
 
     initializeUserMenu();
     setupLogout();
+      // 드롭다운 처리
+    const showDropdownPages = ['main', 'movie', 'drama', 'search']; // search 페이지도 추가
     
-    // 드롭다운은 main, movie, drama 페이지에만 표시
-    const showDropdownPages = ['main', 'movie', 'drama'];
+    // 전역 객체에 드롭다운 상태 추적 - 중요: 싱글톤 패턴
+    if (!window.dropdownInitialized) {
+      window.dropdownInitialized = {
+        instance: null,
+        listeners: []
+      };
+    }
+    
     if (showDropdownPages.includes(pathWithoutSlash)) {
-      // 기존 드롭다운 제거 (HTML에 하드코딩된 경우 대비)
-      const existingDropdown = document.querySelector('.dropdown-container');
-      if (existingDropdown) {
-        existingDropdown.remove();
+      // 모든 전역 클릭 이벤트 리스너 제거 - 중요: 이벤트 충돌 방지
+      if (window.dropdownInitialized.listeners.length > 0) {
+        window.dropdownInitialized.listeners.forEach(listener => {
+          document.removeEventListener('click', listener);
+        });
+        window.dropdownInitialized.listeners = [];
+        console.log('기존 드롭다운 이벤트 리스너 정리됨');
       }
       
-      // 드롭다운 JS로 초기화
-      initDropdown();
-      console.log(`${pathWithoutSlash} 페이지에 드롭다운 초기화 완료`);
+      // 기존 드롭다운 인스턴스가 있다면 제거 (클린업)
+      const existingDropdowns = document.querySelectorAll('.dropdown-container');
+      existingDropdowns.forEach(dropdown => {
+        dropdown.remove();
+      });
+        // 새 장르 선택기 초기화 - 매우 단순화된 방식
+      try {
+        // 초기화 직접 실행 (지연 없음)
+        const genreInstance = initDropdown();
+        
+        // 로그 출력
+        console.log(`${pathWithoutSlash} 페이지에 장르 선택기 초기화 완료`);
+      } catch (err) {
+        console.error('장르 선택기 초기화 실패:', err);
+      }
+    } else {
+      console.log(`${pathWithoutSlash} 페이지는 드롭다운이 필요하지 않음`);
     }
 
     console.log('헤더 + 검색 + 사용자메뉴 초기화 완료');
