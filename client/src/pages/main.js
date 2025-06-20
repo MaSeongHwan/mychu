@@ -6,7 +6,6 @@
 
 import { renderSlider } from '../components/Recommendations.js';
 import { API_BASE_URL } from '../api/config.js';
-import { initHeroSlider } from '../components/HeroSlider.js';
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 성능 측정 시작
   console.time('main-page-initialization');
-  
-  // 메인 슬라이더 초기화
-  initHeroSlider();
   
   // 메인 페이지 추천 슬라이더 초기화
   initMainPageSliders();

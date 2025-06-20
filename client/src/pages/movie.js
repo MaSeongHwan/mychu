@@ -6,7 +6,6 @@
 
 import { renderSlider } from '../components/Recommendations.js';
 import { API_BASE_URL } from '../api/config.js';
-import { initHeroSlider } from '../components/HeroSlider.js';
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 영화 전용 추천 API 호출 및 슬라이더 초기화
   initMoviePageSliders();
-  
-  // Hero 슬라이더 초기화 (영화)
-  initHeroSlider();
   
   // 영화 장르별 필터링 이벤트 처리
   initMovieGenreFilters();

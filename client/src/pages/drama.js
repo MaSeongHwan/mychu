@@ -6,7 +6,6 @@
 
 import { renderSlider } from '../components/Recommendations.js';
 import { API_BASE_URL } from '../api/config.js';
-import { initHeroSlider } from '../components/HeroSlider.js';
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
