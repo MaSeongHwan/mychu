@@ -192,7 +192,13 @@ body {
 }
 .content-item:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); border-color: #10b981; }
 .item-poster { position: relative; aspect-ratio: 2/3; overflow: hidden; }
-.poster-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.poster-image { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transition: transform 0.3s;
+  background-color: #1f2937; /* 이미지 로딩 전 배경색 */
+}
 .content-item:hover .poster-image { transform: scale(1.05); }
 .item-overlay {
   position: absolute; inset: 0;
@@ -271,7 +277,14 @@ body {
 .rank-card .card-title { font-size: 1rem; font-weight: 600; color: #fff; }
 .rank-card .card-meta { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
 .rank-card .card-year, .rank-card .card-country { font-size: 0.75rem; color: #9ca3af; background: #374151; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
-.card-image { width: 100%; height: 280px; object-fit: cover; transition: transform 0.3s; flex-shrink: 0; }
+.card-image { 
+  width: 100%; 
+  height: 280px; 
+  object-fit: cover; 
+  transition: transform 0.3s; 
+  flex-shrink: 0;
+  background-color: #1f2937; /* 이미지 로딩 전 배경색 */
+}
 .card:hover .card-image { transform: scale(1.05); }
 .card-info { padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; color: #fff; }

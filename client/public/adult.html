@@ -307,14 +307,22 @@
           'Top9 성인물', 'Top10 성인물'
         ];
         
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+        ];
+        
         top10Titles.forEach((title, index) => {
           const item = document.createElement('div');
           item.className = 'content-item';
           const year = 2018 + Math.floor(Math.random() * 6);
+          const imageIndex = index % imageUrls.length; // 이미지를 순환하여 사용
           
           item.innerHTML = `
             <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
               <div class="item-overlay">
                 <button class="play-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -349,14 +357,22 @@
           '추천 성인물9', '추천 성인물10'
         ];
         
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+        ];
+        
         latestTitles.forEach((title, index) => {
           const item = document.createElement('div');
           item.className = 'content-item';
           const year = 2020 + Math.floor(Math.random() * 4);
+          const imageIndex = index % imageUrls.length; // 이미지를 순환하여 사용
           
           item.innerHTML = `
             <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
               <div class="item-overlay">
                 <button class="play-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -391,16 +407,24 @@
           '나는 성인물13', '나는 성인물14', '나는 성인물15', '나는 성인물16'
         ];
         
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+        ];
+        
         for (let i = 0; i < count; i++) {
           const item = document.createElement('div');
           item.className = 'content-item';
           const titleIndex = ((page - 1) * count + i) % titles.length;
           const title = titles[titleIndex];
           const year = 2018 + Math.floor(Math.random() * 6);
+          const imageIndex = i % imageUrls.length; // 이미지를 순환하여 사용
           
           item.innerHTML = `
             <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
               <div class="item-overlay">
                 <button class="play-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -642,3 +666,6 @@
   </script>
 </body>
 </html>
+
+  <!-- 공통 헤더 및 초기화 스크립트 -->
+  <script type="module" src="/src/init.js"></script>
