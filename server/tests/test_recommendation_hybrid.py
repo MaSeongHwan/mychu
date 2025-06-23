@@ -4,7 +4,10 @@ from server.main import app
 from unittest.mock import patch, MagicMock
 import numpy as np
 
-client = TestClient(app)
+@pytest.fixture
+def client():
+    """Create a test client for the FastAPI app"""
+    return TestClient(app)
 
 @pytest.fixture
 def mock_db_session():
@@ -31,7 +34,7 @@ def mock_db_session():
 
 @patch("server.api.routes.recommendation_hybrid.get_db")
 @patch("server.core.services.contents_recommendation.hybrid_vectors", np.random.rand(10, 128))
-def test_get_similar_content(mock_get_db, mock_db_session):
+def test_get_similar_content(client, mock_get_db, mock_db_session):
     """Test the similar content recommendation endpoint"""
     mock_get_db.return_value = mock_db_session
     
