@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "develop", "feat/#9-docker" ]
+    branches: [ "develp", "dockerfucker" ]
   workflow_dispatch:
 
 jobs:
