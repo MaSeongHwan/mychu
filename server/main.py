@@ -15,6 +15,8 @@ from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
 from server.api.routes.log import router as log_router
 from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
+from server.api.routes.adult_recommendation import router as adult_rec_router
+
 
 
 # 설정 및 초기화
@@ -76,6 +78,7 @@ app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation-hybrid"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
+app.include_router(adult_rec_router)
 
 
 # 로거 설정
