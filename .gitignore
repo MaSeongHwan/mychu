@@ -37,4 +37,5 @@ venv/
 node_modules/
 
 # 예외 (예제 파일은 Git에 포함)
-!.env.example
+!.env.example*.pyc
+__pycache__/
