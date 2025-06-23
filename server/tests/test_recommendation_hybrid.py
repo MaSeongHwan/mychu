@@ -32,23 +32,22 @@ def mock_db_session():
     mock_session.query.return_value = mock_query
     return mock_session
 
-@patch("server.api.routes.recommendation_hybrid.get_db")
-@patch("server.core.services.contents_recommendation.hybrid_vectors", np.random.rand(10, 128))
-def test_get_similar_content(client, mock_get_db, mock_db_session):
+def test_get_similar_content(client, mock_db_session):
     """Test the similar content recommendation endpoint"""
-    mock_get_db.return_value = mock_db_session
-    
-    # Test successful recommendation
-    response = client.get("/recommendation/similar/1?top_n=5")
-    assert response.status_code == 200
-    data = response.json()
-    assert "items" in data
-    assert len(data["items"]) <= 5
-    
-    # Test non-existent asset
-    mock_db_session.query.return_value.filter.return_value.first.return_value = None
-    response = client.get("/recommendation/similar/999")
-    assert response.status_code == 404
+    with patch("server.api.routes.recommendation_hybrid.get_db", return_value=mock_db_session), \
+         patch("server.core.services.contents_recommendation.hybrid_vectors", np.random.rand(10, 128)):
+        
+        # Test successful recommendation
+        response = client.get("/recommendation/similar/1?top_n=5")
+        assert response.status_code == 200
+        data = response.json()
+        assert "items" in data
+        assert len(data["items"]) <= 5
+        
+        # Test non-existent asset
+        mock_db_session.query.return_value.filter.return_value.first.return_value = None
+        response = client.get("/recommendation/similar/999")
+        assert response.status_code == 404
     
 if __name__ == "__main__":
     # Simple manual test for debugging
