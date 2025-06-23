@@ -1,396 +1,194 @@
-# Server Routes Backup Documentation
+알겠습니다. `server/routes_backup_docs.md` 파일에 제가 직접 변경 사항을 적용하는 데 어려움이 있으니, 요청하신 내용을 한국어 버전과 영어 버전으로 정리하여 여기에 바로 제공해 드리겠습니다.
 
-This file contains backups of the Python code from the deprecated `server/routes` directory.
-These routes have been replaced by equivalent functionality in `server/api/routes`.
+---
 
-## user.py
+### **한국어 버전 (Korean Version)**
 
-```python
-from fastapi import APIRouter, Depends, HTTPException, Header
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-from typing import List, Optional, Dict, Any
-from datetime import datetime, timedelta
-import re
-import logging
-import traceback
-from server.core.database import get_db
-from server.models.user import User
-from server.schemas import FirebaseUserCreate, FirebaseUserRead, UserRead
-from server.core.firebase import init_firebase
-from firebase_admin import auth
-from sqlalchemy import func
+# 서버 디렉토리 구조 및 개발 가이드라인
 
-router = APIRouter(tags=["users"])
+이 문서는 `server` 디렉토리의 현재 구조와 주요 구성 요소를 설명하고, 백엔드 개발 시 개발자가 따라야 할 가이드라인을 제공합니다.
 
-@router.get("/", response_model=List[UserRead])
-def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = db.query(User).offset(skip).limit(limit).all()
-    return [{"user_index": user.user_index, 
-             "age_avg": user.age_avg,
-             "main_channels": user.main_channels,
-             "use_tms": user.use_tms,
-             "cnt": user.cnt} for user in users]
+## 1. 디렉토리 개요
 
-@router.get("/{user_index}")
-def get_user(user_index: int, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.user_index == user_index).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+`server` 디렉토리는 각각 특정 기능을 담당하는 몇 가지 주요 하위 디렉토리로 구성됩니다:
 
-@router.post("/")
-def create_user(user_index: int, sha2_hash: str, db: Session = Depends(get_db)):
-    db_user = User(user_index=user_index, sha2_hash=sha2_hash)
-    try:
-        db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        return db_user
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=400, detail=str(e))
+-   `api/`: FastAPI 애플리케이션의 API 라우트와 Pydantic 스키마를 포함합니다.
+    -   `routes/`: API 엔드포인트(예: `/users`, `/assets`, `/search`)를 정의합니다.
+    -   `schemas/`: API 요청 및 응답을 위한 데이터 유효성 검사 및 직렬화 스키마를 정의합니다.
+-   `config/`: 애플리케이션의 구성 설정을 저장합니다.
+-   `core/`: 데이터베이스 연결, Firebase 통합 및 유틸리티 함수와 같은 핵심 기능을 포함합니다.
+    -   `database.py`: 데이터베이스 세션 및 연결을 관리합니다.
+    -   `firebase.py`: Firebase Admin SDK를 초기화하고 관리합니다.
+    -   `firebase_auth.py`: Firebase 인증 로직(예: 토큰 검증)을 포함합니다.
+    -   `search_engine.py`: 검색 로직을 구현합니다.
+    -   `services/`: 비즈니스 로직 서비스(예: 추천 로직)를 포함합니다.
+    -   `utils/`: 일반 유틸리티 함수를 포함합니다.
+-   `models/`: 데이터베이스 테이블을 나타내는 SQLAlchemy ORM 모델을 정의합니다.
+-   `recommender/`: 모델 추론 및 슬레이트 생성과 같은 추천 시스템 관련 구성 요소를 포함합니다.
+-   `tests/`: 백엔드를 위한 단위 및 통합 테스트를 포함합니다.
 
-# Firebase token verification
-async def verify_firebase_token(authorization: Optional[str] = Header(None)) -> dict:
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Missing authorization header")
-    
-    if not authorization.startswith('Bearer '):
-        raise HTTPException(status_code=401, detail="Invalid authorization format. Must be 'Bearer <token>'")
-    
-    token = authorization.split(' ')[1]
-    if not token or token == 'undefined' or token == 'null':
-        raise HTTPException(status_code=401, detail="Empty or invalid token")
-    
-    try:
-        # 토큰이 너무 길거나 형식이 이상한지 기본 검사
-        if len(token) < 10 or len(token) > 2000:  # JWT 토큰은 일반적으로 이 범위 내
-            raise HTTPException(status_code=401, detail="Token length is invalid")
-        
-        # Firebase Admin SDK를 통해 JWT 토큰 검증
-        decoded_token = auth.verify_id_token(token)
-        
-        # 필수 클레임 확인
-        if 'uid' not in decoded_token:
-            raise HTTPException(status_code=401, detail="Token does not contain user ID")
-        
-        # 토큰 만료 시간 체크
-        if 'exp' in decoded_token and decoded_token['exp'] < datetime.now().timestamp():
-            raise HTTPException(status_code=401, detail="Token has expired")
-            
-        return decoded_token
-    except ValueError as e:
-        raise HTTPException(status_code=401, detail=f"Invalid token format: {str(e)}")
-    except auth.ExpiredIdTokenError:
-        raise HTTPException(status_code=401, detail="Token has expired. Please login again.")
-    except auth.RevokedIdTokenError:
-        raise HTTPException(status_code=401, detail="Token has been revoked. Please login again.")
-    except auth.InvalidIdTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token. Please login again.")
-    except Exception as e:
-        raise HTTPException(status_code=401, detail=f"Token verification failed: {str(e)}")
+## 2. 주요 구성 요소 및 역할
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import func
-from datetime import datetime
-import logging, re, traceback
+### 2.1. API 라우트 (`server/api/routes/`)
 
-from server.models.user import User
-from server.schemas.user import UserRegister, UserRead
-from server.core.dependencies import get_db, verify_firebase_token
+이 파일들은 프론트엔드에서 접근할 수 있는 다양한 API 엔드포인트를 정의합니다. 각 파일은 일반적으로 주요 리소스 또는 기능에 해당합니다.
 
-router = APIRouter()
+-   `asset.py`: 콘텐츠 자산(예: 자산 상세 정보, 배우, 감독, 태그, 점수 검색) 관련 작업을 처리합니다.
+-   `recommendation_test.py`: 추천을 위한 테스트 엔드포인트를 제공합니다.
+-   `recommendations.py`: 주요 추천 엔드포인트(예: `/top`, `/emotion`, `/recent`)를 정의합니다.
+-   `search.py`: 콘텐츠 검색 기능을 구현합니다.
+-   `user.py`: 사용자 관련 작업(등록 및 인증 포함)을 관리합니다 (`/users`, `/users/auth/register`, `/users/auth/me`).
 
-@router.post("/auth/register", response_model=UserRead)
-async def register_user(
-    user_data: UserRegister,
-    token_data: dict = Depends(verify_firebase_token),
-    db: Session = Depends(get_db)
-):
-    logger = logging.getLogger("uvicorn")
-    logger.info(f"📉 Registration attempt for: {user_data.email} with Firebase UID: {user_data.sha2_hash}")
+**더 이상 사용되지 않는 라우트에 대한 참고:** 다음 파일들은 이전에 존재했지만 제거되었습니다:
+-   `log.py`: 로깅 기능은 다른 라우터에 직접 통합되거나, 필요한 경우 별도의 로깅 서비스에서 처리될 수 있습니다.
+-   `mas_recommendation.py`: 이 파일은 실험적인 버전이었으며 제거되었습니다.
 
-    try:
-        # UID 검사
-        if token_data['uid'] != user_data.sha2_hash:
-            logger.warning(f"UID mismatch: {token_data['uid']} vs {user_data.sha2_hash}")
-            raise HTTPException(status_code=401, detail="Token UID does not match request UID")
+### 2.2. 데이터베이스 모델 (`server/models/`)
 
-        # 이메일 형식 검사
-        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{1,}$'
-        if not user_data.email or not re.match(email_regex, user_data.email):
-            logger.warning(f"Invalid email: {user_data.email}")
-            raise HTTPException(status_code=400, detail="Invalid email format")
+SQLAlchemy ORM 모델은 데이터베이스 테이블의 구조를 정의하고 데이터베이스와 상호 작용하는 객체 지향적인 방법을 제공합니다.
 
-        # 중복 사용자 검사
-        existing_user = db.query(User).filter(User.sha2_hash == user_data.sha2_hash).first()
-        if existing_user:
-            raise HTTPException(status_code=400, detail="User already exists")
+-   `asset.py`: `Asset` 모델 및 관련 모델(예: `ActorAsset`, `DirectorAsset`, `TagAsset`, `Score`)을 정의합니다.
+-   `user.py`: `User` 모델을 정의합니다.
+-   `log.py`: (이전에) 로깅 관련 모델을 정의했습니다. 로깅이 필요한 경우, 모델은 여기에 정의되어야 합니다.
+-   `base.py`: SQLAlchemy 모델을 위한 선언적 베이스를 포함합니다.
 
-        # 신규 사용자 생성
-        new_user = User(
-            sha2_hash=user_data.sha2_hash,
-            email=user_data.email,
-            nick_name=user_data.nickname,
-            birth=user_data.birthdate,
-            terms_agreed_at=user_data.terms_agreed_at,
-            is_adult=user_data.is_adult,
-            sec_password=user_data.sec_password,
-            created_at=datetime.utcnow()
-        )
+### 2.3. 핵심 기능 (`server/core/`)
 
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+이 디렉토리에는 필수적이고 재사용 가능한 구성 요소가 포함되어 있습니다.
 
-        logger.info(f"✅ Registered user: {new_user.email} (UID: {new_user.sha2_hash})")
-        return new_user
+-   `database.py`:
+    -   `get_db()`: FastAPI 라우트에 데이터베이스 세션을 제공하기 위한 의존성 주입 함수입니다.
+    -   `init_db()`: 데이터베이스 연결을 초기화하고 테이블을 생성합니다(존재하지 않는 경우).
+-   `firebase.py`:
+    -   `init_firebase()`: Firebase Admin SDK를 초기화합니다.
+-   `firebase_auth.py`:
+    -   `verify_firebase_token()`: 수신 요청에서 Firebase ID 토큰의 유효성을 검사하기 위해 API 라우트에서 사용되는 의존성 함수입니다.
+-   `search_engine.py`: (구현된 경우) 검색 엔진의 핵심 로직을 포함합니다.
+-   `services/recommendation.py`: (구현된 경우) API 라우팅과 별도로 고급 추천 알고리즘을 위한 비즈니스 로직을 포함합니다.
 
-    except HTTPException:
-        raise
-    except SQLAlchemyError as e:
-        db.rollback()
-        logger.error(f"Database error: {str(e)}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail="Database error")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail="Unexpected error")
+## 3. 개발 가이드라인
 
-@router.get("/auth/me", response_model=UserRead)
-async def get_current_user(
-    token_data: dict = Depends(verify_firebase_token),
-    db: Session = Depends(get_db)
-):
-    uid = token_data['uid']
-    user = db.query(User).filter(User.sha2_hash == uid).first()
+`server` 디렉토리에 새로운 기능을 추가하거나 기존 기능을 수정할 때 다음 가이드라인을 따르십시오:
 
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+1.  **API 라우트:**
+    *   새로운 API 엔드포인트는 도메인에 따라 `server/api/routes/` 내의 전용 파일에 정의되어야 합니다(예: `new_feature.py`).
+    *   모든 요청 본문 및 응답 모델에 대해 `server/api/schemas/`에 적절한 Pydantic 스키마가 정의되어 데이터 유효성 검사를 보장해야 합니다.
+    *   데이터베이스 상호 작용을 위해 라우트 함수 내에서 `Depends(get_db)`를 사용하여 데이터베이스 세션을 얻으십시오.
+    *   인증이 필요한 라우트의 경우, `Depends(verify_firebase_token)`를 사용하여 사용자가 인증되었는지 및 권한이 있는지 확인하십시오.
 
-    return user
+2.  **데이터베이스 상호 작용:**
+    *   모든 데이터베이스 테이블 정의는 `server/models/`에 있어야 합니다.
+    *   모든 데이터베이스 작업에 SQLAlchemy ORM을 사용하십시오. 절대적으로 필요하고 정당화되는 경우가 아니면 원시 SQL 쿼리를 피하십시오.
+    *   데이터베이스와 상호 작용하는 코드에서 적절한 오류 처리(예외 발생 시 `db.rollback()`을 사용한 `try-except-finally`)를 보장하십시오.
 
+3.  **비즈니스 로직:**
+    *   복잡한 비즈니스 로직(예: 추천 알고리즘, 데이터 처리)은 API 라우트 함수에 직접 넣지 말고, `server/core/services/` 또는 `server/recommender/` 내의 서비스 모듈에 캡슐화해야 합니다. 이는 재사용성과 테스트 용이성을 향상시킵니다.
 
-@router.get("/auth/{firebase_uid}/dataset", response_model=Optional[UserRead])
-async def get_user_dataset(firebase_uid: str, db: Session = Depends(get_db)):
-    logger = logging.getLogger("uvicorn")
+4.  **구성:**
+    *   모든 민감한 정보 및 환경별 설정은 `server/config/settings.py` 또는 환경 변수를 사용하여 관리해야 합니다.
 
-    try:
-        # 1. sha2_hash 컬럼을 기준으로 사용자 조회
-        user = db.query(User).filter(User.sha2_hash == firebase_uid).first()
-        if not user:
-            logger.warning(f"❌ User not found for UID: {firebase_uid}")
-            raise HTTPException(status_code=404, detail="User not found")
+5.  **Firebase 통합:**
+    *   Firebase 초기화는 `server/core/firebase.py`에서 처리됩니다. 다른 곳에서 Firebase를 다시 초기화하는 것을 피하십시오.
+    *   백엔드 Firebase 인증의 경우 `verify_firebase_token` 의존성을 사용하십시오.
 
-        logger.info(f"✅ User found: user_idx={user.user_idx}")
+6.  **테스트:**
+    *   새로운 기능 및 버그 수정에 대한 단위 및 통합 테스트를 `server/tests/` 디렉토리에 작성하여 코드 품질을 보장하고 회귀를 방지하십시오.
 
-        # 2. 반환 스키마에 맞게 가공
-        return {
-            "user_index": user.user_idx,
-            "age_avg": user.age,
-            "main_channels": None,
-            "use_tms": None,
-            "cnt": None
-        }
+이러한 구조와 가이드라인을 준수함으로써 깨끗하고 확장 가능하며 이해하기 쉬운 백엔드 코드베이스를 유지할 수 있습니다.
 
-    except Exception as e:
-        logger.error(f"💥 Error in get_user_dataset: {str(e)}")
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
-```
+---
 
-## asset.py
+### **영어 버전 (English Version)**
 
-```python
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session, selectinload
-from typing import List, Optional
-from server.core.database import get_db
-from server.models.asset import Asset, ActorAsset, DirectorAsset, TagAsset, Score
+# Server Directory Structure and Development Guidelines
 
-router = APIRouter(
-    prefix="/assets",
-    tags=["assets"]
-)
+This document outlines the current structure of the `server` directory, its key components, and provides guidelines for developers working on the backend.
 
-@router.get("/", response_model=List[dict])
-def get_assets(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    assets = db.query(Asset).offset(skip).limit(limit).all()
-    return assets
+## 1. Directory Overview
 
-@router.get("/{asset_index}")
-def get_asset(asset_index: int, db: Session = Depends(get_db)):
-    asset = db.query(Asset).filter(Asset.asset_index == asset_index).first()
-    if asset is None:
-        raise HTTPException(status_code=404, detail="Asset not found")
-    return asset
+The `server` directory is organized into several key subdirectories, each responsible for specific functionalities:
 
-# --- 배우 목록만 조회 ---
-@router.get("/{asset_id}/actors", response_model=List[dict])
-def get_asset_actors(asset_id: int, db: Session = Depends(get_db)):
-    asset = (
-        db.query(Asset)
-          .options(selectinload(Asset.actors).selectinload(ActorAsset.actor))
-          .filter(Asset.idx == asset_id)
-          .first()
-    )
-    if not asset:
-        raise HTTPException(404, detail="Asset not found")
-    # ActorAsset 객체 대신 순수 배우 정보만 반환
-    return [aa.actor for aa in asset.actors]
+-   `api/`: Contains the FastAPI application's API routes and Pydantic schemas.
+    -   `routes/`: Defines the API endpoints (e.g., `/users`, `/assets`, `/search`).
+    -   `schemas/`: Defines data validation and serialization schemas for API requests and responses.
+-   `config/`: Stores configuration settings for the application.
+-   `core/`: Houses core functionalities like database connection, Firebase integration, and utility functions.
+    -   `database.py`: Manages the database session and connection.
+    -   `firebase.py`: Initializes and manages Firebase services.
+    -   `firebase_auth.py`: Contains Firebase authentication logic (e.g., token verification).
+    -   `search_engine.py`: Implements search logic.
+    -   `services/`: Contains business logic services (e.g., recommendation logic).
+    -   `utils/`: General utility functions.
+-   `models/`: Defines SQLAlchemy ORM models, representing the database tables.
+-   `recommender/`: Contains components related to the recommendation system, such as model inference and slate generation.
+-   `tests/`: Holds unit and integration tests for the backend.
 
-# --- 감독 목록만 조회 ---
-@router.get("/{asset_id}/directors", response_model=List[dict])
-def get_asset_directors(asset_id: int, db: Session = Depends(get_db)):
-    asset = (
-        db.query(Asset)
-          .options(selectinload(Asset.directors).selectinload(DirectorAsset.director))
-          .filter(Asset.idx == asset_id)
-          .first()
-    )
-    if not asset:
-        raise HTTPException(404, detail="Asset not found")
-    return [da.director for da in asset.directors]
+## 2. Key Components and Their Roles
 
-# --- 태그 목록만 조회 ---
-@router.get("/{asset_id}/tags", response_model=List[dict])
-def get_asset_tags(asset_id: int, db: Session = Depends(get_db)):
-    asset = (
-        db.query(Asset)
-          .options(selectinload(Asset.tags).selectinload(TagAsset.tag))
-          .filter(Asset.idx == asset_id)
-          .first()
-    )
-    if not asset:
-        raise HTTPException(404, detail="Asset not found")
-    return [ta.tag for ta in asset.tags]
+### 2.1. API Routes (`server/api/routes/`)
 
-# --- 평점(Score)만 조회 ---
-@router.get("/{asset_id}/score", response_model=dict)
-def get_asset_score(asset_id: int, db: Session = Depends(get_db)):
-    score = (
-        db.query(Score)
-          .filter(Score.asset_idx == asset_id)
-          .first()
-    )
-    if not score:
-        raise HTTPException(404, detail="Score not found")
-    return score
+These files define the various API endpoints accessible by the frontend. Each file typically corresponds to a major resource or feature.
 
-@router.get("/search/")
-def search_assets(
-    query: Optional[str] = None,
-    genre: Optional[str] = None,
-    year: Optional[int] = None,
-    db: Session = Depends(get_db)
-):
-    search_query = db.query(Asset)
-    
-    if query:
-        search_query = search_query.filter(Asset.asset_nm.ilike(f"%{query}%"))
-    if genre:
-        search_query = search_query.filter(Asset.genre.ilike(f"%{genre}%"))
-    if year:
-        search_query = search_query.filter(Asset.rlse_year == year)
-    
-    results = search_query.limit(20).all()
-    return results
-```
+-   `asset.py`: Handles operations related to content assets (e.g., retrieving asset details, actors, directors, tags, scores).
+-   `recommendation_test.py`: Provides test endpoints for recommendations.
+-   `recommendations.py`: Defines the main recommendation endpoints (e.g., `/top`, `/emotion`, `/recent`).
+-   `search.py`: Implements search functionality for content.
+-   `user.py`: Manages user-related operations, including registration and authentication (`/users`, `/users/auth/register`, `/users/auth/me`).
 
-## log.py
+**Note on deprecated routes:** The following files were previously present but have been removed:
+-   `image.py`: Functionality for images is now handled within `asset.py` or directly by static file serving if applicable.
+-   `log.py`: Logging functionality might be integrated directly into other routers or handled by a separate logging service if needed.
+-   `mas_recommendation.py`: This was an experimental version and has been removed.
 
-```python
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from typing import List, Optional
-from server.core.database import get_db
-from server.models.log import Product, ProductKeyword
-from server.models.user import VodLog
+### 2.2. Database Models (`server/models/`)
 
-router = APIRouter(
-    prefix="/logs",
-    tags=["logs"]
-)
+SQLAlchemy ORM models define the structure of your database tables and provide an object-oriented way to interact with the database.
 
-@router.get("/", response_model=List[dict])
-def get_logs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    logs = db.query(VodLog).offset(skip).limit(limit).all()
-    return logs
+-   `asset.py`: Defines the `Asset` model and related models (e.g., `ActorAsset`, `DirectorAsset`, `TagAsset`, `Score`).
+-   `user.py`: Defines the `User` model.
+-   `log.py`: (Previously) Defined logging-related models. If logging is needed, its models should be defined here.
+-   `base.py`: Contains the declarative base for SQLAlchemy models.
 
-@router.get("/user/{user_index}")
-def get_user_logs(user_index: int, db: Session = Depends(get_db)):
-    logs = db.query(VodLog).filter(VodLog.user_idx == user_index).all()
-    if not logs:
-        raise HTTPException(status_code=404, detail="No logs found for this user")
-    return logs
+### 2.3. Core Functionalities (`server/core/`)
 
-@router.get("/asset/{asset_index}")
-def get_asset_logs(asset_index: int, db: Session = Depends(get_db)):
-    logs = db.query(VodLog).filter(VodLog.asset_idx == asset_index).all()
-    if not logs:
-        raise HTTPException(status_code=404, detail="No logs found for this asset")
-    return logs
+This directory contains essential, reusable components.
 
-@router.post("/")
-def create_log(
-    user_index: int,
-    asset_index: int,
-    use_tms: Optional[int] = None,
-    feedback: Optional[int] = None,
-    db: Session = Depends(get_db)
-):
-    new_log = VodLog(
-        user_idx=user_index,
-        asset_idx=asset_index,
-        use_tms=use_tms if use_tms is not None else 0,
-        feedback=feedback if feedback is not None else 0
-    )
-    try:
-        db.add(new_log)
-        db.commit()
-        db.refresh(new_log)
-        return new_log
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=400, detail=str(e))
-```
+-   `database.py`:
+    -   `get_db()`: Dependency injection function to provide a database session to FastAPI routes.
+    -   `init_db()`: Initializes the database connection and creates tables (if not exists).
+-   `firebase.py`:
+    -   `init_firebase()`: Initializes the Firebase Admin SDK.
+-   `firebase_auth.py`:
+    -   `verify_firebase_token()`: A dependency function used by API routes to validate Firebase ID tokens from incoming requests.
+-   `search_engine.py`: (If implemented) Contains the core logic for the search engine.
+-   `services/recommendation.py`: (If implemented) Contains the business logic for advanced recommendation algorithms, separate from the API routing.
 
-## recommendations.py
+## 3. Guidelines for Development
 
-```python
-from fastapi import APIRouter, Depends, HTTPException
-from server.core.database import get_db
-from sqlalchemy.orm import Session
-import logging
-import random
+When adding new features or modifying existing ones in the `server` directory, please follow these guidelines:
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+1.  **API Routes:**
+    *   New API endpoints should be defined in a dedicated file within `server/api/routes/` based on their domain (e.g., `new_feature.py`).
+    *   Ensure proper Pydantic schemas are defined in `server/api/schemas/` for all request bodies and response models to ensure data validation.
+    *   Use `Depends(get_db)` to obtain a database session within your route functions for database interactions.
+    *   For authenticated routes, use `Depends(verify_firebase_token)` to ensure the user is authenticated and authorized.
 
-# 더미 데이터 설정
-DUMMY_MOVIES = [
-    {
-        "idx": i,
-        "asset_nm": f"영화 제목 {i}",
-        "poster_path": f"https://picsum.photos/300/450?random={i}",
-        "genre": "액션/드라마"
-    } for i in range(1, 11)
-]
+2.  **Database Interactions:**
+    *   All database table definitions should reside in `server/models/`.
+    *   Use SQLAlchemy ORM for all database operations. Avoid raw SQL queries unless absolutely necessary and justified.
+    *   Ensure proper error handling (`try-except-finally` with `db.rollback()` on exceptions) in database-interacting code.
 
-router = APIRouter(prefix="/recommendations", tags=["recommendations"])
+3.  **Business Logic:**
+    *   Complex business logic (e.g., recommendation algorithms, data processing) should be encapsulated in service modules within `server/core/services/` or `server/recommender/`, rather than directly in API route functions. This promotes reusability and testability.
 
-# 레거시 추천 라우트는 server/api/routes/recommendation_test.py로 이전되었습니다.
-# /recommendations/top, /recommendations/emotion, /recommendations/recent 엔드포인트는
-# /recommendation/top, /recommendation/emotion, /recommendation/recent로 대체되었습니다.
-```
+4.  **Configuration:**
+    *   All sensitive information and environment-specific settings should be managed in `server/config/settings.py` or using environment variables.
 
-## __init__.py
+5.  **Firebase Integration:**
+    *   Firebase initialization is handled in `server/core/firebase.py`. Avoid re-initializing Firebase elsewhere.
+    *   For backend Firebase authentication, use the `verify_firebase_token` dependency.
 
-```python
-# The file is empty
-```
+6.  **Testing:**
+    *   Write unit and integration tests for new features and bug fixes in the `server/tests/` directory to ensure code quality and prevent regressions.
+
+By adhering to this structure and guidelines, we can maintain a clean, scalable, and understandable backend codebase.

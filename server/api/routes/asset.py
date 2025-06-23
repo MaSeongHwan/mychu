@@ -7,7 +7,6 @@ from server.models.asset import Asset
 from server.api.schemas.asset import AssetOut
 
 router = APIRouter(
-    prefix="/assets",
     tags=["assets"]
 )
 

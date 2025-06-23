@@ -33,12 +33,25 @@ def main_search_assets(db=None, query: str = "", limit: int = 10):
     # 표시에 필요한 상세 정보를 포함한 딕셔너리 목록 반환
     return [
         {
-            "asset_idx": asset.idx,
-            "asset_nm": asset.super_asset_nm,
+            "idx": asset.idx,
+            "full_asset_id": asset.full_asset_id,
+            "unique_asset_id": asset.unique_asset_id,
+            "asset_nm": asset.asset_nm,
+            "super_asset_nm": asset.super_asset_nm,
+            "actr_disp": asset.actr_disp,
             "genre": asset.genre,
-            "release_year": asset.rlse_year,
-            "poster_path": asset.poster_path if hasattr(asset, "poster_path") else None,
-            "is_movie": asset.is_movie
+            "degree": asset.degree,
+            "asset_time": asset.asset_time,
+            "rlse_year": asset.rlse_year,
+            "smry": asset.smry,
+            "epsd_no": asset.epsd_no,
+            "is_adult": asset.is_adult,
+            "is_movie": asset.is_movie,
+            "is_drama": asset.is_drama,
+            "is_main": asset.is_main,
+            "keyword": asset.keyword,
+            "poster_path": asset.poster_path,
+            "smry_shrt": getattr(asset, "smry_shrt", None)
         } for asset in results
     ]
 
@@ -60,13 +73,25 @@ def is_adult_search_assets(db=None, query: str = "", limit: int = 10):
     # 표시에 필요한 상세 정보를 포함한 딕셔너리 목록 반환
     return [
         {
-            "asset_idx": asset.idx,
-            "asset_nm": asset.super_asset_nm,
+            "idx": asset.idx,
+            "full_asset_id": asset.full_asset_id,
+            "unique_asset_id": asset.unique_asset_id,
+            "asset_nm": asset.asset_nm,
+            "super_asset_nm": asset.super_asset_nm,
+            "actr_disp": asset.actr_disp,
             "genre": asset.genre,
-            "release_year": asset.rlse_year,
-            "poster_path": asset.poster_path if hasattr(asset, "poster_path") else None,
+            "degree": asset.degree,
+            "asset_time": asset.asset_time,
+            "rlse_year": asset.rlse_year,
+            "smry": asset.smry,
+            "epsd_no": asset.epsd_no,
+            "is_adult": asset.is_adult,
             "is_movie": asset.is_movie,
-            "is_adult": asset.is_adult
+            "is_drama": asset.is_drama,
+            "is_main": asset.is_main,
+            "keyword": asset.keyword,
+            "poster_path": asset.poster_path,
+            "smry_shrt": getattr(asset, "smry_shrt", None)
         } for asset in results
     ]
 
@@ -120,12 +145,24 @@ def advanced_search_assets(db=None, query: str = "", limit: int = 10,
     # 표시에 필요한 상세 정보를 포함한 딕셔너리 목록 반환
     return [
         {
-            "asset_idx": asset.idx,
-            "asset_nm": asset.super_asset_nm,
+            "idx": asset.idx,
+            "full_asset_id": asset.full_asset_id,
+            "unique_asset_id": asset.unique_asset_id,
+            "asset_nm": asset.asset_nm,
+            "super_asset_nm": asset.super_asset_nm,
+            "actr_disp": asset.actr_disp,
             "genre": asset.genre,
-            "release_year": asset.rlse_year,
-            "poster_path": asset.poster_path if hasattr(asset, "poster_path") else None,
+            "degree": asset.degree,
+            "asset_time": asset.asset_time,
+            "rlse_year": asset.rlse_year,
+            "smry": asset.smry,
+            "epsd_no": asset.epsd_no,
+            "is_adult": asset.is_adult,
             "is_movie": asset.is_movie,
-            "is_adult": asset.is_adult
+            "is_drama": asset.is_drama,
+            "is_main": asset.is_main,
+            "keyword": asset.keyword,
+            "poster_path": asset.poster_path,
+            "smry_shrt": getattr(asset, "smry_shrt", None)
         } for asset in results
     ]

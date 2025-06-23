@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>콘텐츠 상세 페이지</title>
+  <link rel="stylesheet" href="/src/styles/contents.css" />
+  <script type="module">
+    import { loadHeader } from '/components/loadHeader.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      loadHeader();
+    });
+  </script>
+</head>
+<body>
+  <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
+  
+  <main class="main-content">
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-gradient"></div>
+      <div class="container hero-content">
+        <div class="hero-poster">
+          <div class="poster-container">
+            <img id="poster-img" class="poster-image" alt="콘텐츠 포스터" />
+            <div class="poster-glow"></div>
+          </div>
+        </div>
+        <div class="hero-info">
+          <div class="content-meta">
+            <span class="meta-badge" id="year">2023</span>
+            <span class="meta-badge" id="time">00분</span>
+            <span class="meta-badge genre" id="genre">장르</span>
+          </div>
+          <h1 class="content-title" id="title">제목</h1>
+          <div class="emotion-tags">
+            <div class="emotion-tag heart">설렘</div>
+            <div class="emotion-tag mystery">로맨틱</div>
+            <div class="emotion-tag time">시간여행</div>
+            <div class="emotion-tag tear">감동</div>
+          </div>
+          <p class="content-synopsis" id="summary">줄거리</p>
+
+          <div class="cast-section">
+            <h3 class="cast-title">주요 출연</h3>
+            <div class="cast-list" id="cast-list"></div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="play-button">▶ 재생하기</button>
+            <button class="action-button">♡ 찜하기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 관련 상품 섹션 -->
+    <div class="container">
+      <section class="related-products">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            헬로 렌탈 추천 상품
+          </h2>
+          <!-- <p class="section-subtitle">영화 속 아이템과 굿즈를 만나보세요</p> -->
+        </div>
+        <!-- 슬라이더 컨테이너 -->
+        <div class="products-slider">
+          <!-- 이전/다음 버튼 -->
+          <button class="slider-btn prev-btn" onclick="slideProducts('prev')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          <button class="slider-btn next-btn" onclick="slideProducts('next')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+          <!-- 상품 그리드 (슬라이드 가능) -->
+          <div class="products-track">
+            <!-- 상품 1 -->
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://rentalcdn.lghellovision.net/uploads/product/leuAp9tIaY.png" alt="인버터에어컨">
+                <div class="product-overlay">
+                  <button class="quick-view-btn">빠른 보기</button>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-vendor">LG</div>
+                <h3 class="product-name">휘센 위너 인버터에어컨 18+6평(1개월 무료)</h3>
+                <div class="product-price">
+                  <span class="final-price">37,900원</span>
+                </div>
+                <div class="product-tags">
+                  <span class="product-tag">슈퍼딜특가</span>
+                  <span class="product-tag">3일배송</span>
+                </div>
+              </div>
+            </div>
+            <!-- 상품 2 -->
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://rentalcdn.lghellovision.net/uploads/product/mEHz0zfMRt.png" alt="세탁기">
+                <div class="product-badge new"></div>
+                <div class="product-overlay">
+                  <button class="quick-view-btn">빠른 보기</button>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-vendor">삼성</div>
+                <h3 class="product-name">BESPOKE 그랑데 세탁기 AI</h3>
+                <div class="product-price">
+                  <span class="final-price">39,900원</span>
+                </div>
+                <div class="product-tags">
+                  <span class="product-tag">핫딜</span>
+                </div>
+              </div>
+            </div>
+            <!-- 상품 3 -->
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://rentalcdn.lghellovision.net/uploads/product/WkDt3EHq33.png" alt="제습기">
+                <!-- <div class="product-badge sale">특가</div> -->
+                <div class="product-overlay">
+                  <button class="quick-view-btn">빠른 보기</button>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-vendor">LG</div>
+                <h3 class="product-name">휘센 오브제컬렉션 제습기 23L</h3>
+                <div class="product-price">
+                  <span class="final-price">3,900원</span>
+                </div>
+                <div class="product-tags">
+                  <span class="product-tag">빠른 배송</span>
+                </div>
+              </div>
+            </div>
+            <!-- 상품 4 -->
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/280x280" alt="OST 앨범">
+                <div class="product-overlay">
+                  <button class="quick-view-btn">빠른 보기</button>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-vendor">뮤직스토어</div>
+                <h3 class="product-name">상견니 OST 앨범 </h3>
+                <div class="product-price">
+                  <span class="final-price">28,000원</span>
+                </div>
+                <div class="product-tags">
+                  <span class="product-tag">예약판매</span>
+                </div>
+              </div>
+            </div>
+            <!-- 상품 5 -->
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/280x280" alt="맥북">
+                <div class="product-badge new">신상</div>
+                <div class="product-overlay">
+                  <button class="quick-view-btn">빠른 보기</button>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="product-vendor">드라마굿즈</div>
+                <h3 class="product-name">카일이의 맥북</h3>
+                <div class="product-price">
+                  <span class="final-price">1,000,000,000원</span>
+                </div>
+                <div class="product-tags">
+                  <span class="product-tag">한정판</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 슬라이더 인디케이터 -->
+          <div class="slider-indicators">
+            <span class="indicator active" onclick="goToSlide(0)"></span>
+            <span class="indicator" onclick="goToSlide(1)"></span>
+            <span class="indicator" onclick="goToSlide(2)"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- 비슷한 콘텐츠 추천 슬라이드 -->
+    <div class="container">
+      <section class="related-products" id="similar-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            비슷한 콘텐츠 추천
+          </h2>
+        </div>
+        <div class="products-slider" id="similar-slider">
+          <button class="slider-btn prev-btn" id="similar-prev-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          <button class="slider-btn next-btn" id="similar-next-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+          <div class="products-track" id="similar-track">
+            <!-- JS로 포스터 이미지 카드가 들어감 -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <!-- 헤더 로딩 및 검색 설정 -->
+  <script type="module" src="/src/init.js"></script>
+  
+  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
+  <script type="module" src="/src/main.js"></script> 
+   
+  <script defer>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const contentId = urlParams.get("id");
+
+    if (!contentId) return;
+
+    try {
+      const res = await fetch(`${window.location.origin}/assets/${contentId}`);
+      const data = await res.json();
+
+      document.getElementById("poster-img").src = data.poster_path;
+      document.getElementById("title").innerText = data.asset_nm;
+      document.getElementById("genre").innerText = data.genre;
+      document.getElementById("year").innerText = data.rlse_year;
+      document.getElementById("time").innerText = `${Math.floor(data.asset_time / 60)}분`;
+      document.getElementById("summary").innerText = data.smry;
+
+      const castList = data.actr_disp ? data.actr_disp.split(",") : [];
+      const castContainer = document.getElementById("cast-list");
+      castContainer.innerHTML = "";
+      castList.forEach(actor => {
+        const el = document.createElement("div");
+        el.className = "cast-item";
+        el.innerText = actor.trim();
+        castContainer.appendChild(el);
+      });
+    } catch (err) {
+      console.error("Failed to fetch content info", err);ㄴ
+    }
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // 비슷한 콘텐츠 더미 세로 포스터 이미지 (예시)
+  const similarPosters = [
+    "https://media.themoviedb.org/t/p/w440_and_h660_face/uRzJaOysinMti88BGuu8m8shVCp.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/kHosEyMUhgrAKu3TsuBIepP5vCN.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/7PPMBnoylG1eKv2WOQ3FVjgoaUO.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/2YxlQvaUNkVVitAOhnmZ4xgD8SS.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/3G1gdQ9VYEjnWNRX5J8vtDRWJCs.jpg",
+    "https://media.themoviedb.org/t/p/w188_and_h282_bestv2/xSwQTkFErWexFMyPwBeFG65xkEt.jpg"
+  ];
+
+  const track = document.getElementById("similar-track");
+  const prevBtn = document.getElementById("similar-prev-btn");
+  const nextBtn = document.getElementById("similar-next-btn");
+
+  // 카드 렌더링 (세로 포스터만)
+  similarPosters.forEach(src => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.style.minWidth = "200px";
+    card.style.maxWidth = "200px";
+    card.style.padding = "0";
+    card.style.display = "flex";
+    card.style.flexDirection = "column";
+    card.style.alignItems = "center";
+    card.style.justifyContent = "center";
+    card.style.background = "#1f2937";
+    card.style.border = "1px solid #374151";
+    card.style.borderRadius = "1rem";
+    card.style.overflow = "hidden";
+    card.style.boxSizing = "border-box";
+    const imgDiv = document.createElement("div");
+    imgDiv.className = "product-image";
+    imgDiv.style.width = "100%";
+    imgDiv.style.height = "300px";
+    imgDiv.style.aspectRatio = "2/3";
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = "비슷한 콘텐츠 포스터";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    imgDiv.appendChild(img);
+    card.appendChild(imgDiv);
+    track.appendChild(card);
+  });
+
+  // 슬라이드 로직
+  let currentSlide = 0;
+  const cardsPerView = window.innerWidth <= 768 ? 1 : 3;
+  const totalCards = similarPosters.length;
+  const maxSlides = Math.ceil(totalCards / cardsPerView) - 1;
+
+  function updateSlide() {
+    const cardWidth = 200 + 24; // 카드 너비 + gap
+    const translateX = -currentSlide * cardWidth * cardsPerView;
+    track.style.transform = `translateX(${translateX}px)`;
+  }
+
+  prevBtn.addEventListener("click", function() {
+    currentSlide = currentSlide <= 0 ? maxSlides : currentSlide - 1;
+    updateSlide();
+  });
+
+  nextBtn.addEventListener("click", function() {
+    currentSlide = currentSlide >= maxSlides ? 0 : currentSlide + 1;
+    updateSlide();
+  });
+
+  // 반응형 대응
+  window.addEventListener("resize", function() {
+    updateSlide();
+  });
+});
+</script>
+</body>
+</html>

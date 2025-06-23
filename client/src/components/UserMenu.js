@@ -29,7 +29,7 @@ export function setupLogout() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       // 로그아웃 로직 추가 가능
-      window.location.href = '/login.html';
+      window.location.href = '/login';
     });
   }
 }

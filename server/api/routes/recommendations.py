@@ -10,7 +10,6 @@ from server.models.asset import Asset
 from server.api.schemas.recommendation import RecommendationResponse, RecommendationItem
 
 router = APIRouter(
-    prefix="/recommendation",
     tags=["recommendation"]
 )
 

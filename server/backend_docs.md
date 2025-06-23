@@ -34,6 +34,19 @@
   ```
 - 기존 파일들은 `server/routes_backup_docs.md`에 참조용으로 보관됨
 
+### 라우트 추가 내역 (2025-06-20)
+- 하이브리드 추천 시스템 API 추가: `server/api/routes/recommendation_hybrid.py`
+- 모델 로더 모듈 추가: `server/core/services/recommendation_loader.py`
+- 콘텐츠 추천 서비스 활용: `server/core/services/contents_recommendation.py`
+- 라우터 import 경로 추가:
+  ```python
+  from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
+  ```
+- 라우터 등록:
+  ```python
+  app.include_router(rec_hybrid_router, prefix="", tags=["recommendation-hybrid"])
+  ```
+
 ## 2. 코어 모듈 (core/)
 
 ### database.py
@@ -50,6 +63,22 @@
 ### search_engine.py
 - 컨텐츠 검색 기능 구현
 - 검색 인덱싱 및 쿼리 처리
+
+### recommendation_loader.py
+- ML 모델, 벡터, 인코더 및 매핑 불러오기
+- 사전 훈련된 모델을 API와 통합
+- `recommender_assets` 디렉토리의 모델 파일 관리
+  - hybrid_vectors(genre_emotion_smry).npy
+  - tfidf_vectorizer_smry.pkl
+  - onehot_encoder_genre.pkl
+  - emotion_dict_nrc.pkl
+  - content_mapping.pkl (필요시)
+
+### contents_recommendation.py
+- 콘텐츠 기반 및 하이브리드 추천 로직
+- k-최근접 이웃(KNN) 알고리즘 구현
+- 코사인 유사도 기반 콘텐츠 매칭
+- 필터링 기능 (성인 콘텐츠, 메인 콘텐츠 등)
 
 ## 3. 모델 (models/)
 
@@ -120,6 +149,17 @@
 - 레거시 코드를 API 라우터만 남기고 내부 구현은 제거
 - 새 엔드포인트로의 마이그레이션 안내 주석 포함
 
+### recommendation_hybrid.py
+- 하이브리드 추천 알고리즘 API 구현
+- 주요 엔드포인트:
+  - `/recommendation/similar/{asset_idx}`: 특정 콘텐츠와 유사한 콘텐츠 추천
+    - 장르, 감정, 줄거리 특성을 결합한 하이브리드 벡터 활용
+    - 코사인 유사도 기반 순위 결정
+    - 성인 콘텐츠 필터링 옵션 제공
+  - `/recommendation/hybrid/user/{user_idx}`: 사용자 맞춤 하이브리드 추천 (개발 중)
+- 응답 스키마: `SimilarContentResponse`
+  - 각 추천 항목은 `rank`, `idx`, `content_nm`, `similarity` 정보 포함
+
 ## 5. 추천 시스템 (recommender/)
 
 ### 추천 API 구조 개선
@@ -158,6 +198,27 @@
   - 후보군 스코어링 및 다양성 적용 인터페이스 구현
 - `model_inference.py`에서 ML 모델 통합 구조 마련
 
+### 하이브리드 추천 시스템 아키텍처
+- 세 가지 주요 기능 통합:
+  1. 콘텐츠 기반 필터링 (장르, 줄거리 유사도)
+  2. 감정 기반 필터링 (NRC 감정 사전 활용)
+  3. 협업 필터링 요소 (향후 구현 예정)
+  
+- 하이브리드 벡터 생성 과정:
+  1. 텍스트 전처리 및 TF-IDF 벡터화 (줄거리)
+  2. 원-핫 인코딩 (장르)
+  3. 감정 특성 추출 (NRC 감정 사전)
+  4. 특성 결합 및 차원 축소
+  
+- 유사도 계산:
+  - 코사인 유사도 기반 KNN 알고리즘
+  - 맞춤형 필터링 (성인 콘텐츠, 메인 콘텐츠 등)
+  
+- 구현 상태:
+  - 모델 학습 및 저장 완료
+  - 모델 로더 구현 완료
+  - FastAPI 라우터 연결 완료
+  - 사용자 맞춤 추천 구현 중
 
 ## 6. API 스키마 (api/schemas/)
 

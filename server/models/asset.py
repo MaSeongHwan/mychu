@@ -1,5 +1,5 @@
 # filepath: c:\Users\LG\mychu\server\models\asset.py
-from sqlalchemy import Column, Integer, String, Boolean, Text, Float, ForeignKey
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, Text, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import TIMESTAMP
 from .base import Base
@@ -12,19 +12,20 @@ class Asset(Base):
     unique_asset_id = Column(Text, nullable=False)
     asset_nm = Column(Text, nullable=False)
     super_asset_nm = Column(Text, nullable=False)
-    actr_disp = Column(Text)
-    genre = Column(Text)
-    degree = Column(Integer)
-    asset_time = Column(Integer)
-    rlse_year = Column(Integer)
-    smry = Column(Text)
+    actr_disp = Column(Text, nullable=True)
+    genre = Column(Text, nullable=True)
+    degree = Column(Integer, nullable=True)
+    asset_time = Column(Integer, nullable=True)
+    rlse_year = Column(BigInteger, nullable=True)
+    smry = Column(Text, nullable=True)
     epsd_no = Column(Integer, default=0, nullable=False)
-    is_adult = Column(Boolean, default=False)
-    is_movie = Column(Boolean, default=False)
-    is_drama = Column(Boolean, default=False)
-    is_main = Column(Boolean, default=False)
-    keyword = Column(Text)
-    poster_path = Column(Text)  # 이미지 경로 저장
+    is_adult = Column(Boolean, default=False, nullable=False)
+    is_movie = Column(Boolean, default=False, nullable=False)
+    is_drama = Column(Boolean, default=False, nullable=False)
+    is_main = Column(Boolean, default=False, nullable=False)
+    keyword = Column(Text, nullable=True)
+    poster_path = Column(Text, nullable=True)
+    smry_shrt = Column(Text, nullable=True)
     
     actors = relationship("ActorAsset", back_populates="asset")
     directors = relationship("DirectorAsset", back_populates="asset")
@@ -85,3 +86,21 @@ class TagAsset(Base):
 
     tag = relationship("Tag", back_populates="assets")
     asset = relationship("Asset", back_populates="tags")
+
+class AssetEmotion(Base):
+    __tablename__ = "asset_emotion"
+
+    idx = Column(Integer, ForeignKey("assets.idx", ondelete="CASCADE"), primary_key=True)
+    full_asset_id = Column(Text, unique=True, nullable=False)
+    emotion_anger = Column(Float, nullable=True)
+    emotion_anticipation = Column(Float, nullable=True)
+    emotion_disgust = Column(Float, nullable=True)
+    emotion_fear = Column(Float, nullable=True)
+    emotion_joy = Column(Float, nullable=True)
+    emotion_negative = Column(Float, nullable=True)
+    emotion_positive = Column(Float, nullable=True)
+    emotion_sadness = Column(Float, nullable=True)
+    emotion_surprise = Column(Float, nullable=True)
+    emotion_trust = Column(Float, nullable=True)
+
+    asset = relationship("Asset", backref="emotion", uselist=False)

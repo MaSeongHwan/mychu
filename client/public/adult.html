@@ -5,331 +5,250 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>성인관 - WellList</title>
   <link rel="stylesheet" href="../src/styles/adult.css">
+
+  <!-- 헤더 로딩 및 검색 설정 -->
+  <script type="module" src="/src/init.js"></script>
+
+  <!-- 페이지 전용 외부 스크립트 (예: 추천 콘텐츠 슬라이더) -->
+  <script type="module" src="/src/main.js"></script> 
+
+  <script type="module" src="/src/pages/mylist.js" defer></script>
+  <script type="module">
+    import { loadHeader } from '/components/loadHeader.js';
+    loadHeader();
+  </script>
+  <style>
+    .password-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .password-modal.active {
+      display: flex;
+    }
+
+    .password-container {
+      background-color: #1f2937;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      border: 1px solid #374151;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .password-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      background-color: #374151;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .password-input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+
+    .password-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #10b981;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .password-submit:hover {
+      background-color: #059669;
+    }
+
+    .password-error {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      display: none;
+    }
+
+    .password-error.empty {
+      color: #f59e0b;
+    }
+
+    .back-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background-color: #374151;
+      color: #ffffff;
+      border: 1px solid #4b5563;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      background-color: #4b5563;
+      border-color: #6b7280;
+    }
+  </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <div class="header-left">
-          <a href="/" class="logo-link">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
-          </a>
-          <nav class="main-nav">
-            <a href="main.html" class="nav-link">홈</a>
-            <a href="#" class="nav-link">영화</a>
-            <a href="#" class="nav-link">드라마</a>
-            <a href="#" class="nav-link">성인관</a>
-        
-          </nav>
-        </div>
 
-        <div class="header-right">
-          <div class="search-container">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" placeholder="콘텐츠 검색..." class="search-input">
-          </div>
-          <div class="user-menu-container">
-            <button class="icon-button user-menu-button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
-            <div class="user-dropdown">
-              <div class="dropdown-header">
-                <span class="user-name">사용자님</span>
-                <span class="user-email">user@example.com</span>
-              </div>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    내가 찜한 리스트
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="3"></circle>
-                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    설정
-                  </a>
-                </li>
-                <li class="dropdown-divider"></li>
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                      <polyline points="16 17 21 12 16 7"></polyline>
-                      <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    로그아웃
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+  <!-- 비밀번호 입력 모달 -->
+  <div class="password-modal" id="passwordModal">
+    <div class="password-container">
+      <h2 class="password-title">성인 인증</h2>
+      <input type="password" class="password-input" id="passwordInput" placeholder="비밀번호를 입력하세요" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button class="password-submit" id="passwordSubmit">확인</button>
+      <p class="password-error" id="passwordError">비밀번호가 일치하지 않습니다.</p>
+      <p class="password-error empty" id="passwordEmpty" style="display: none;">비밀번호를 입력하세요</p>
+      <a href="/main" class="back-button">뒤로가기</a>
+    </div>
+  </div>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="main-content" style="display: none;">
+    <!-- 성인관 안내 문구 -->
+    <div class="adult-notice">
+      <div class="container">
+        <div class="notice-content">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notice-icon">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="notice-text">성인관에 입장하셨습니다. 19세 이상만 이용 가능한 콘텐츠입니다.</span>
         </div>
       </div>
     </div>
-  </header>
 
-  <!-- 메인 콘텐츠 -->
-  <main class="main-content">
     <div class="container">
-      <!-- 장르 헤더 -->
-      <section class="genre-header">
-        <div class="breadcrumb">
-          <a href="/" class="breadcrumb-link">홈</a>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-          <span class="breadcrumb-current">성인관</span>
-        </div>
-        <h1 class="genre-title">성인관</h1>
-        <p class="genre-description">어린이는 가라.....</p>
-        <div class="genre-stats">
-          <span class="stats-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-              <line x1="7" y1="2" x2="7" y2="22"></line>
-              <line x1="17" y1="2" x2="17" y2="22"></line>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <line x1="2" y1="7" x2="7" y2="7"></line>
-              <line x1="2" y1="17" x2="7" y2="17"></line>
-              <line x1="17" y1="17" x2="22" y2="17"></line>
-              <line x1="17" y1="7" x2="22" y2="7"></line>
+
+      <!-- 인기작 추천 슬라이더 섹션 -->
+      <section class="content-section" id="top10-section">
+        <h2>Top10 인기작</h2>
+        <div class="slider-container">
+          <button class="slider-nav prev" id="top10-prev-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            총 n개 작품
-           </span> 
+          </button>
+          <div class="content-grid" id="top10-grid">
+            <!-- Top10 콘텐츠 아이템들 -->
+          </div>
+          <button class="slider-nav next" id="top10-next-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="loading-indicator" id="top10-loading-indicator">
+          <div class="loading-spinner"></div>
         </div>
       </section>
       
-
-      <!-- 콘텐츠 그리드 -->
+      <!-- 추천 콘텐츠 슬라이더 섹션 -->
+      <section class="content-section" id="latest-section">
+        <h2>추천 콘텐츠</h2>
+        <div class="slider-container">
+          <button class="slider-nav prev" id="latest-prev-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="content-grid" id="latest-grid">
+            <!-- 추천 콘텐츠 아이템들 -->
+          </div>
+          <button class="slider-nav next" id="latest-next-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="loading-indicator" id="latest-loading-indicator">
+          <div class="loading-spinner"></div>
+        </div>
+      </section>
+      
+      <!-- 최신 작품 그리드 -->
       <section class="content-section">
+        <h2>최신 작품</h2>
         <div class="content-grid" id="content-grid">
           <!-- 콘텐츠 아이템들 -->
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="나는 성인물" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">나는 성인물</h3>
-              <div class="item-meta">
-                <span class="item-year">2019</span>
-                <span class="item-country">한국</span> 
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="나는야 성인물" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">나는야 성인물</h3>
-              <div class="item-meta">
-                <span class="item-year">2016</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="나도 성인물" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div> 
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">나도 성인물</h3>
-              <div class="item-meta">
-                <span class="item-year">2023</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="너도 성인물?" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">너도 성인물?</h3>
-              <div class="item-meta">
-                <span class="item-year">2022</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="응나도성인물" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">응나도성인물</h3>
-              <div class="item-meta">
-                <span class="item-year">2022</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="성" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">성</h3>
-              <div class="item-meta">
-                <span class="item-year">2022</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 더 많은 콘텐츠 아이템들... -->
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="인" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">인</h3>
-              <div class="item-meta">
-                <span class="item-year">2016</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-item">
-            <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="물" class="poster-image">
-              <div class="item-overlay">
-                <button class="play-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="wishlist-btn" title="찜하기">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="item-info">
-              <h3 class="item-title">물</h3>
-              <div class="item-meta">
-                <span class="item-year">2013</span>
-                <span class="item-country">한국</span>
-              </div>
-            </div>
-          </div>
         </div>
-
-        <!-- 로딩 인디케이터 -->
         <div class="loading-indicator" id="loading-indicator">
           <div class="loading-spinner"></div>
-          <span>더 많은 콘텐츠를 불러오는 중...</span>
         </div>
       </section>
     </div>
   </main>
-
-  <script>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 WellList. All rights reserved.</p>
+      </div>
+    </div>    
+  </footer>  
+  <!-- 헤더 로딩 및 검색 설정 -->
+  <script type="module" src="/src/init.js"></script>
+  
+  <!-- 페이지 전용 외부 스크립트 (예: 최신 콘텐츠 슬라이더) -->
+  <script type="module" src="/src/main.js"></script> 
+   
+  <script type="module">
+    import { initializeUserMenu, setupLogout } from '/src/components/UserMenu.js';
+    import { initializeSearch } from '/src/components/Search.js';
+    // 테스트 추천 API를 사용하는 새 함수 임포트
+    import { initRecommendationsWithTest } from '/src/api/recommendation_test.js';
+    import { initDropdown } from '/src/components/Dropdown.js'; // Dropdown 임포트
+    
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM 로드 완료, 초기화 시작');
+      
+      // 향상된 검색 기능 초기화 - 자동완성 포함
+      initializeSearch();
+      console.log('검색 초기화 완료');
+
+      // 사용자 메뉴 초기화
+      initializeUserMenu();
+      console.log('사용자 메뉴 초기화 완료');
+
+
+      // 최신작 시스템 초기화 (테스트 API 사용)
+      initRecommendationsWithTest();
+      console.log('최신작 시스템 초기화 완료');
+
+      // 로그아웃 설정
+      setupLogout();
+      console.log('로그아웃 설정 완료');
+
+      // 성인관 페이지 전용 기능들
       // 사용자 메뉴 드롭다운 토글
       const userMenuButton = document.querySelector('.user-menu-button');
       const userDropdown = document.querySelector('.user-dropdown');
@@ -373,46 +292,138 @@
       });
 
       // 무한 스크롤 구현
-      let isLoading = false;
       let page = 1;
+      const itemsPerPage = 5;
+      let isLoading = false;
       const loadingIndicator = document.getElementById('loading-indicator');
-
-      function loadMoreContent() {
-        if (isLoading) return;
+      
+      // Top10 인기작 콘텐츠 생성
+      function generateTop10Content() {
+        const top10Grid = document.getElementById('top10-grid');
+        const top10Titles = [
+          'Top1 성인물', 'Top2 성인물', 'Top3 성인물', 'Top4 성인물', 
+          'Top5 성인물', 'Top6 성인물', 'Top7 성인물', 'Top8 성인물',
+          'Top9 성인물', 'Top10 성인물'
+        ];
         
-        isLoading = true;
-        loadingIndicator.style.display = 'flex';
-
-        // 실제로는 API 호출
-        setTimeout(() => {
-          const newItems = generateContentItems(8); // 8개씩 로드
-          newItems.forEach(item => contentGrid.appendChild(item));
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+        ];
+        
+        top10Titles.forEach((title, index) => {
+          const item = document.createElement('div');
+          item.className = 'content-item';
+          const year = 2018 + Math.floor(Math.random() * 6);
+          const imageIndex = index % imageUrls.length; // 이미지를 순환하여 사용
           
-          isLoading = false;
-          loadingIndicator.style.display = 'none';
-          page++;
-        }, 1000);
+          item.innerHTML = `
+            <div class="item-poster">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
+              <div class="item-overlay">
+                <button class="play-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
+                <button class="wishlist-btn" title="찜하기">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="item-info">
+              <h3 class="item-title">${title}</h3>
+              <div class="item-meta">
+                <span class="item-year">${year}</span>
+                <span class="item-country">한국</span>
+              </div>
+            </div>
+          `;
+          top10Grid.appendChild(item);
+        });
       }
 
+      // 추천작 콘텐츠 생성
+      function generateLatestContent() {
+        const latestGrid = document.getElementById('latest-grid');
+        const latestTitles = [
+          '추천 성인물1', '추천 성인물2', '추천 성인물3', '추천 성인물4', 
+          '추천 성인물5', '추천 성인물6', '추천 성인물7', '추천 성인물8',
+          '추천 성인물9', '추천 성인물10'
+        ];
+        
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
+        ];
+        
+        latestTitles.forEach((title, index) => {
+          const item = document.createElement('div');
+          item.className = 'content-item';
+          const year = 2020 + Math.floor(Math.random() * 4);
+          const imageIndex = index % imageUrls.length; // 이미지를 순환하여 사용
+          
+          item.innerHTML = `
+            <div class="item-poster">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
+              <div class="item-overlay">
+                <button class="play-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </button>
+                <button class="wishlist-btn" title="찜하기">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="item-info">
+              <h3 class="item-title">${title}</h3>
+              <div class="item-meta">
+                <span class="item-year">${year}</span>
+                <span class="item-country">한국</span>
+              </div>
+            </div>
+          `;
+          latestGrid.appendChild(item);
+        });
+      }
+      
       function generateContentItems(count) {
         const items = [];
         const titles = [
-          '김비서가 왜 그럴까', '호텔 델루나', '사이코지만 괜찮아', 
-          '로맨스는 별책부록', '진심이 닿다', '청춘기록', 
-          '스타트업', '런온', '나의 아저씨', '미스터 션샤인'
+          '나는 성인물', '나는 성인물2', '나는 성인물3', '나는 성인물4', 
+          '나는 성인물5', '나는 성인물6', '나는 성인물7', '나는 성인물8',
+          '나는 성인물9', '나는 성인물10', '나는 성인물11', '나는 성인물12',
+          '나는 성인물13', '나는 성인물14', '나는 성인물15', '나는 성인물16'
+        ];
+        
+        // 제공된 이미지 링크들
+        const imageUrls = [
+          'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
+          'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2sYiAxWV0vxEmDN05GqITTAg.PNG/200.png?type=w773'
         ];
         
         for (let i = 0; i < count; i++) {
           const item = document.createElement('div');
           item.className = 'content-item';
-          const title = titles[Math.floor(Math.random() * titles.length)];
+          const titleIndex = ((page - 1) * count + i) % titles.length;
+          const title = titles[titleIndex];
           const year = 2018 + Math.floor(Math.random() * 6);
-          const rating = (4.0 + Math.random() * 1.0).toFixed(1);
-          
+          const imageIndex = i % imageUrls.length; // 이미지를 순환하여 사용
           
           item.innerHTML = `
             <div class="item-poster">
-              <img src="https://via.placeholder.com/200x300" alt="${title}" class="poster-image">
+              <img src="${imageUrls[imageIndex]}" alt="${title}" class="poster-image">
               <div class="item-overlay">
                 <button class="play-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -439,10 +450,108 @@
         return items;
       }
 
-      // 스크롤 이벤트 리스너
+      // 초기 콘텐츠 로드
+      const initialItems = generateContentItems(itemsPerPage);
+      initialItems.forEach(item => contentGrid.appendChild(item));
+
+      // Top10 인기작과 최신작 콘텐츠 생성
+      generateTop10Content();
+      generateLatestContent();
+
+      // 슬라이더 화살표 버튼 기능 초기화
+      function initSliderNavigation() {
+        const sliderConfigs = [
+          { 
+            gridId: 'top10-grid', 
+            prevBtnId: 'top10-prev-btn', 
+            nextBtnId: 'top10-next-btn',
+            scrollAmount: 400
+          },
+          { 
+            gridId: 'latest-grid', 
+            prevBtnId: 'latest-prev-btn', 
+            nextBtnId: 'latest-next-btn',
+            scrollAmount: 400
+          }
+        ];
+
+        sliderConfigs.forEach(config => {
+          const grid = document.getElementById(config.gridId);
+          const prevBtn = document.getElementById(config.prevBtnId);
+          const nextBtn = document.getElementById(config.nextBtnId);
+
+          if (!grid || !prevBtn || !nextBtn) return;
+
+          // 이전 버튼 클릭 이벤트
+          prevBtn.addEventListener('click', () => {
+            grid.scrollBy({
+              left: -config.scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          // 다음 버튼 클릭 이벤트
+          nextBtn.addEventListener('click', () => {
+            grid.scrollBy({
+              left: config.scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          // 스크롤 위치에 따른 버튼 표시/숨김
+          function updateButtonVisibility() {
+            const isAtStart = grid.scrollLeft <= 0;
+            const isAtEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth;
+
+            prevBtn.style.opacity = isAtStart ? '0.3' : '0.8';
+            prevBtn.style.pointerEvents = isAtStart ? 'none' : 'auto';
+            
+            nextBtn.style.opacity = isAtEnd ? '0.3' : '0.8';
+            nextBtn.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+          }
+
+          // 초기 버튼 상태 설정
+          updateButtonVisibility();
+
+          // 스크롤 이벤트 리스너
+          grid.addEventListener('scroll', updateButtonVisibility);
+        });
+      }
+
+      // 슬라이더 네비게이션 초기화
+      initSliderNavigation();
+
+      // 성인관 안내 문구 3초 후 사라지게
+      setTimeout(() => {
+        const notice = document.querySelector('.adult-notice');
+        if (notice) {
+          notice.style.opacity = '0';
+          notice.style.transition = 'opacity 0.5s';
+          setTimeout(() => {
+            notice.style.display = 'none';
+          }, 3000);
+        }
+      }, 500);
+
+      // 스크롤 이벤트 처리
       window.addEventListener('scroll', function() {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
-          loadMoreContent();
+        if (isLoading) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        
+        if (scrollTop + clientHeight >= scrollHeight - 100) {
+          isLoading = true;
+          loadingIndicator.style.display = 'flex';
+          
+          // 새로운 콘텐츠 로드 시뮬레이션
+          setTimeout(() => {
+            page++;
+            const newItems = generateContentItems(itemsPerPage);
+            newItems.forEach(item => contentGrid.appendChild(item));
+            
+            isLoading = false;
+            loadingIndicator.style.display = 'none';
+          }, 1000);
         }
       });
 
@@ -478,5 +587,84 @@
       });
     });
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const passwordModal = document.getElementById('passwordModal');
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordSubmit = document.getElementById('passwordSubmit');
+      const passwordError = document.getElementById('passwordError');
+      const passwordEmpty = document.getElementById('passwordEmpty');
+      const mainContent = document.querySelector('.main-content');
+
+      // 모달 표시
+      passwordModal.classList.add('active');
+
+      // 비밀번호 확인
+      passwordSubmit.addEventListener('click', () => {
+        const password = passwordInput.value;
+        passwordError.style.display = 'none';
+        passwordEmpty.style.display = 'none';
+
+        if (!password) {
+          passwordEmpty.style.display = 'block';
+          return;
+        }
+
+        if (password === '0000') {
+          passwordModal.classList.remove('active');
+          mainContent.style.display = 'block';
+          // 세션 스토리지에 인증 상태 저장
+          sessionStorage.setItem('adultAuth', 'true');
+          
+          // 성인관 모드 활성화
+          activateAdultMode();
+        } else {
+          passwordError.style.display = 'block';
+          passwordInput.value = '';
+        }
+      });
+
+      // Enter 키로도 제출 가능
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          passwordSubmit.click();
+        }
+      });
+
+      // 이미 인증된 경우 모달 숨기기
+      if (sessionStorage.getItem('adultAuth') === 'true') {
+        passwordModal.classList.remove('active');
+        mainContent.style.display = 'block';
+        
+        // 성인관 모드 활성화
+        activateAdultMode();
+      }
+    });
+
+    // 성인관 모드 활성화 함수
+    function activateAdultMode() {
+      // 헤더에 성인관 모드 클래스 추가
+      const header = document.querySelector('.header');
+      if (header) {
+        header.classList.add('adult-mode');
+      }
+      
+      // 페이지 제목 변경
+      document.title = '성인관 - WellList (19+)';
+      
+      // 메타 태그에 성인 콘텐츠 표시
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        const meta = document.createElement('meta');
+        meta.name = 'description';
+        meta.content = '19세 이상만 이용 가능한 성인 콘텐츠';
+        document.head.appendChild(meta);
+      }
+    }
+  </script>
 </body>
 </html>
+
+  <!-- 공통 헤더 및 초기화 스크립트 -->
+  <script type="module" src="/src/init.js"></script>

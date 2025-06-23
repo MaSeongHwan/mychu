@@ -33,8 +33,8 @@
 | tags | 태그 정보 |
 | tagasset | 태그-콘텐츠 연결 정보 |
 
-### 로그 및 추천 도메인 (Log)
-VOD 시청 로그, 추천 결과, 사용자-콘텐츠 상호작용
+### 상품/키워드 도메인 (Product/Keyword)
+제품 정보 및 제품-키워드 상호작용
 
 | 테이블 이름 | 설명 |
 |------------|------|
@@ -49,29 +49,40 @@ server/
 │   ├── routes/              # API 엔드포인트 정의
 │   │   ├── user.py          # 회원가입, 로그인, 정보조회
 │   │   ├── asset.py         # 콘텐츠 관련 조회
-│   │   ├── recommend.py     # 추천 결과 제공
-│   │   └── log.py           # 로그 관련 API
+│   │   ├── recommendation_test.py # 추천 테스트 관련 라우터
+│   │   ├── recommendations.py # 추천 결과 제공
+│   │   ├── search.py        # 검색 관련 API
 │   └── schemas/             # API 요청/응답 데이터 구조
 │       ├── user.py          # 사용자 관련 스키마
 │       ├── asset.py         # 콘텐츠 관련 스키마
-│       └── log.py           # 로그 관련 스키마
+│       ├── recommendation.py# 추천 관련 스키마
+│       ├── search.py        # 검색 관련 스키마
 ├── config/                  # 설정 관련 모듈
 │   └── settings.py          # .env 기반 환경변수 관리
 ├── core/                    # 핵심 기능 모듈
 │   ├── database.py          # SQLAlchemy, 세션 관리
 │   ├── firebase_auth.py     # Firebase 로그인 연동
-│   └── utils.py             # 해시 함수, 타임스탬프 등 공통 유틸
+│   ├── firebase_config.py   # Firebase 구성 초기화
+│   ├── firebase.py          # Firebase Admin SDK 관련
+│   ├── search_engine.py     # 검색 엔진 인터페이스
+│   ├── services/            # 서비스 계층
+│   │   └── recommendation.py# 추천 로직 서비스
+│   ├── utils/               # 유틸리티 함수
+│   │   └── crypto.py        # 암호화 유틸
+│   └── utils.py             # 일반 유틸
 ├── models/                  # 데이터베이스 모델 정의
 │   ├── user.py              # 사용자 관련 모델 (users, user_log 등)
 │   ├── asset.py             # 콘텐츠 관련 모델 (assets, actor 등)
-│   ├── log.py               # 로그 관련 모델 (vod_log, my_list 등)
+│   ├── log.py               # 제품/키워드 관련 모델 (product, productkeyword)
 │   ├── base.py              # BaseModel (SQLAlchemy 상속)
 │   └── __init__.py          # 모델 패키지 초기화
 ├── recommender/             # 추천 시스템 모듈
+│   ├── model_inference.py   # 추천 모델 호출 (TF, torch 등)
 │   ├── slate_generator.py   # Slate 기반 추천 목록 생성
-│   └── model_inference.py   # 추천 모델 호출 (TF, torch 등)
+│   ├── search_example.ipynb # 검색 예제 노트북
+│   └── search_widgets.py    # 검색 위젯 관련
 ├── main.py                  # FastAPI 진입점
-└── schemas.py               # 전역 스키마 정의
+└── schemas.py               # (레거시) 전역 스키마 정의 (점진적 제거 필요)
 ```
 
 ## 3. 주요 모듈 역할
@@ -83,25 +94,26 @@ server/
 | api/routes/ | API 엔드포인트 및 비즈니스 로직 | FastAPI |
 | config/ | 환경 설정 및 상수 관리 | python-dotenv |
 | core/ | 핵심 기능 및 유틸리티 | - |
-| recommender/ | 추천 알고리즘 및 추천 결과 생성 | scikit-learn, numpy |
+| recommender/ | 추천 알고리즘 및 추천 결과 생성 | scikit-learn, numpy (예시) |
 
 ## 4. API 구조
 
-### 사용자 API (/users)
-- `GET /users/` - 사용자 목록 조회
-- `GET /users/{user_id}` - 특정 사용자 정보 조회
-- `POST /users/auth/register` - 회원 가입
-- `GET /users/auth/me` - 현재 로그인한 사용자 정보 조회
+### 사용자 API (`/users`)
+-   `GET /users/` - 사용자 목록 조회
+-   `GET /users/{user_id}` - 특정 사용자 정보 조회
+-   `POST /users/auth/register` - 회원 가입
+-   `GET /users/auth/me` - 현재 로그인한 사용자 정보 조회
 
-### 콘텐츠 API (/assets)
-- `GET /assets/` - 콘텐츠 목록 조회
-- `GET /assets/{asset_id}` - 특정 콘텐츠 정보 조회
-- `GET /assets/search` - 콘텐츠 검색
+### 콘텐츠 API (`/assets`)
+-   `GET /assets/` - 콘텐츠 목록 조회
+-   `GET /assets/{asset_id}` - 특정 콘텐츠 정보 조회
 
-### 추천 API (/recommendations)
-- `GET /recommendations/` - 사용자 맞춤 추천 목록 제공
-- `GET /recommendations/similar/{item_id}` - 유사 콘텐츠 추천
+### 검색 API (`/search`)
+-   `GET /search/` - 콘텐츠 검색
 
-### 로그 API (/logs)
-- `POST /logs/view` - 시청 로그 저장
-- `POST /logs/action` - 사용자 활동 로그 저장
+### 추천 API (`/recommendations` 및 `/recommendation_test`)
+-   `GET /recommendations/` - 사용자 맞춤 추천 목록 제공
+-   `GET /recommendations/top` - 인기 콘텐츠 추천 목록 제공
+-   `GET /recommendations/emotion` - 감정 기반 추천 목록 제공
+-   `GET /recommendations/recent` - 최신 콘텐츠 추천 목록 제공
+-   `GET /recommendation_test/test` - 추천 테스트 엔드포인트

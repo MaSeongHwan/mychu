@@ -56,15 +56,6 @@ def fix_user_idx_sequence(db: Session):
         logger.error(f"❌ 시퀀스 보정 실패: {e}")
 
 # ------------------------ 기본 User API ------------------------
-
-@router.post("/", response_model=UserSchema)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = UserModel(**user.dict())
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
 @router.get("/{user_id}", response_model=UserSchema)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.user_idx == user_id).first()

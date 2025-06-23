@@ -1,83 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>  <meta charset="UTF-8">
+<head>  
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마이페이지 - WellList</title>
   <link rel="stylesheet" href="/src/styles/mylist.css">
-  <script type="module" src="/src/pages/mylist.js" defer> </script>
+  <script type="module" src="/src/init.js"></script>
+  <script type="module" src="/src/pages/mylist.js" defer></script>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <div class="header-left">
-          <a href="/" class="logo-link">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
-          </a>
-          <nav class="main-nav">
-            <a href="/" class="nav-link">홈</a>
-            <a href="#" class="nav-link">영화</a>
-            <a href="#" class="nav-link">드라마</a>
-            <a href="#" class="nav-link">성인관</a>
-          </nav>
-        </div>
-
-        <div class="header-right">
-          <div class="search-container">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" placeholder="콘텐츠 검색..." class="search-input">
-          </div>
-          <div class="user-menu-container">
-            <button class="icon-button user-menu-button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
-            <div class="user-dropdown">
-              <div class="dropdown-header">                
-                <span class="user-name">로딩중...</span>
-              </div>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    내가 찜한 리스트
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="3"></circle>
-                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    설정
-                  </a>
-                </li>
-                <li class="dropdown-divider"></li>
-                <li>
-                  <a href="#" class="dropdown-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                      <polyline points="16 17 21 12 16 7"></polyline>
-                      <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    로그아웃
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
 
   <!-- Main Content -->
   <main class="main-content">
@@ -92,219 +24,60 @@
             </svg>
           </div>
           <div class="profile-info">            
-            <h1 class="profile-name">로딩중...</h1>
-            <p class="profile-join-date">가입일: 로딩중...</p>
-          </div>
-        </div>
-        <div class="profile-stats">
-          <div class="stat-item">
-            <span class="stat-number">24</span>
-            <span class="stat-label">찜한 콘텐츠</span>
+            <h1 class="profile-name"></h1>
+            <p class="profile-join-date"></p>
           </div>
         </div>
       </div>
 
       <!-- 탭 네비게이션 -->
       <div class="tab-navigation">
-        <button class="tab-button active" data-tab="wishlist">
+        <button class="tab-button active" data-tab="watch-history">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12,6 12,12 16,14"></polyline>
+          </svg>
+          시청 기록
+        </button>
+        <button class="tab-button" data-tab="wishlist">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
-          내가 찜한 콘텐츠
+          내가 찜한 콘텐츠 <span class="tab-badge" id="wishlistTabBadge">0개</span>
+        </button>
+        <button class="tab-button" data-tab="purchased">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          구매한 상품 <span class="tab-badge" id="purchasedTabBadge">0개</span>
         </button>
       </div>
 
-      <!-- 찜한 콘텐츠 탭 -->
-      <div class="tab-content active" id="wishlist">
+      <!-- 시청 기록 탭 -->
+      <div class="tab-content active" id="watch-history">
         <div class="content-section">
-          <div class="section-header">
-            <h2 class="section-title">내가 찜한 콘텐츠</h2>
-            <div class="section-controls">
-              <select class="sort-select">
-                <option value="recent">최근 추가순</option>
-                <option value="name">제목순</option>
-                <option value="rating">평점순</option>
-              </select>
-              <div class="view-toggle">
-                <button class="view-btn active" data-view="grid">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg>
-                </button>
-                <button class="view-btn" data-view="list">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
+          <div class="content-grid grid-view" id="watchHistoryGrid">
+            <!-- JS에서 동적으로 시청 기록 렌더링 -->
           </div>
+        </div>
+      </div>
 
-          <div class="content-grid" id="wishlistGrid">
-            <!-- 찜한 콘텐츠 아이템들 -->
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="더 글로리" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">더 글로리</h3>
-                <div class="item-meta">
-                  <span class="item-genre">드라마</span>
-                </div>
-                <p class="item-added-date">2024.03.15 추가</p>
-              </div>
-            </div>
+      <!-- 찜한 콘텐츠 탭 -->
+      <div class="tab-content" id="wishlist">
+        <div class="content-section">
+          <div class="content-grid grid-view" id="wishlistGrid">
+            <!-- JS에서 동적으로 찜한 콘텐츠 렌더링 -->
+          </div>
+        </div>
+      </div>
 
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="오징어 게임" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">오징어 게임</h3>
-                <div class="item-meta">
-                  <span class="item-genre">스릴러</span>
-                </div>
-                <p class="item-added-date">2024.03.10 추가</p>
-              </div>
-            </div>
-
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="킹덤" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">킹덤</h3>
-                <div class="item-meta">
-                  <span class="item-genre">호러</span>
-                </div>
-                <p class="item-added-date">2024.03.05 추가</p>
-              </div>
-            </div>
-
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="사랑의 불시착" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">사랑의 불시착</h3>
-                <div class="item-meta">
-                  <span class="item-genre">로맨스</span>
-                </div>
-                <p class="item-added-date">2024.02.28 추가</p>
-              </div>
-            </div>
-
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="이태원 클라쓰" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">이태원 클라쓰</h3>
-                <div class="item-meta">
-                  <span class="item-genre">드라마</span>
-                </div>
-                <p class="item-added-date">2024.02.20 추가</p>
-              </div>
-            </div>
-
-            <div class="content-item">
-              <div class="item-poster">
-                <img src="https://via.placeholder.com/200x300" alt="스위트홈" class="poster-image">
-                <div class="item-overlay">
-                  <button class="play-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </button>
-                  <button class="remove-btn" title="찜 해제">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="item-info">
-                <h3 class="item-title">스위트홈</h3>
-                <div class="item-meta">
-                  <span class="item-genre">호러</span>
-                </div>
-                <p class="item-added-date">2024.02.15 추가</p>
-              </div>
-            </div>
+      <!-- 구매한 상품 탭 -->
+      <div class="tab-content" id="purchased">
+        <div class="content-section">
+          <div class="content-grid grid-view" id="purchasedGrid">
+            <!-- JS에서 동적으로 구매한 상품 렌더링 -->
           </div>
         </div>
       </div>
@@ -312,146 +85,6 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 탭 전환 기능
-      const tabButtons = document.querySelectorAll('.tab-button');
-      const tabContents = document.querySelectorAll('.tab-content');
-
-      tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const targetTab = this.getAttribute('data-tab');
-          
-          // 모든 탭 버튼과 콘텐츠에서 active 클래스 제거
-          tabButtons.forEach(btn => btn.classList.remove('active'));
-          tabContents.forEach(content => content.classList.remove('active'));
-          
-          // 클릭된 탭 버튼과 해당 콘텐츠에 active 클래스 추가
-          this.classList.add('active');
-          document.getElementById(targetTab).classList.add('active');
-        });
-      });
-
-      // 뷰 전환 기능 (그리드/리스트)
-      const viewButtons = document.querySelectorAll('.view-btn');
-      const contentGrids = document.querySelectorAll('.content-grid');
-
-      viewButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const viewType = this.getAttribute('data-view');
-          const parentSection = this.closest('.content-section');
-          const viewToggle = parentSection.querySelector('.view-toggle');
-          const grid = parentSection.querySelector('.content-grid');
-          
-          // 같은 섹션 내의 뷰 버튼들에서 active 클래스 제거
-          viewToggle.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-          
-          // 클릭된 버튼에 active 클래스 추가
-          this.classList.add('active');
-          
-          // 그리드에 뷰 타입 클래스 적용
-          grid.className = `content-grid ${viewType}-view`;
-        });
-      });
-
-      // 찜 해제 기능
-      const removeButtons = document.querySelectorAll('.remove-btn');
-      removeButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const item = this.closest('.content-item');
-          const title = item.querySelector('.item-title').textContent;
-          
-          if (confirm(`"${title}"을(를) 찜 목록에서 제거하시겠습니까?`)) {
-            item.style.animation = 'fadeOut 0.3s ease-out forwards';
-            setTimeout(() => {
-              item.remove();
-              updateStats();
-            }, 300);
-          }
-        });
-      });
-
-      // 재생 버튼 기능
-      const playButtons = document.querySelectorAll('.play-btn');
-      playButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const item = this.closest('.content-item');
-          const title = item.querySelector('.item-title').textContent;
-          alert(`"${title}" 재생을 시작합니다.`);
-        });
-      });
-
-      // 다운로드 버튼 기능
-      const downloadButtons = document.querySelectorAll('.download-btn');
-      downloadButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const item = this.closest('.content-item');
-          const title = item.querySelector('.item-title').textContent;
-          alert(`"${title}" 다운로드를 시작합니다.`);
-        });
-      });
-
-      // 통계 업데이트 함수
-      function updateStats() {
-        const wishlistCount = document.querySelectorAll('#wishlist .content-item').length;
-        const purchasedCount = document.querySelectorAll('#purchased .content-item').length;
-        
-        document.querySelector('.stat-item:first-child .stat-number').textContent = wishlistCount;
-        document.querySelector('.stat-item:nth-child(2) .stat-number').textContent = purchasedCount;
-      }
-
-      // 정렬 기능
-      const sortSelects = document.querySelectorAll('.sort-select');
-      sortSelects.forEach(select => {
-        select.addEventListener('change', function() {
-          const sortType = this.value;
-          const grid = this.closest('.content-section').querySelector('.content-grid');
-          const items = Array.from(grid.querySelectorAll('.content-item'));
-          
-          items.sort((a, b) => {
-            switch(sortType) {
-              case 'name':
-                return a.querySelector('.item-title').textContent.localeCompare(b.querySelector('.item-title').textContent);
-              case 'rating':
-                const ratingA = parseFloat(a.querySelector('.item-rating span').textContent);
-                const ratingB = parseFloat(b.querySelector('.item-rating span').textContent);
-                return ratingB - ratingA;
-              case 'recent':
-              default:
-                return 0; // 기본 순서 유지
-            }
-          });
-          
-          // 정렬된 순서로 다시 배치
-          items.forEach(item => grid.appendChild(item));
-        });
-      });
-
-      // 사용자 메뉴 드롭다운 토글
-      const userMenuButton = document.querySelector('.user-menu-button');
-      const userDropdown = document.querySelector('.user-dropdown');
-      
-      if (userMenuButton && userDropdown) {
-        userMenuButton.addEventListener('mouseenter', function() {
-          userDropdown.classList.add('show');
-        });
-        
-        const userMenuContainer = document.querySelector('.user-menu-container');
-        userMenuContainer.addEventListener('mouseleave', function() {
-          userDropdown.classList.remove('show');
-        });
-      }
-
-      // 로고 클릭 시 홈으로 이동
-      const logoLink = document.querySelector('.logo-link');
-      logoLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = '/';
-      });
-    });
-
     // 페이드아웃 애니메이션 CSS
     const style = document.createElement('style');
     style.textContent = `
@@ -462,5 +95,6 @@
     `;
     document.head.appendChild(style);
   </script>
+  
 </body>
 </html>

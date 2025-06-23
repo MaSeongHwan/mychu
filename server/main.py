@@ -2,18 +2,20 @@ from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,HTMLResponse
 import os
 import logging
 import sys
 
 # 라우터 import
 from server.api.routes.asset import router as asset_router  
-from server.api.routes.log import router as log_router
 from server.api.routes.search import router as search_router
 from server.api.routes.user import router as user_router
 from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
+from server.api.routes.log import router as log_router
+from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
+
 
 # 설정 및 초기화
 from server.config.settings import CORS_ORIGINS
@@ -57,6 +59,7 @@ templates = Jinja2Templates(directory=CLIENT_PUBLIC_DIR)
 app.mount("/static", StaticFiles(directory=CLIENT_PUBLIC_DIR), name="static")
 app.mount("/src", StaticFiles(directory=CLIENT_SRC_DIR), name="src")
 app.mount("/client", StaticFiles(directory=CLIENT_DIR), name="client")
+app.mount("/components", StaticFiles(directory="client/public/components"), name="components")
 
 # 정적 파일 존재 여부 확인 및 로깅
 css_path = os.path.join(CLIENT_SRC_DIR, "styles", "mylist.css")
@@ -66,12 +69,14 @@ else:
     logger.error(f"CSS file NOT found at: {css_path}")
 
 # 라우터 등록
-app.include_router(user_router,       prefix="/users", tags=["users"])
+app.include_router(user_router,       prefix="/users",  tags=["users"])
 app.include_router(asset_router,      prefix="/assets", tags=["assets"])
 app.include_router(log_router,        prefix="/logs",   tags=["logs"])
 app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
+app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation-hybrid"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
+
 
 # 로거 설정
 logger = logging.getLogger("uvicorn")
@@ -86,6 +91,7 @@ async def startup_event():
     init_db()
     init_firebase()
 
+
 # 페이지 라우트
 @app.get("/")
 async def read_root(request: Request):
@@ -99,17 +105,39 @@ async def read_root(request: Request):
 async def read_main(request: Request):
     return templates.TemplateResponse("main.html", {"request": request})
 
+@app.get("/drama")
+async def read_drama(request: Request):
+    return templates.TemplateResponse("drama.html", {"request": request})
+
+@app.get("/movie")
+async def read_movie(request: Request):
+    return templates.TemplateResponse("movie.html", {"request": request})
+
 @app.get("/mylist")
 async def read_mylist(request: Request):
     return templates.TemplateResponse("mylist.html", {"request": request})
+
+@app.get("/rating")
+async def read_rating(request: Request):
+    return templates.TemplateResponse("rating.html", {"request": request})
 
 @app.get("/adult")
 async def read_adult(request: Request):
     return templates.TemplateResponse("adult.html", {"request": request})
 
-@app.get("/contents")
+@app.get("/search", response_class=HTMLResponse)
+async def read_search(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
+
+@app.get("/contents", response_class=HTMLResponse)
 async def read_contents(request: Request):
     return templates.TemplateResponse("contents.html", {"request": request})
+
+@app.get("/contents_test")
+async def read_contents_test(request: Request):
+    return templates.TemplateResponse("contents_test.html", {"request": request})
+
+
 # 템플릿 및 정적 파일 디버깅용 라우터
 @app.get("/debug-templates")
 async def debug_templates():

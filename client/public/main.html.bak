@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WellList - VOD 추천 시스템</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+
+<body>
+  <!-- Header는 JS로 삽입됩니다 -->
+  <!-- ✅ 여기에는 아무것도 넣지 않음! 헤더는 JS로 삽입됩니다 -->
+  
+  <!-- Header Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-slider-track" id="mainHeroSliderTrack">
+        <!-- Slide 1 -->
+        <div class="hero-slide">
+          <div class="poster-and-text">
+            <div class="hero-poster">
+              <div class="poster-container">
+                <img src="https://via.placeholder.com/200x300/FF5733/FFFFFF?text=Movie+1" alt="콘텐츠 포스터" class="poster-image" />
+                <div class="poster-glow"></div>
+              </div>
+            </div>
+            <div class="hero-info">
+              <span class="badge">오늘의 추천</span>
+              <h2 class="hero-title">이상한 나라의 엘리스</h2>
+              <div class="content-meta">
+                <div class="rating">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>4.8</span>
+                </div>
+                <span class="release-year">2023</span>
+                <span class="genre">판타지</span>
+              </div>
+              <p class="hero-description">
+                이상한 나라로 떨어진 엘리스의 모험.
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  재생
+                </button>
+                <button class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  찜하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hero-slide">
+          <div class="poster-and-text">
+            <div class="hero-poster">
+              <div class="poster-container">
+                <img src="https://via.placeholder.com/200x300/33FF57/FFFFFF?text=Movie+2" alt="콘텐츠 포스터" class="poster-image" />
+                <div class="poster-glow"></div>
+              </div>
+            </div>
+            <div class="hero-info">
+              <span class="badge">오늘의 추천</span>
+              <h2 class="hero-title">시간 여행자의 아내</h2>
+              <div class="content-meta">
+                <div class="rating">장장
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>4.5</span>
+                </div>
+                <span class="release-year">2022</span>
+                <span class="genre">로맨스</span>
+              </div>
+              <p class="hero-description">
+                시간을 넘나드는 운명적인 사랑 이야기.
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  재생
+                </button>
+                <button class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  찜하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="hero-slide">
+          <div class="poster-and-text">
+            <div class="hero-poster">
+              <div class="poster-container">
+                <img src="https://via.placeholder.com/200x300/3357FF/FFFFFF?text=Movie+3" alt="콘텐츠 포스터" class="poster-image" />
+                <div class="poster-glow"></div>
+              </div>
+            </div>
+            <div class="hero-info">
+              <span class="badge">오늘의 추천</span>
+              <h2 class="hero-title">코드명: 그림자</h2>
+              <div class="content-meta">
+                <div class="rating">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>4.7</span>
+                </div>
+                <span class="release-year">2024</span>
+                <span class="genre">액션</span>
+              </div>
+              <p class="hero-description">
+                베일에 싸인 요원의 숨막히는 임무.
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  재생
+                </button>
+                <button class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  찜하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="hero-slide">
+          <div class="poster-and-text">
+            <div class="hero-poster">
+              <div class="poster-container">
+                <img src="https://via.placeholder.com/200x300/FFFF33/000000?text=Movie+4" alt="콘텐츠 포스터" class="poster-image" />
+                <div class="poster-glow"></div>
+              </div>
+            </div>
+            <div class="hero-info">
+              <span class="badge">오늘의 추천</span>
+              <h2 class="hero-title">미래 도시</h2>
+              <div class="content-meta">
+                <div class="rating">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>4.6</span>
+                </div>
+                <span class="release-year">2021</span>
+                <span class="genre">SF</span>
+              </div>
+              <p class="hero-description">
+                기술이 지배하는 미래 도시의 어두운 진실.
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  재생
+                </button>
+                <button class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  찜하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="hero-slide">
+          <div class="poster-and-text">
+            <div class="hero-poster">
+              <div class="poster-container">
+                <img src="https://via.placeholder.com/200x300/FF33FF/FFFFFF?text=Movie+5" alt="콘텐츠 포스터" class="poster-image" />
+                <div class="poster-glow"></div>
+              </div>
+            </div>
+            <div class="hero-info">
+              <span class="badge">오늘의 추천</span>
+              <h2 class="hero-title">잃어버린 유적</h2>
+              <div class="content-meta">
+                <div class="rating">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>4.4</span>
+                </div>
+                <span class="release-year">2020</span>
+                <span class="genre">어드벤처</span>
+              </div>
+              <p class="hero-description">
+                고대 유적을 찾아 떠나는 위험천만한 여정.
+              </p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  재생
+                </button>
+                <button class="btn btn-outline">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  찜하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="hero-slider-nav prev" id="mainHeroPrevBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <button class="hero-slider-nav next" id="mainHeroNextBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+    </div>
+  </section>
+
+  <!-- Content Categories -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- 오늘의 인기작 Top 10 슬라이더 섹션 -->
+      <section class="section" id="top-section">
+        <div class="section-header">
+          <h2>오늘의 인기작</h2>
+          <div class="section-controls">
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
+            </button>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
+            </button>
+          </div>
+        </div>        
+        <div class="slider" id="top-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
+          </div>
+        </div>
+      </section>
+
+      <!-- 개인화된 추천 슬라이더 섹션 -->
+      <section class="section" id="emotion-section">
+        <div class="section-header">
+          <h2>소금님, 오늘은 따듯한 힐링 영화가 어울려요</h2>
+          <div class="section-controls">
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
+            </button>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="slider" id="emotion-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
+          </div>
+          <!-- 슬라이더 컨텐츠는 JavaScript로 동적 생성됩니다 -->
+        </div>
+      </section>
+
+      <!-- 최근 시청 콘텐츠 슬라이더 섹션 -->
+      <section class="section" id="recent-section">
+        <div class="section-header">
+          <h2>최근 시청 콘텐츠</h2>
+          <div class="section-controls">
+            <button class="control-btn prev-btn">
+              <span class="icon icon-arrow-left"></span>
+            </button>
+            <button class="control-btn next-btn">
+              <span class="icon icon-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="slider" id="recent-slider">
+          <div class="error-message">
+            컨텐츠를 불러오는데 실패했습니다.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 WellList. All rights reserved.</p>
+      </div>
+    </div>    
+  </footer>    <!-- 헤더 로딩 및 검색 설정 (공통 초기화) -->
+  <script type="module" src="/src/init.js"></script>
+  
+  <!-- 페이지 전용 외부 스크립트 (메인 페이지 슬라이더 및 추천 로직) -->
+  <script type="module" src="/src/pages/main.js"></script>
+  
+</body>
+</html>
