@@ -3,8 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입 - WellList</title>
-  <link rel="stylesheet" href="../src/styles/index.css">
+  <title>회원가입 - WellList</title>  
+  <link rel="stylesheet" href="/src/styles/index.css">
+  
+  <!-- Suppress MetaMask related errors -->
+  <script>
+    // Prevent MetaMask related errors
+    window.ethereum = undefined;
+    
+    // Catch and suppress specific console errors
+    const originalConsoleError = console.error;
+    console.error = function() {
+      // Check if the error is related to MetaMask
+      if (arguments[0] && 
+          (String(arguments[0]).includes('MetaMask') || 
+           String(arguments[0]).includes('inpage.js'))) {
+        return; // Suppress the error
+      }
+      // Otherwise, pass through to the original console.error
+      originalConsoleError.apply(console, arguments);
+    };
+  </script>
 </head>
 <body>
   <!-- Header -->
@@ -12,12 +31,12 @@
     <div class="container">
       <div class="header-content">
         <div class="header-left">
-          <a href="index.html" class="logo-link">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" class="logo-image">
+          <a class="logo-link">
+            <img src="/static/images/welllist_backno.png" alt="WellList" class="logo-image">
           </a>
         </div>
         <div class="header-right">
-          <a href="login.html" class="login-link">로그인</a>
+          <a href="/" class="login-link">로그인</a>
         </div>
       </div>
     </div>
@@ -42,6 +61,7 @@
                 name="contact" 
                 class="form-input" 
                 placeholder="이메일 주소를 입력하세요"
+                autocomplete="email"
                 required
               >
               <div class="input-error" id="contactError"></div>
@@ -50,13 +70,14 @@
             <div class="form-group">
               <label for="name" class="form-label">닉네임</label>
               <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                class="form-input" 
-                placeholder="사용하실 닉네임을 입력하세요"
-                required
-              >
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-input"
+                  placeholder="닉네임을 입력하세요"
+                  autocomplete="nickname"
+                  required
+                >
               <div class="input-error" id="nameError"></div>
             </div>
 
@@ -69,6 +90,7 @@
                   name="password" 
                   class="form-input" 
                   placeholder="비밀번호를 입력하세요 (8자 이상)"
+                  autocomplete="new-password"
                   required
                 >
                 <button type="button" class="password-toggle" id="passwordToggle">
@@ -91,6 +113,7 @@
                   name="confirmPassword" 
                   class="form-input" 
                   placeholder="비밀번호를 다시 입력하세요"
+                  autocomplete="new-password"
                   required
                 >
                 <button type="button" class="password-toggle" id="confirmPasswordToggle">
@@ -101,8 +124,7 @@
                 </button>
               </div>
               <div class="input-error" id="confirmPasswordError"></div>
-            </div>
-
+            </div>            
             <div class="form-group">
               <label for="birthdate" class="form-label">생년월일</label>
               <input 
@@ -145,34 +167,111 @@
           <div class="signup-footer">
             <p class="login-prompt">
               이미 계정이 있으신가요? 
-              <a href="login.html" class="login-link-text">로그인</a>
+              <a href="/" class="login-link-text">로그인</a>
             </p>
           </div>
-        </div>   
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <p>&copy; 2025 WellList. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="#">이용약관</a>
-          <a href="#">개인정보처리방침</a>
-          <a href="#">고객센터</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  
 
-  <script>
+  <script type="module">
+    // Firebase 모듈을 CDN에서 import
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword 
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    
+    // API 기본 URL 설정
+    const API_BASE_URL = 'http://127.0.0.1:8000'; // 실제 백엔드 URL에 맞게 수정하세요
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBiLAswitPi5YrSXa4pr8EkTSwFwcnYoCQ",
+      authDomain: "bootcamp-19343.firebaseapp.com",
+      projectId: "bootcamp-19343",
+      storageBucket: "bootcamp-19343.firebasestorage.app",
+      messagingSenderId: "606944113151",
+      appId: "1:606944113151:web:acf320de523e2f24f9f7ca",
+      measurementId: "G-HPFYGZLYX3"
+    };
+
+    // Firebase 초기화
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    
+    // 회원가입 함수 정의
+    async function signUpWithEmail(email, password, nickname, birthdate) {
+      let user;
+      try {
+        // 1. Firebase Auth에 사용자 등록
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        user = userCredential.user;
+        
+        // 2. ID 토큰(JWT) 가져오기
+        const idToken = await user.getIdToken();        // 3. 백엔드 서버에 사용자 등록 - UserRegister 스키마에 맞게 데이터 구조 설정
+        const response = await fetch(`${API_BASE_URL}/users/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`
+          },
+          body: JSON.stringify({
+            sha2_hash: user.uid,
+            email: email,
+            nick_name: nickname || email.split('@')[0],
+            birth: birthdate || null,
+            terms_agreed_at: new Date().toISOString(),
+            is_adult: false,
+            sec_password: "0000"
+          })
+        });// 응답 처리를 더 안전하게 개선
+        let responseData;
+        try {
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            responseData = await response.json();
+          } else {
+            const text = await response.text();
+            responseData = { detail: text };
+          }
+        } catch (e) {
+          console.error('응답 처리 중 오류:', e);
+          responseData = { detail: '응답 처리 실패' };
+        }
+        
+        if (!response.ok) {
+          let errorMessage = responseData.detail || '서버 등록 실패';
+          throw new Error(errorMessage);
+        }
+
+        return responseData;
+      } catch (error) {
+        console.error("회원가입 실패:", error);
+        // Firebase Auth에서 생성된 사용자 삭제
+        if (user && error.code !== 'auth/email-already-in-use') {
+          try {
+            await user.delete();
+          } catch (deleteError) {
+            console.error("사용자 삭제 실패:", deleteError);
+          }
+        }
+        throw error;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('signupForm');
       const contactInput = document.getElementById('contact');
+      const nameInput = document.getElementById('name');
       const passwordInput = document.getElementById('password');
       const confirmPasswordInput = document.getElementById('confirmPassword');
+      const birthdateInput = document.getElementById('birthdate');
       const passwordToggle = document.getElementById('passwordToggle');
       const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
       const signupBtn = document.querySelector('.signup-btn');
@@ -259,7 +358,7 @@
       }
 
       // 폼 제출 처리
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // 유효성 검사
@@ -300,14 +399,48 @@
           signupBtn.classList.add('loading');
           btnLoading.style.display = 'block';
           
-          // 실제 회원가입 처리 (시뮬레이션)
-          setTimeout(() => {
+          try {
+            // 생년월일 데이터 포맷 확인
+            const birthdate = birthdateInput.value;
+            const birthDateFormatted = formatDateToISOString(birthdate);
+            
+            // Firebase로 회원가입
+            const userData = await signUpWithEmail(
+              contactInput.value,
+              passwordInput.value,
+              nameInput.value,
+              birthDateFormatted
+            );
+            console.log('회원가입 성공:', userData);
+            
+            // 회원가입 성공 처리
             alert('회원가입이 완료되었습니다!');
+            // 메인 페이지로 이동
+            window.location.href = '/main';
+          } catch (error) {
+            console.error('회원가입 실패:', error);
+            let errorMessage = '회원가입에 실패했습니다. 다시 시도해주세요.';
+            
+            switch (error.code) {
+              case 'auth/email-already-in-use':
+                errorMessage = '이미 사용중인 이메일입니다.';
+                break;
+              case 'auth/invalid-email':
+                errorMessage = '올바른 이메일 형식이 아닙니다.';
+                break;
+              case 'auth/operation-not-allowed':
+                errorMessage = '이메일/비밀번호 가입이 비활성화되어있습니다.';
+                break;
+              case 'auth/weak-password':
+                errorMessage = '비밀번호가 너무 약합니다.';
+                break;
+            }
+            
+            showError('passwordError', errorMessage);
+          } finally {
             signupBtn.classList.remove('loading');
             btnLoading.style.display = 'none';
-            // 로그인 페이지로 이동
-            // window.location.href = 'login.html';
-          }, 2000);
+          }
         }
       });
 
@@ -322,13 +455,28 @@
         errorElement.textContent = '';
         errorElement.style.display = 'none';
       }
-
+      
       // 로고 클릭 시 홈으로 이동
       const logoLink = document.querySelector('.logo-link');
       logoLink.addEventListener('click', function(e) {
         e.preventDefault();
         window.location.href = '/';
       });
+      
+      // 날짜 포맷 함수 - yyyy-MM-dd 형식으로 변환
+      function formatDateToISOString(dateString) {
+        if (!dateString) return null;
+        
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return null;
+        
+        // 날짜를 yyyy-MM-dd 형식으로 변환
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        return `${year}-${month}-${day}`;
+      }
     });
   </script>
 </body>
