@@ -159,8 +159,4 @@ async function getCachedData(key, fetchFunction, forceRefresh = false) {
     throw error;
   }
 }
-export function renderSlider(container, items) {
-  console.log('renderSlider 호출됨', container, items);
-  // ... 이하 생략 ...
-}
 

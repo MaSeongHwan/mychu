@@ -103,7 +103,14 @@ async def read_root(request: Request):
 
 @app.get("/main")
 async def read_main(request: Request):
-    return templates.TemplateResponse("main.html", {"request": request})
+    try:
+        db = SessionLocal()
+        # 예시: 쿼리 실행
+        # data = db.query(SomeModel).all()
+    except Exception as e:
+        print("DB 연결 에러:", e)
+        data = None
+    return templates.TemplateResponse("main.html", {"request": request, "data": data})
 
 @app.get("/drama")
 async def read_drama(request: Request):
