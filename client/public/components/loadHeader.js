@@ -1,4 +1,6 @@
 // /src/components/loadHeader.js
+import { initializeUserMenu } from '/src/components/UserMenu.js';
+
 export async function loadHeader() {
   const res = await fetch('/components/header.html');
   const html = await res.text();
@@ -39,27 +41,59 @@ function renderSuggestions(results, container, query) {
   });
 }
 
-loadHeader().then(() => {
+loadHeader().then(async () => {
   const searchInput = document.querySelector('.search-input');
   const suggestionsContainer = document.getElementById('search-suggestions');
+
+  // Initialize user menu functionality
+  initializeUserMenu();
 
   searchInput.addEventListener('input', async (e) => {
     const query = e.target.value.trim();
     if (query.length < 1) {
       suggestionsContainer.innerHTML = '';
+      suggestionsContainer.classList.remove('show');
       return;
     }
 
-    const res = await fetch(`/search?query=${encodeURIComponent(query)}&limit=10`);
-    if (!res.ok) {
+    try {
+      // Use the correct API endpoint with trailing slash
+      const res = await fetch(`/search/?query=${encodeURIComponent(query)}&limit=10`);
+      if (!res.ok) {
+        throw new Error(`Search request failed with status ${res.status}`);
+      }
+      
+      const data = await res.json();
+      if (!data.results || data.results.length === 0) {
+        suggestionsContainer.innerHTML = '<div class="suggestion-item">검색 결과가 없습니다.</div>';
+      } else {
+        renderSuggestions(data.results, suggestionsContainer, query);
+      }
+      
+      // Show suggestions container
+      suggestionsContainer.classList.add('show');
+    } catch (error) {
+      console.error('Search error:', error);
       suggestionsContainer.innerHTML = '<div class="suggestion-item">검색 결과를 불러올 수 없습니다.</div>';
-      return;
+      suggestionsContainer.classList.add('show');
     }
-    const data = await res.json();
-    if (!data.results) {
-      suggestionsContainer.innerHTML = '<div class="suggestion-item">검색 결과가 없습니다.</div>';
-      return;
+  });
+  
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+      suggestionsContainer.classList.remove('show');
     }
-    renderSuggestions(data.results, suggestionsContainer, query);
+  });
+  
+  // Setup click handlers for suggestions
+  suggestionsContainer.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (item) {
+      const contentId = item.dataset.id;
+      if (contentId) {
+        window.location.href = `/contents.html?id=${contentId}`;
+      }
+    }
   });
 });
