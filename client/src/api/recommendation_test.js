@@ -2,15 +2,20 @@ import { API_BASE_URL } from './config.js';
 import { renderSlider } from '../components/Recommendations.js';
 
 /**
- * API 응답 데이터에서 poster_path와 asset_idx만 남기고 나머지 필드들을 제거하는 함수
+ * API 응답 데이터에서 필요한 필드만 추출하고 ID 필드를 통합하는 함수
  * @param {Array} items - API에서 받은 콘텐츠 배열
- * @returns {Array} poster_path와 asset_idx만 포함된 배열
+ * @returns {Array} 필수 필드를 포함한 배열
  */
 function filterPosterPathOnly(items) {
-  return items.map(item => ({
-    poster_path: item.poster_path,
-    asset_idx: item.asset_idx
-  }));
+  return items.map(item => {
+    const contentId = item.idx || item.asset_idx || item.id || null;
+    return {
+      poster_path: item.poster_path || '',
+      asset_idx: contentId,
+      id: contentId,  // 상세 페이지 이동을 위한 id 필드 추가
+      asset_nm: item.asset_nm || '' // 제목 정보도 유지
+    };
+  });
 }
 
 /**
@@ -356,10 +361,12 @@ export async function fetchMultipleRecommendations(types = ['popular', 'emotion'
             return { error: `서버 에러: ${response.status}` };
           }
           return response.json();
-        })
-        .then(data => {
-          // 포스터와 ID만 추출하여 경량화
+        })        .then(data => {
+          // 필요한 필드를 유지하며 처리
           const items = data.items || [];
+          if (type === 'popular') {
+            console.log('인기 콘텐츠 데이터 샘플:', items.length > 0 ? items[0] : '없음');
+          }
           return filterPosterPathOnly(items);
         })
         .catch(error => {

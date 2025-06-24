@@ -109,7 +109,6 @@ def get_recommendations_with_diversity(self, item_idx, top_n=10):
       "poster_path": "/path/to/image.jpg",
       "similarity": 0.95
     },
-    ...
   ]
 }
 ```

@@ -40,26 +40,28 @@ export async function initMainPageWithLoadingIndicators() {
       // 오류 시 기본 데이터로 초기화
       initHeroSlider([]);
     }
-    
-    // 추천 슬라이더 초기화
+      // 추천 슬라이더 초기화
     if (recommendationsPromise.status === 'fulfilled') {
       const allRecommendations = recommendationsPromise.value;
       console.log('모든 추천 데이터 로드 완료', allRecommendations);
       
       // 각 슬라이더별 데이터 적용
       if (allRecommendations.popular && allRecommendations.popular.length > 0) {
+        console.log('인기 콘텐츠 샘플:', allRecommendations.popular[0]); // 디버깅용 로그
         renderSlider(document.getElementById('popular-main-slider'), allRecommendations.popular);
       } else {
         showSliderError('popular-main-slider', '인기 콘텐츠 데이터를 불러올 수 없습니다.');
       }
       
       if (allRecommendations.emotion && allRecommendations.emotion.length > 0) {
+        console.log('감정 기반 콘텐츠 샘플:', allRecommendations.emotion[0]); // 디버깅용 로그
         renderSlider(document.getElementById('genre-main-slider'), allRecommendations.emotion);
       } else {
         showSliderError('genre-main-slider', '감정 기반 추천 데이터를 불러올 수 없습니다.');
       }
       
       if (allRecommendations.recent && allRecommendations.recent.length > 0) {
+        console.log('최근 시청 콘텐츠 샘플:', allRecommendations.recent[0]); // 디버깅용 로그
         renderSlider(document.getElementById('recent-main-slider'), allRecommendations.recent);
       } else {
         showSliderError('recent-main-slider', '최근 시청 데이터를 불러올 수 없습니다.');
