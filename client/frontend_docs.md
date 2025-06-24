@@ -9,10 +9,21 @@ client/
 │   ├── login.html       # 로그인/회원가입
 │   ├── main.html        # 메인 대시보드
 │   ├── mylist.html      # 찜 목록
-│   └── search.html      # 검색 결과 페이지
+│   ├── rating.html      # 평점 페이지
+│   ├── search.html      # 검색 결과 페이지
+│   ├── adult.html       # 성인 콘텐츠 페이지
+│   ├── movie.html       # 영화 페이지
+│   ├── drama.html       # 드라마 페이지
+│   ├── components/      # 공통 UI 컴포넌트 (재사용 요소)
+│   │   ├── header.html  # 헤더 HTML 구조
+│   │   ├── header.css   # 헤더 스타일
+│   │   └── loadHeader.js # 헤더 로드 스크립트
 │   ├── images/          # 이미지 파일
-│   │   ├── logo.png     # 기존 로고 이미지 (경로명 오류 수정 후 welllist_backno.png 사용 가능)
-│   │   └── welllist_backno.png # 추가된 로고 이미지 (실제 파일 존재 시)
+│   │   ├── login_image1.png # 로그인 페이지 이미지
+│   │   ├── logo.png     # 현재 사용 중인 로고 이미지
+│   │   ├── mypage_img.png # 마이페이지 이미지
+│   │   ├── search_img.png # 검색 아이콘
+│   │   └── welllist_backno.png # 대체 로고 이미지
 │   │   └── ...
 ├── src/
 │   ├── api/            # API 통신 관련 파일
@@ -116,7 +127,8 @@ export const ENDPOINTS = {
     recommendations: {
         top: '/recommendation/top',
         emotion: '/recommendation/emotion',
-        recent: '/recommendation/recent'
+        recent: '/recommendation/recent',
+        similar: '/recommendation/similar' // 유사 콘텐츠 추천 엔드포인트
     },
     assets: '/assets',
     search: '/search',
@@ -215,10 +227,14 @@ export async function searchFiltered(query, limit = 10) {
   - 호버 효과
 
 ### contents.html (상세 페이지)
-- 컨텐츠 메타데이터 표시
-- 비디오 플레이어
-- 관련 컨텐츠 추천
-- 시청 기록 관리
+- 컨텐츠 메타데이터 표시 (포스터, 제목, 장르, 연도, 시간, 설명 등)
+- 감정 태그 표시 (설렘, 로맨틱, 시간여행, 감동 등)
+- 출연진 정보 표시
+- 헬로 렌탈 추천 상품 슬라이더
+- 비슷한 콘텐츠 추천 슬라이더 (API 연동)
+- 모듈식 구조 (헤더는 loadHeader.js에 의해 자동으로 삽입)
+- 공통 헤더 컴포넌트 사용
+- 반응형 슬라이더 (모바일/데스크탑 화면 크기 대응)
 
 ### mylist.html (개인화)
 - 찜한 컨텐츠 관리
@@ -255,16 +271,20 @@ export async function searchFiltered(query, limit = 10) {
 ## 6. JavaScript 모듈
 
 ### main.js
-- 기존 마이페이지 관련 코드 제거
-- FastAPI 서버 연동 (슬라이더 초기화)
-- 컨텐츠 로딩 및 렌더링
-- 이벤트 핸들러 관리 (일반 슬라이더)
+- 콘텐츠 상세 페이지 (contents.html) 전용 스크립트
+- 현재 컨텐츠 ID를 URL에서 추출
+- 유사 콘텐츠 추천 API 호출 (`/recommendation/similar/{contentId}`)
+- 데이터 처리 및 Slider.js를 통한 렌더링
+- 이벤트 핸들러 관리 (슬라이더 내비게이션)
 - 반응형 동작 처리
 
 ### init.js
-- 헤더 로딩 후 초기화 (`loadHeader()`)
+- 모든 페이지에서 공통으로 사용되는 초기화 스크립트
+- 헤더 로딩 후 초기화 (`loadHeader()` 호출)
 - 로고 클릭 시 메인 페이지 이동 이벤트 리스너 처리
-- 검색 기능, 사용자 메뉴, 추천 콘텐츠 초기화
+- 검색 기능 초기화 (`initializeSearch()`)
+- 사용자 메뉴 초기화 (`initializeUserMenu()`, `setupLogout()`)
+- 드롭다운 메뉴 초기화 (`initDropdown()`) - 경로에 따라 조건부 실행
 
 ### auth.js
 - Firebase 인증 통합
@@ -288,6 +308,8 @@ export async function searchFiltered(query, limit = 10) {
 ## 7. API 연동
 
 ### 엔드포인트
+- `/assets/{asset_idx}`: 특정 콘텐츠 상세 정보 조회
+- `/recommendation/similar/{asset_idx}`: 특정 콘텐츠와 유사한 콘텐츠 추천 (다양한 시리즈에서 하나씩만 추천)
 - `/recommendation/test`: 테스트 추천 API 엔드포인트 (MainHeroSlider에서 사용, 여러 파라미터 지원)
 - `/search`: 컨텐츠 검색 (기본)
 - `/search/advanced`: 고급 검색 (필터링 기능 제공)
@@ -302,11 +324,13 @@ export async function searchFiltered(query, limit = 10) {
 
 ### 데이터 흐름
 1. 페이지 로드
-2. `init.js`에서 헤더 로드 후 `initMainHeroSlider()` 및 `initDropdown()` 호출 (main.html)
-3. `MainHeroSlider.js`에서 API 요청 (`/recommendation/test?n=4&is_adult=false&is_main=true`)
-4. 응답 데이터를 `populateSlider()` 함수로 슬라이드 동적 렌더링
-5. `recommendation_test.js`에서 다른 슬라이더들에 대한 API 요청 및 `renderSlider()` 렌더링
-6. 사용자 인터랙션에 따른 UI 업데이트
+2. `loadHeader.js`를 통해 공통 헤더 로드 및 초기화
+3. `init.js`에서 페이지 기본 요소 초기화 후 `initMainHeroSlider()` 및 `initDropdown()` 호출 (main.html)
+4. 비디오 정보 로드 (contents.html의 경우 URL 파라미터에서 컨텐츠 ID 추출)
+5. 콘텐츠 ID 기반으로 상세 정보 API 호출 (`/assets/{contentId}`)
+6. 추천 콘텐츠 API 호출 (`/recommendation/similar/{contentId}?top_n=10`)
+7. `Slider.js`의 `renderSlider()` 함수를 통해 추천 콘텐츠 렌더링
+8. 사용자 인터랙션에 따른 UI 업데이트 (슬라이더 네비게이션, 클릭 등)
 
 ## 8. 사용자 경험
 
@@ -318,13 +342,121 @@ export async function searchFiltered(query, limit = 10) {
   - `renderSlider()` 함수를 모든 슬레이트에서 공유
 
 ### 인터랙션
+- 통합 헤더 및 네비게이션 (모든 페이지 공통)
 - 슬라이더 내비게이션 (이전/다음 버튼)
-- 호버 효과
-- 부드러운 전환
-- 로딩 상태 표시
-- 에러 처리 및 재시도 로직
+- 콘텐츠 카드 호버 효과 및 클릭 시 상세 페이지 이동
+- 부드러운 슬라이드 전환 (CSS transitions)
+- 로딩 상태 표시 (API 호출 중)
+- 이미지 로드 에러 처리 및 대체 이미지 표시
+- 반응형 UI (모바일/태블릿/데스크탑 대응)
 
 ### 추천 시스템 개선
 - 각 슬레이트마다 다른 추천 알고리즘 적용 가능
 - 테스트 엔드포인트를 통한 빠른 프로토타이핑
 - 파라미터 기반의 유연한 추천 결과 제공
+
+## 9. 컴포넌트 구조 개선
+
+### 헤더 분리와 재사용
+- 기존의 모든 페이지에 복제되어 있던 헤더를 별도의 컴포넌트로 분리
+- `/public/components/` 디렉토리에 헤더 관련 파일 구성
+  - `header.html`: 헤더의 HTML 구조
+  - `header.css`: 헤더 전용 스타일
+  - `loadHeader.js`: 모든 페이지에서 헤더를 동적으로 로드하는 스크립트
+
+```javascript
+// loadHeader.js의 주요 기능
+export async function loadHeader() {
+  try {
+    const response = await fetch('/components/header.html');
+    const html = await response.text();
+    
+    // 헤더 HTML을 페이지에 삽입
+    const headerPlaceholder = document.querySelector('header') || document.createElement('header');
+    headerPlaceholder.innerHTML = html;
+    
+    if (!document.querySelector('header')) {
+      document.body.insertBefore(headerPlaceholder, document.body.firstChild);
+    }
+    
+    // 헤더 스타일 로드
+    if (!document.querySelector('link[href="/components/header.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/components/header.css';
+      document.head.appendChild(link);
+    }
+    
+    // 헤더 초기화 (검색, 드롭다운 등)
+    initializeHeader();
+  } catch (error) {
+    console.error('헤더 로드 실패:', error);
+  }
+}
+```
+
+### 슬라이더 컴포넌트 개선
+- `contents.html`에서 하드코딩된 이미지 슬라이더를 동적 로드 방식으로 변경
+- `Slider.js` 컴포넌트를 활용하여 API에서 실시간으로 추천 컨텐츠 로드
+- 슬라이더 내비게이션 로직 간소화 및 성능 개선
+
+```javascript
+// Slider.js의 주요 기능
+export async function renderSlider(slider, items) {
+  slider.innerHTML = '';
+  const cardContainer = document.createElement('div');
+  cardContainer.className = 'card-container';
+
+  for (const item of items) {
+    const card = await createCard(item);
+    cardContainer.appendChild(card);
+  }
+
+  slider.appendChild(cardContainer);
+}
+
+// 카드 생성 함수
+async function createCard(item) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // 이미지 로드 처리 및 에러 핸들링
+  const posterPath = await loadImage(item.poster_path);
+  
+  card.innerHTML = `
+    <img src="${posterPath}" 
+         alt="${item.asset_nm}" 
+         loading="lazy" />
+    <div class="card-info">
+      <h3 class="card-title">${item.asset_nm}</h3>
+    </div>
+  `;
+
+  // 클릭 이벤트 - 컨텐츠 상세 페이지로 이동
+  card.addEventListener('click', () => {
+    window.location.href = `/contents?id=${item.id}`;
+  });
+
+  return card;
+}
+```
+
+### 페이지 간 일관성 유지
+- 모든 페이지에서 공통으로 사용하는 요소를 `components/` 폴더로 분리
+- 동일한 스타일 및 동작을 유지하여 사용자 경험 일관성 제공
+- CSS 클래스 네이밍 컨벤션 표준화 (BEM 방식)
+- 페이지별 필요 없는 클래스 및 속성 정리 (예: main-content 클래스 제거)
+
+### loadHeader.js
+- 공통 헤더를 모든 페이지에 동적으로 삽입하는 모듈
+- 헤더 HTML 및 CSS를 비동기적으로 로드
+- 각 페이지에서 import하여 사용 (`import { loadHeader } from '/components/loadHeader.js'`)
+- 헤더 로드 후 초기화 함수 실행
+- 오류 처리 및 로드 실패 시 폴백 메커니즘
+
+### Slider.js
+- 공통 슬라이더 컴포넌트 (재사용 가능)
+- 콘텐츠 카드 동적 생성 및 렌더링
+- 이미지 로드 오류 처리
+- 포스터 이미지 최적화 (lazy loading 지원)
+- 콘텐츠 ID를 통한 상세 페이지 링크 연결

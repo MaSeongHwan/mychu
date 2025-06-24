@@ -1,64 +1,163 @@
 # 추천 시스템 상세 설명
 
 ## 1. 개요
-이 VOD 추천 시스템은 콘텐츠 기반 필터링과 협업 필터링을 결합한 하이브리드 추천 시스템을 구현합니다.
+이 VOD 추천 시스템은 콘텐츠 기반 필터링과 감정 기반 필터링을 결합한 하이브리드 추천 시스템을 구현하며, 프론트엔드와 효율적으로 통합되어 실시간 추천을 제공합니다.
 
-## 3. 추천 알고리즘
+## 2. 개선된 하이브리드 추천 알고리즘
 
-### 콘텐츠 기반 필터링
+### 콘텐츠 특성 결합
 ```python
-# server/core/services/recommendation.py의 주요 로직
-- TF-IDF 특성 기반 유사도 계산
-- 코사인 유사도 매트릭스 생성
-- 장르 가중치 적용
+# server/core/services/recommender_singleton.py의 주요 로직
+- 콘텐츠 특성 추출 및 결합:
+  1. 줄거리(smry): TF-IDF 벡터화
+  2. 장르(genre): 원-핫 인코딩
+  3. 감정(emotion): NRC 감정 사전 기반 특성화
+- 특성 가중치 적용 및 통합 벡터 생성
+- 코사인 유사도 기반 효율적인 KNN 구현
 ```
 
-### 사용자 기반 추천
+### 다양성 보장 알고리즘
 ```python
-# server/routes/recommendations.py의 주요 기능
-- 시청 기록 분석
-- 선호 장르 파악
-- 개인화된 추천 생성
+# server/api/routes/recommendation_hybrid.py의 주요 기능
+- 다양한 시리즈에서 추천 제공 (super_asset_nm 기반)
+- 현재 콘텐츠 시리즈 제외
+- top_n 만큼의 추천 항목 보장
+- 필터링 적용 (성인 콘텐츠 등)
 ```
 
 ## 4. API 엔드포인트
 
-### 랜덤 추천
+### 유사 콘텐츠 추천
 ```python
-@router.get("/random")
-- 새로운 컨텐츠 무작위 추천
-- 인기도 가중치 적용
+@router.get("/recommendation/similar/{asset_idx}")
+- 특정 콘텐츠와 유사한 항목 추천
+- 하이브리드 특성 (장르, 감정, 줄거리) 기반 유사도 활용
+- 시리즈별 다양성 적용 (super_asset_nm 기준으로 하나만 추천)
+- 현재 시리즈 제외 기능
 ```
 
-### 개인화 추천
+### 사용자 맞춤 하이브리드 추천
 ```python
-@router.get("/personalized")
-- 사용자 프로필 기반 추천
-- 시청 기록 활용
-- 선호도 분석
+@router.get("/recommendation/hybrid/user/{user_idx}")
+- 사용자 시청 기록 기반 맞춤 추천
+- 선호 장르 및 감정 분석
+- 하이브리드 모델 활용
 ```
 
-### 유사 컨텐츠
+### 테스트용 추천
 ```python
-@router.get("/similar/{asset_id}")
-- 특정 컨텐츠와 유사한 항목 추천
-- TF-IDF 유사도 활용
+@router.get("/recommendation/test")
+- 다양한 파라미터 기반 테스트 추천
+- 장르, 성인여부, 메인여부 등 필터링 옵션
+- 프론트엔드 개발 지원용
 ```
 
 ## 5. 성능 최적화
 
-### 캐싱 전략
+### 싱글톤 패턴 구현
 ```python
-# 추천 결과 캐싱
-- Redis 캐시 활용
-- 주기적 업데이트
-- 캐시 무효화 정책
+# 추천 모델 싱글톤 패턴
+class RecommenderSingleton:
+    _instance = None
+    
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+            cls._instance.load_models()
+        return cls._instance
+    
+    def load_models(self):
+        # 모델 파일 한 번만 로드
+        self.hybrid_vectors = np.load(...)
+        self.knn = NearestNeighbors(n_neighbors=50)
+        self.knn.fit(self.hybrid_vectors)
 ```
 
 ### 계산 최적화
 ```python
-# 배치 처리
-- 주기적 모델 업데이트
-- 사전 계산된 유사도
-- 병렬 처리 활용
+# 다양성 기반 추천 로직
+def get_recommendations_with_diversity(self, item_idx, top_n=10):
+    # 1. KNN으로 더 많은 후보 추출
+    indices, distances = self.knn.kneighbors(...)
+    
+    # 2. 현재 시리즈와 동일한 시리즈 제외
+    current_series = db.query(Asset.super_asset_nm)...
+    
+    # 3. 시리즈별로 하나의 콘텐츠만 선택
+    unique_series_items = {}
+    for idx, score in zip(indices, similarity_scores):
+        series_name = self.series_mapping.get(idx)
+        if series_name not in unique_series_items:
+            unique_series_items[series_name] = (idx, score)
+    
+    # 4. top_n만큼 반환, 부족하면 랜덤 추가
+    result = list(unique_series_items.values())[:top_n]
+    if len(result) < top_n:
+        # 랜덤 콘텐츠로 부족분 채우기
 ```
+
+## 6. 프론트엔드 통합
+
+### API 응답 구조
+```json
+{
+  "recommendations": [
+    {
+      "asset_idx": 12345,
+      "asset_nm": "콘텐츠 제목",
+      "poster_path": "/path/to/image.jpg",
+      "similarity": 0.95
+    },
+    ...
+  ]
+}
+```
+
+### 클라이언트 구현
+```javascript
+// main.js - 콘텐츠 상세 페이지에서 유사 콘텐츠 로드
+async function fetchSimilarContent(contentId, limit = 10) {
+  const endpoint = `${API_BASE_URL}${ENDPOINTS.recommendations.similar}/${contentId}?top_n=${limit}`;
+  const response = await fetch(endpoint);
+  const data = await response.json();
+  return data.recommendations || [];
+}
+
+// Slider.js - 추천 콘텐츠 렌더링
+export async function renderSlider(slider, items) {
+  slider.innerHTML = '';
+  const cardContainer = document.createElement('div');
+  cardContainer.className = 'card-container';
+
+  for (const item of items) {
+    const card = await createCard(item);
+    cardContainer.appendChild(card);
+  }
+
+  slider.appendChild(cardContainer);
+}
+```
+
+### 사용자 경험 향상
+- 로딩 상태 표시: API 요청 중 로딩 인디케이터 표시
+- 에러 처리: 추천을 가져오지 못할 경우 대체 콘텐츠 표시
+- 반응형 디자인: 모바일 및 데스크탑 모두 최적화된 레이아웃
+- 접근성: 키보드 네비게이션 및 스크린 리더 지원
+
+## 7. 시스템 아키텍처 개선
+
+### 싱글톤 패턴 도입
+- 서버 시작 시 모델 데이터 한 번만 로딩
+- 메모리 사용량 최적화
+- 응답 시간 단축
+
+### 불필요한 코드 제거
+- 디버그용 엔드포인트 제거
+- 캐싱 로직 제거 (싱글톤으로 대체)
+- 중복 코드 정리
+
+### 확장성 고려
+- 명확한 인터페이스 설계로 새로운 추천 알고리즘 쉽게 통합 가능
+- 다양한 콘텐츠 유형 (영화, 드라마, 성인 등) 지원
+- 프론트엔드 컴포넌트화로 재사용성 증가

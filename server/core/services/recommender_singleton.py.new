@@ -1,0 +1,284 @@
+import numpy as np
+import os
+import logging
+import pickle
+import time
+from pathlib import Path
+from sklearn.neighbors import NearestNeighbors
+from collections import OrderedDict
+
+logger = logging.getLogger("uvicorn")
+
+# Get the model directory
+MODEL_DIR = Path(os.path.dirname(os.path.abspath(__file__))).parent / "recommender_assets"
+
+class LRUCache:
+    """
+    간단한 LRU (Least Recently Used) 캐시 구현
+    최대 크기에 도달하면 가장 오래된 항목을 제거합니다.
+    """
+    def __init__(self, capacity=100):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+        
+    def get(self, key):
+        if key not in self.cache:
+            return None
+        # 접근 시 항목을 맨 뒤로 이동하여 최신 상태로 표시
+        self.cache.move_to_end(key)
+        return self.cache[key]
+        
+    def put(self, key, value):
+        # 이미 존재하는 키라면 업데이트하고 맨 뒤로 이동
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        # 캐시가 가득 찼다면 가장 오래된 항목(맨 앞) 제거
+        elif len(self.cache) >= self.capacity:
+            self.cache.popitem(last=False)
+        # 새 항목 추가
+        self.cache[key] = value
+    
+    def clear(self):
+        """캐시 비우기"""
+        self.cache.clear()
+        
+    def __len__(self):
+        return len(self.cache)
+
+class RecommenderSingleton:
+    """
+    싱글톤 클래스로 추천 모델 에셋을 관리합니다.
+    애플리케이션 실행 시 한 번만 로드하여 메모리에 유지합니다.
+    """
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            logger.info("Creating RecommenderSingleton instance")
+            cls._instance = super(RecommenderSingleton, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+        
+    def __init__(self):
+        if not self._initialized:
+            logger.info("Initializing RecommenderSingleton resources")
+            self._initialized = True
+            self.hybrid_vectors = self._load_hybrid_vectors()
+            self.knn_model = self._init_knn_model()
+            self.tfidf_vectorizer = self._load_tfidf_vectorizer()
+            self.onehot_encoder = self._load_onehot_encoder()
+            
+            # 콘텐츠 캐시 매핑
+            self.content_mapping = {}
+            self.is_content_mapping_initialized = False
+            
+            # 추천 결과 캐싱
+            self.recommendation_cache = LRUCache(capacity=500)  # 최대 500개 결과 캐싱
+            self.cache_hit_count = 0
+            self.cache_miss_count = 0
+            self.last_cache_report_time = time.time()
+            
+    def _load_hybrid_vectors(self):
+        """하이브리드 벡터 로드"""
+        vector_path = MODEL_DIR / "hybrid_vectors(genre_emotion_smry).npy"
+        logger.info(f"Loading hybrid vectors from {vector_path}")
+        
+        if not vector_path.exists():
+            logger.error(f"Vector file not found at {vector_path}")
+            logger.info("Creating dummy vectors for fallback")
+            dummy_vectors = np.random.rand(100, 50)  # 100 items, 50 dimensions
+            return dummy_vectors
+            
+        try:
+            vectors = np.load(vector_path)
+            logger.info(f"Loaded hybrid vectors with shape {vectors.shape}")
+            return vectors
+        except Exception as e:
+            logger.error(f"Error loading vectors: {str(e)}")
+            # 오류 발생 시 더미 벡터 반환
+            return np.random.rand(100, 50)
+            
+    def _init_knn_model(self):
+        """KNN 모델 초기화 - 벡터가 변경되지 않으므로 미리 fit"""
+        try:
+            logger.info("Initializing KNN model with hybrid vectors")
+            knn = NearestNeighbors(metric='cosine')
+            knn.fit(self.hybrid_vectors)
+            return knn
+        except Exception as e:
+            logger.error(f"Error initializing KNN model: {str(e)}")
+            return None
+    
+    def _load_tfidf_vectorizer(self):
+        """TF-IDF 벡터라이저 로드"""
+        try:
+            path = MODEL_DIR / "tfidf_vectorizer_smry.pkl"
+            if not path.exists():
+                logger.warning(f"TF-IDF vectorizer file not found at {path}")
+                return None
+                
+            with open(path, "rb") as f:
+                vectorizer = pickle.load(f)
+                logger.info("Successfully loaded TF-IDF vectorizer")
+                return vectorizer
+        except Exception as e:
+            logger.error(f"Error loading TF-IDF vectorizer: {str(e)}")
+            return None
+    
+    def _load_onehot_encoder(self):
+        """원핫 인코더 로드"""
+        try:
+            path = MODEL_DIR / "onehot_encoder_genre.pkl"
+            if not path.exists():
+                logger.warning(f"OneHot encoder file not found at {path}")
+                return None
+                
+            with open(path, "rb") as f:
+                encoder = pickle.load(f)
+                logger.info("Successfully loaded OneHot encoder")
+                return encoder
+        except Exception as e:
+            logger.error(f"Error loading OneHot encoder: {str(e)}")
+            return None
+            
+    def initialize_content_mapping(self, main_assets):
+        """
+        콘텐츠 매핑을 초기화합니다. 
+        DB 모델 인스턴스로부터 필요한 정보를 추출하여 메모리에 캐싱합니다.
+        이 메서드는 애플리케이션 시작 시 또는 최초 API 호출 시 한 번만 실행해야 합니다.
+        """
+        if self.is_content_mapping_initialized:
+            logger.info("Content mapping already initialized")
+            return
+            
+        logger.info(f"Initializing content mapping with {len(main_assets)} assets")
+        
+        # 매핑 초기화
+        content_indices = {}
+        content_ids = {}
+        content_names = {}
+        is_main_map = {}
+        is_adult_map = {}
+        asset_details = {}
+        
+        # 모든 매핑을 한 번에 채우기
+        for i, asset in enumerate(main_assets):
+            content_indices[asset.idx] = i
+            content_ids[i] = asset.idx
+            content_names[i] = asset.asset_nm
+            is_main_map[asset.idx] = asset.is_main
+            is_adult_map[asset.idx] = 0 if not asset.is_adult else 1
+            
+            asset_details[asset.idx] = {
+                "asset_nm": asset.asset_nm,
+                "unique_asset_id": asset.unique_asset_id or "",
+                "super_asset_nm": asset.super_asset_nm or "",
+                "is_adult": asset.is_adult or False,
+                "is_movie": asset.is_movie or False,
+                "is_drama": asset.is_drama or False,
+                "is_main": asset.is_main or False,
+                "poster_path": asset.poster_path or ""
+            }
+        
+        # 매핑 저장
+        self.content_mapping = {
+            "content_indices": content_indices,
+            "content_ids": content_ids,
+            "content_names": content_names,
+            "is_main_map": is_main_map,
+            "is_adult_map": is_adult_map,
+            "asset_details": asset_details
+        }
+        
+        self.is_content_mapping_initialized = True
+        logger.info("Content mapping successfully initialized")
+        
+    def get_similar_contents(self, target_idx, top_n=10, include_adult=False):
+        """
+        주어진 타겟 인덱스에 대해 유사한 콘텐츠를 찾습니다.
+        이미 초기화된 KNN 모델을 사용하므로 벡터 로딩 및 KNN 학습 단계를 건너뛰어 성능을 향상시킵니다.
+        """
+        # 캐시 키 생성 (target_idx, top_n, include_adult의 조합)
+        cache_key = f"{target_idx}_{top_n}_{include_adult}"
+        
+        # 캐시에서 결과 확인
+        cached_result = self.recommendation_cache.get(cache_key)
+        if cached_result is not None:
+            self.cache_hit_count += 1
+            # 주기적으로 캐시 통계 로깅
+            current_time = time.time()
+            if current_time - self.last_cache_report_time > 300:  # 5분마다 로깅
+                total_requests = self.cache_hit_count + self.cache_miss_count
+                hit_rate = self.cache_hit_count / total_requests * 100 if total_requests > 0 else 0
+                logger.info(f"Recommendation cache statistics: {len(self.recommendation_cache)} items, "
+                           f"{self.cache_hit_count} hits, {self.cache_miss_count} misses, {hit_rate:.2f}% hit rate")
+                self.last_cache_report_time = current_time
+            return cached_result
+        
+        # 캐시에 없으면 계산
+        self.cache_miss_count += 1
+        
+        if not self.is_content_mapping_initialized:
+            logger.error("Content mapping not initialized. Call initialize_content_mapping() first.")
+            return []
+            
+        if self.knn_model is None:
+            logger.error("KNN model not initialized")
+            return []
+            
+        try:
+            # 이미 학습된 KNN 모델에서 이웃 가져오기
+            distances, indices = self.knn_model.kneighbors([self.hybrid_vectors[target_idx]])
+            
+            content_ids = self.content_mapping["content_ids"]
+            content_names = self.content_mapping["content_names"]
+            is_main_map = self.content_mapping["is_main_map"]
+            is_adult_map = self.content_mapping["is_adult_map"]
+            
+            results = []
+            for idx, dist in zip(indices[0], distances[0]):
+                # 자기 자신 건너뛰기
+                if idx == target_idx:
+                    continue
+                    
+                # 매핑에 인덱스가 있는지 확인
+                if idx not in content_ids:
+                    continue
+                    
+                asset_id = content_ids[idx]
+                
+                # 필터링 적용 (is_main, is_adult)
+                is_main = is_main_map.get(asset_id, False)
+                is_not_adult = is_adult_map.get(asset_id, 1) == 0
+                
+                if not is_main:
+                    continue
+                    
+                # 성인 콘텐츠 필터
+                if not include_adult and not is_not_adult:
+                    continue
+                    
+                # 결과에 추가
+                results.append({
+                    "rank": len(results) + 1,
+                    "idx": asset_id,
+                    "content_nm": content_names.get(idx, f"Content {idx}"),
+                    "similarity": round(1 - dist, 4)
+                })
+                
+                # top_n에 도달하면 중지
+                if len(results) >= top_n:
+                    break
+            
+            # 결과를 캐시에 저장
+            self.recommendation_cache.put(cache_key, results)       
+            return results
+            
+        except Exception as e:
+            logger.error(f"Error in get_similar_contents: {str(e)}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return []
+
+# 싱글톤 인스턴스 생성
+recommender = RecommenderSingleton()
