@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .base import Base
@@ -51,7 +51,8 @@ class MyList(Base):
     asset_idx = Column(Integer, ForeignKey("assets.idx"), primary_key=True)
     action = Column(Boolean, nullable=False)
     time_stamp = Column(TIMESTAMP, nullable=False)
-
+    score = Column(Float, nullable=True)
+    
     user = relationship("User", back_populates="my_list")
 
 class RecList(Base):
