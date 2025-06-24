@@ -1,5 +1,5 @@
 document.querySelector('.welllist').addEventListener('click', () => {
-    window.location.href = "/login/email.html";
+    window.location.href = "/";
   });
   
   document.querySelector('.naver').addEventListener('click', () => {
