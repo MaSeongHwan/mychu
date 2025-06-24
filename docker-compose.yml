@@ -2,6 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres:15
+    # 호스트 아키텍처에 따라 자동으로 선택되도록 명시적 platform 지정 제거
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -11,10 +12,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
   fastapi:
     build:
       context: .
+      # 플랫폼 관련 args 제거하여 호스트 아키텍처 자동 감지
+    # 플랫폼 명시 제거: 호스트 아키텍처에 맞게 자동 구성
     command: uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./server:/app/server
@@ -32,4 +34,4 @@ services:
       - db
 
 volumes:
-  postgres_data: 
+  postgres_data:

@@ -78,7 +78,6 @@ app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation-hybrid"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
-app.include_router(adult_rec_router)
 
 
 # 로거 설정
@@ -95,6 +94,52 @@ async def startup_event():
     init_firebase()
 
 
+# 추가: 시작 시 인기 콘텐츠에 대한 추천 결과 미리 로드
+@app.on_event("startup")
+async def preload_popular_recommendations():
+    """애플리케이션 시작 시 인기 콘텐츠 추천 결과를 미리 캐싱합니다."""
+    import logging
+    from sqlalchemy import func
+    from server.core.database import SessionLocal
+    from server.models.asset import Asset
+    from server.core.services.recommender_singleton import recommender
+    
+    logger = logging.getLogger("uvicorn")
+    logger.info("Preloading popular content recommendations at startup")
+    
+    try:
+        # DB 세션 생성
+        db = SessionLocal()
+        
+        # 메인 콘텐츠만 필터링
+        main_assets = db.query(Asset).filter(Asset.is_main == True).all()
+        
+        # 콘텐츠 매핑 초기화 (필요한 경우)
+        if not recommender.is_content_mapping_initialized:
+            logger.info("Initializing content mapping")
+            recommender.initialize_content_mapping(main_assets)
+        
+        # 인기 콘텐츠 ID 목록 가져오기 (예: 가장 최근 추가된 10개)
+        popular_assets = db.query(Asset).filter(Asset.is_main == True).order_by(
+            Asset.idx.desc()  # 최근 추가된 콘텐츠
+        ).limit(20).all()  # 상위 20개만
+        
+        popular_asset_ids = [asset.idx for asset in popular_assets]
+        logger.info(f"Selected {len(popular_asset_ids)} popular assets for preloading")
+        
+        # 추천 결과 미리 로드
+        recommender.preload_recommendations(popular_asset_ids, top_n=10, include_adult=False)
+        recommender.preload_recommendations(popular_asset_ids, top_n=10, include_adult=True)
+        
+        db.close()
+        logger.info("Finished preloading popular content recommendations")
+        
+    except Exception as e:
+        logger.error(f"Error preloading recommendations: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
+
+
 # 페이지 라우트
 @app.get("/")
 async def read_root(request: Request):
@@ -106,13 +151,6 @@ async def read_root(request: Request):
 
 @app.get("/main")
 async def read_main(request: Request):
-    try:
-        db = SessionLocal()
-        # 예시: 쿼리 실행
-        # data = db.query(SomeModel).all()
-    except Exception as e:
-        print("DB 연결 에러:", e)
-        data = None
     return templates.TemplateResponse("main.html", {"request": request, "data": data})
 
 @app.get("/drama")
