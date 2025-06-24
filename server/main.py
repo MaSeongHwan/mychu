@@ -177,6 +177,9 @@ async def read_contents(request: Request):
 async def read_contents_test(request: Request):
     return templates.TemplateResponse("contents_test.html", {"request": request})
 
+@app.get("/account")
+async def read_account(request: Request):
+    return templates.TemplateResponse("account.html", {"request": request})
 
 # 템플릿 및 정적 파일 디버깅용 라우터
 @app.get("/debug-templates")

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 선택 - WellList</title>
+  <link rel="stylesheet" href="/src/styles/login.css">
+</head>
+<body>
+  <!-- 로고 -->
+  <header class="login-header">
+    <img src="/assets/logo-welllist.png" alt="WellList Logo" class="logo" />
+  </header>
+
+  <!-- 로그인 선택 컨테이너 -->
+  <main class="login-container">
+    <h1 class="login-title">반가워요!<br>계정을 선택해주세요.</h1>
+
+    <div class="login-buttons">
+      <button class="login-btn welllist">
+        <span class="logo-icon">🖐️</span> 이메일로 시작하기
+      </button>
+      <button class="login-btn naver">
+        <span class="logo-icon">N</span> 네이버로 시작하기
+      </button>
+      <button class="login-btn kakao">
+        <span class="logo-icon">💬</span> 카카오로 시작하기
+      </button>
+    </div>
+
+    <div class="login-footer">
+      아직 계정이 없으신가요? <a href="/signup.html">회원가입</a>
+    </div>
+  </main>
+
+  <script src="/src/pages/login.js"></script>
+</body>
+</html>
