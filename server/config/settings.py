@@ -19,7 +19,7 @@ FIREBASE_MEASUREMENT_ID = os.getenv('FIREBASE_MEASUREMENT_ID')
 # 데이터베이스 설정
 DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PASSWORD = os.getenv('DB_PASSWORD', 'root')
-DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_HOST = os.getenv('DB_HOST', 'loocalhost')
 DB_PORT = os.getenv('DB_PORT', '5432')
 DB_NAME = os.getenv('DB_NAME', 'welllist')
 

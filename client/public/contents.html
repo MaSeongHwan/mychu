@@ -39,7 +39,7 @@
             <div class="emotion-tag time">시간여행</div>
             <div class="emotion-tag tear">감동</div>
           </div>
-          <p class="content-synopsis" id="summary">줄거리</p>
+          
 
           <div class="cast-section">
             <h3 class="cast-title">주요 출연</h3>
@@ -245,7 +245,7 @@
       document.getElementById("genre").innerText = data.genre;
       document.getElementById("year").innerText = data.rlse_year;
       document.getElementById("time").innerText = `${Math.floor(data.asset_time / 60)}분`;
-      document.getElementById("summary").innerText = data.smry;
+      //document.getElementById("summary").innerText = data.smry;
 
       const castList = data.actr_disp ? data.actr_disp.split(",") : [];
       const castContainer = document.getElementById("cast-list");
