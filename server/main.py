@@ -146,6 +146,10 @@ async def initialize_recommender():
 async def read_root(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+@app.get("/")
+async def read_account(request: Request):
+    return templates.TemplateResponse("account.html", {"request": request})
+
 @app.get("/index")
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -181,6 +185,10 @@ async def read_search(request: Request):
 @app.get("/contents", response_class=HTMLResponse)
 async def read_contents(request: Request):
     return templates.TemplateResponse("contents.html", {"request": request})
+
+@app.get("/account", response_class=HTMLResponse)
+async def read_contents(request: Request):
+    return templates.TemplateResponse("account.html", {"request": request})
 
 @app.get("/contents_test")
 async def read_contents_test(request: Request):

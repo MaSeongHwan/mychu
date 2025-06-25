@@ -1,140 +1,128 @@
 /* 전체 배경 및 기본 스타일 */
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #000;
-    color: #fff;
-    font-family: 'Noto Sans KR', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  /* 로고 영역 */
-  .account-header {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
-  .account-logo {
-    height: 24px;
-    object-fit: contain;
-  }
-  
-  /* 중앙 계정 선택 UI */
-  .account-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-  
-  .account-title {
-    font-size: 1.4rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: bold;
-    line-height: 1.6;
-  }
-  
-  .account-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 280px;
-  }
-  
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 로고 영역 */
+.account-header {
+  width: 100%;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.account-logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+/* 중앙 계정 선택 UI */
+.account-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.account-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: bold;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+/* 버튼 그룹 */
+.account-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.account-btn {
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  padding: 1.25rem 1.5rem;
+  border-radius: 10px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 아이콘과 텍스트 모두 중앙 정렬 */
+  text-align: center;
+  gap: 0.75rem;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.account-btn:hover {
+  background-color: #1c1c1c;
+}
+
+.logo-icon {
+  font-size: 1.3rem;
+  width: 28px;
+  text-align: center;
+}
+
+.account-btn.naver .logo-icon {
+  color: #03c75a;
+}
+.account-btn.kakao .logo-icon {
+  color: #fae100;
+}
+.account-btn.welllist .logo-icon {
+  color: #10b981;
+}
+
+/* 하단 안내 문구 */
+.account-footer {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+.account-footer a {
+  color: #10b981;
+  font-weight: 500;
+  margin-left: 0.3rem;
+  text-decoration: none;
+}
+
+.account-footer a:hover {
+  text-decoration: underline;
+}
+
+/* 반응형 미세 조정 */
+@media (max-width: 480px) {
   .account-btn {
-    background-color: #111;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.9rem 1rem;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    transition: background 0.2s;
-    cursor: pointer;
+    padding: 1rem;
   }
-  
-  .account-btn:hover {
-    background-color: #1c1c1c;
-  }
-  
+
   .logo-icon {
-    font-size: 1.1rem;
     width: 24px;
-    text-align: center;
+    font-size: 1.1rem;
   }
-  
-  .account-btn.naver .logo-icon {
-    color: #03c75a;
-  }
-  
-  .account-btn.kakao .logo-icon {
-    color: #fae100;
-  }
-  
-  .account-btn.welllist .logo-icon {
-    color: #10b981;
-  }
-  
-  /* 하단 안내 문구 */
+
   .account-footer {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #aaa;
+    font-size: 0.85rem;
   }
-  
-  .account-footer a {
-    color: #10b981;
-    font-weight: 500;
-    margin-left: 0.3rem;
-    text-decoration: none;
-  }
-  
-  .account-footer a:hover {
-    text-decoration: underline;
-  }
-  
-  .background-slide {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 300%;
-    background-image: url("/static/images/thumb2.png");
-    background-repeat: repeat-y;
-    background-size: cover;
-    animation: scroll-bg 60s linear infinite;
-    z-index: -2;
-  }
-  
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: -1;
-  }
-  
-  @keyframes scroll-bg {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-66.66%);
-    }
-  }
-  
+}
