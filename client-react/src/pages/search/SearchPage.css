@@ -1,0 +1,182 @@
+/* SearchPage.css */
+
+.main-content {
+  padding-top: 6rem;
+  min-height: calc(100vh - 70px - 250px); /* 헤더와 푸터 높이를 제외한 최소 높이 */
+}
+
+.container {
+  width: min(1400px, 90vw);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* 검색 헤더 */
+.search-header {
+  margin-bottom: 2rem;
+}
+
+.search-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.search-count {
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+.result-count {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* 검색 결과 그리드 */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* 로딩 및 에러 상태 */
+.loading-indicator,
+.error-message,
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+}
+
+.error-message {
+  color: #f87171;
+}
+
+/* 콘텐츠 카드 스타일 */
+.content-item {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.content-item:hover {
+  transform: translateY(-5px);
+}
+
+.item-poster {
+  position: relative;
+  width: 100%;
+  padding-top: 150%; /* 포스터 비율 2:3 */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #1f2937;
+}
+
+.poster-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.content-item:hover .poster-image {
+  transform: scale(1.05);
+}
+
+/* 오버레이 및 버튼 */
+.item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 50%);
+  opacity: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 1.5rem;
+  gap: 1rem;
+  transition: opacity 0.3s ease;
+}
+
+.content-item:hover .item-overlay {
+  opacity: 1;
+}
+
+.play-btn,
+.wishlist-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.play-btn {
+  color: #000;
+}
+
+.wishlist-btn {
+  color: #ef4444;
+}
+
+.play-btn:hover,
+.wishlist-btn:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+/* 콘텐츠 정보 */
+.item-info {
+  padding: 0.75rem 0.5rem;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.item-meta {
+  display: flex;
+  gap: 0.75rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.item-genre {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-year {
+  color: #9ca3af;
+}

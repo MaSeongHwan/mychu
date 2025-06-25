@@ -9,12 +9,22 @@ import './ContentSection.css';
  * @param {string} props.title - 섹션 제목
  * @param {string} props.endpoint - 데이터를 불러올 API 엔드포인트
  * @param {string} props.id - 컴포넌트 고유 ID (DOM 제어용)
- * @param {Array} props.items - 선택적: 직접 전달되는 아이템 목록 (API 호출 대신 사용)
+ * @param {Array} props.items - 직접 전달되는 아이템 목록 (API 호출 대신 사용)
+ * @param {boolean} props.isLoading - 로딩 상태 (외부에서 관리할 때)
+ * @param {string} props.error - 에러 메시지 (외부에서 관리할 때)
  */
-const ContentSection = ({ title, endpoint, id, items: initialItems }) => {
+const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: externalLoading, error: externalError }) => {
+  // 콘솔 디버깅으로 받은 props 확인
+  console.log(`ContentSection 렌더링: "${title}"`, { 
+    initialItems, 
+    externalLoading, 
+    externalError,
+    itemsLength: initialItems ? initialItems.length : 0
+  });
+
   const [items, setItems] = useState(initialItems || []);
-  const [loading, setLoading] = useState(!initialItems);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(externalLoading !== undefined ? externalLoading : !initialItems);
+  const [error, setError] = useState(externalError || null);
   const [currentIndex, setCurrentIndex] = useState(0);
   
   // 뷰포트 크기에 따라 보여질 카드 수 계산
@@ -120,31 +130,37 @@ const ContentSection = ({ title, endpoint, id, items: initialItems }) => {
         ) : items.length === 0 ? (
           <div className="empty-message">표시할 콘텐츠가 없습니다.</div>
         ) : (
-          <div className="slider-track" style={{ transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)` }}>
-            {items.map((item, index) => (
-              <div 
-                key={item.idx || index} 
-                className="content-card"
-                onClick={() => handleCardClick(item.idx)}
-              >
-                <div className="card-poster">
-                  <img 
-                    src={item.poster_path || `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
-                    alt={item.asset_nm || '포스터'}
-                    onError={(e) => {
-                      e.target.src = `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'No Image')}`;
-                    }}
-                  />
-                </div>
-                <div className="card-info">
-                  <h3 className="card-title">{item.asset_nm || item.super_asset_nm}</h3>
-                  <div className="card-meta">
-                    {item.genre && <span className="card-genre">{item.genre}</span>}
-                    {item.rlse_year && <span className="card-year">{item.rlse_year}</span>}
+          <div className="slider-track" style={{ transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)` }}>            {Array.isArray(items) && items.map((item, index) => {
+              if (!item) {
+                console.warn(`Null or undefined item at index ${index} in ${title} section`);
+                return null;
+              }
+              
+              return (
+                <div 
+                  key={item.idx || `item-${index}`} 
+                  className="content-card"
+                  onClick={() => handleCardClick(item.idx)}
+                >
+                  <div className="card-poster">
+                    <img 
+                      src={item.poster_path || `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
+                      alt={item.asset_nm || '포스터'}
+                      onError={(e) => {
+                        e.target.src = `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'No Image')}`;
+                      }}
+                    />
+                  </div>
+                  <div className="card-info">
+                    <h3 className="card-title">{item.asset_nm || item.super_asset_nm || '제목 없음'}</h3>
+                    <div className="card-meta">
+                      {item.genre && <span className="card-genre">{item.genre}</span>}
+                      {item.rlse_year && <span className="card-year">{item.rlse_year}</span>}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

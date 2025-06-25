@@ -196,10 +196,13 @@ async def read_contents(request: Request):
 async def read_contents_test(request: Request):
     return templates.TemplateResponse("contents_test.html", {"request": request})
 
-# React 앱 라우팅을 위한 경로
-@app.get("/react/{full_path:path}", response_class=HTMLResponse)
-async def serve_react_app(request: Request, full_path: str = ""):
-    # React 빌드 디렉토리에서 index.html을 제공
+# React 앱 라우팅을 위한 경로 추가 (React Router 지원)
+@app.get("/react-app/{full_path:path}", response_class=HTMLResponse)
+async def serve_react_routes(request: Request, full_path: str = ""):
+    """
+    React Router를 사용하는 SPA에서 클라이언트 사이드 라우팅을 지원합니다.
+    모든 경로에 대해 React 앱의 index.html을 제공합니다.
+    """
     REACT_DIST_DIR = os.path.join(BASE_DIR, "client-react", "dist")
     index_path = os.path.join(REACT_DIST_DIR, "index.html")
     
@@ -209,11 +212,11 @@ async def serve_react_app(request: Request, full_path: str = ""):
                 html_content = f.read()
             return HTMLResponse(content=html_content)
         except Exception as e:
-            logger.error(f"Error serving React app: {str(e)}")
-            return JSONResponse(status_code=500, content={"error": "Failed to serve React app"})
+            logger.error(f"React 앱 제공 오류: {str(e)}")
+            return JSONResponse(status_code=500, content={"error": "React 앱을 제공할 수 없습니다"})
     else:
-        return JSONResponse(status_code=404, content={"error": "React build not found"})
-
+        logger.error(f"React 빌드를 찾을 수 없습니다: {index_path}")
+        return JSONResponse(status_code=404, content={"error": "React 빌드를 찾을 수 없습니다"})
 
 # 템플릿 및 정적 파일 디버깅용 라우터
 @app.get("/debug-templates")

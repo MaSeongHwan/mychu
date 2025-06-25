@@ -73,15 +73,15 @@ const Hero = ({ slides = [] }) => {
           setHeroData(slides);
           return;
         }
-        
-        // API에서 데이터 가져오기
-        const response = await fetch('/api/recommendation/hero');
+          // API에서 데이터 가져오기
+        // 실제 API가 존재하지 않으므로 기존 테스트 API를 사용
+        const response = await fetch('/recommendation/test?n=5&is_adult=false&is_main=true');
         if (!response.ok) {
           throw new Error('히어로 데이터를 불러오는데 실패했습니다.');
         }
         
         const data = await response.json();
-        const heroItems = data?.result || [];
+        const heroItems = data?.items || [];
         
         if (heroItems.length === 0) {
           // API 응답이 비었을 경우 샘플 데이터 사용

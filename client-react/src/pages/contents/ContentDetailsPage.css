@@ -1,0 +1,258 @@
+.content-details-page {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* 배경 이미지 스타일 */
+.content-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80vh;
+  background-size: cover;
+  background-position: center top;
+  z-index: -1;
+}
+
+.backdrop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(15, 17, 22, 0.7) 0%, rgba(15, 17, 22, 0.8) 50%, rgba(15, 17, 22, 1) 95%);
+}
+
+/* 콘텐츠 정보 컨테이너 */
+.content-info-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 1rem 2rem;
+  gap: 2rem;
+}
+
+/* 포스터 이미지 */
+.content-poster {
+  flex: 0 0 300px;
+}
+
+.content-poster img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 콘텐츠 상세 정보 */
+.content-info {
+  flex: 1;
+  color: #ffffff;
+}
+
+.content-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+/* 메타 정보 (개봉년도, 장르, 러닝타임 등) */
+.content-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: #c0c0c0;
+  font-size: 1rem;
+}
+
+.meta-divider {
+  margin: 0 0.5rem;
+}
+
+.content-rating {
+  background-color: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* 줄거리 */
+.content-synopsis {
+  margin-bottom: 1.5rem;
+}
+
+.content-synopsis h3 {
+  font-size: 1.2rem;
+  color: #c0c0c0;
+  margin-bottom: 0.5rem;
+}
+
+.content-synopsis p {
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* 감독 및 출연 정보 */
+.content-people {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.content-director {
+  margin-right: 2rem;
+}
+
+.content-people h3 {
+  font-size: 1.2rem;
+  color: #c0c0c0;
+  margin-bottom: 0.5rem;
+}
+
+/* 액션 버튼 */
+.content-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.play-button, .add-list-button {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.play-button {
+  background-color: #e50914;
+  color: white;
+}
+
+.add-list-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* 관련 콘텐츠 섹션 */
+.related-content {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.related-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.related-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.related-content-item {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.related-content-item:hover {
+  transform: scale(1.05);
+}
+
+.related-content-item img {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.related-content-item h3 {
+  font-size: 0.9rem;
+  color: #c0c0c0;
+  font-weight: 400;
+}
+
+/* 로딩 상태 */
+.content-details-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  color: #c0c0c0;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #e50914;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+/* 에러 상태 */
+.content-details-error {
+  max-width: 500px;
+  margin: 5rem auto;
+  text-align: center;
+  color: #c0c0c0;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.content-details-error button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .content-info-container {
+    flex-direction: column;
+    padding-top: 6rem;
+  }
+  
+  .content-poster {
+    flex: 0 0 auto;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  .content-info h1 {
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .content-people {
+    flex-direction: column;
+  }
+  
+  .content-director {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .related-content-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

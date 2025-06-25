@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
-import Hero from '../components/hero/Hero';
-import ContentSection from '../components/content/ContentSection';
+import Hero from '../../components/hero/Hero';
+import ContentSection from '../../components/content/ContentSection';
+import { recommendationAPI } from '../../services/api';
 import './HomePage.css';
 
 /**
@@ -98,63 +97,61 @@ const HomePage = () => {
       genre: 'SF',
       poster_path: 'https://via.placeholder.com/300x450?text=Movie+5',
       rlse_year: '2022'
-    },
-    {
-      idx: '6',
-      asset_nm: '샘플 영화 6',
-      genre: '판타지',
-      poster_path: 'https://via.placeholder.com/300x450?text=Movie+6',
-      rlse_year: '2020'
     }
   ];
 
+  // 실패 시 샘플 데이터 사용
+  const heroContent = heroData.length > 0 ? heroData[0] : {
+    idx: '1',
+    asset_nm: '히어로 샘플 콘텐츠',
+    genre: '드라마',
+    poster_path: 'https://via.placeholder.com/1200x600?text=Hero+Banner',
+    backdrop_path: 'https://via.placeholder.com/1920x1080?text=Hero+Background',
+    synopsis: '이것은 히어로 섹션에 표시될 샘플 콘텐츠입니다. API 연동 시 실제 데이터로 대체됩니다.'
+  };
+
   return (
-    <div className="app">
-      {/* 헤더 */}
-      <Header />
-      
+    <div className="home-page">
       {/* 히어로 섹션 */}
-      <Hero slides={heroData.length > 0 ? heroData : undefined} />
-      
-      {/* 메인 콘텐츠 */}
-      <main className="main-content">
-        <div className="container">          
-          {/* 인기 콘텐츠 */}
-          <ContentSection 
-            title="오늘의 인기 콘텐츠" 
-            endpoint="/recommendation/top?n=10"
-            id="popular-content"
-            items={loading ? [] : sampleContentItems}
-          />
-          
-          {/* 감정 기반 추천 */}
-          <ContentSection 
-            title={`${userName}님, 오늘은 기분 전환이 필요해 보여요`}
-            endpoint="/recommendation/test?n=10&genre=코미디"
-            id="mood-content"
-            items={loading ? [] : sampleContentItems}
-          />
-          
-          {/* 최신 콘텐츠 */}
-          <ContentSection 
-            title="따끈따끈한 신작, 지금 만나보세요"
-            endpoint="/recommendation/recent?n=10"
-            id="recent-content"
-            items={loading ? [] : sampleContentItems}
-          />
-          
-          {/* 테스트용 API 기반 추천 */}
-          <ContentSection 
-            title="테스트 API 기반 추천 슬라이더 (10개)"
-            endpoint="/recommendation/test?n=10"
-            id="test-recommendation"
-            items={userRecommendations.length > 0 ? userRecommendations : []}
-          />
-        </div>
-      </main>
-      
-      {/* 푸터 */}
-      <Footer />
+      <Hero 
+        content={heroContent}
+        isLoading={loading}
+      />
+
+      {/* 콘텐츠 섹션들 */}
+      <div className="content-sections">
+        {/* 인기 콘텐츠 */}
+        <ContentSection 
+          title="인기 콘텐츠"
+          items={popularContent.length > 0 ? popularContent : sampleContentItems}
+          isLoading={loading}
+          error={error}
+        />
+        
+        {/* 최신 콘텐츠 */}
+        <ContentSection 
+          title="최신 업데이트"
+          items={recentContent.length > 0 ? recentContent : sampleContentItems}
+          isLoading={loading}
+          error={error}
+        />
+        
+        {/* 장르별 콘텐츠 */}
+        <ContentSection 
+          title="액션 영화"
+          items={genreContent.length > 0 ? genreContent : sampleContentItems}
+          isLoading={loading}
+          error={error}
+        />
+        
+        {/* 사용자 추천 콘텐츠 */}
+        <ContentSection 
+          title={`${userName}님을 위한 추천`}
+          items={userRecommendations.length > 0 ? userRecommendations : sampleContentItems}
+          isLoading={loading}
+          error={error}
+        />
+      </div>
     </div>
   );
 };

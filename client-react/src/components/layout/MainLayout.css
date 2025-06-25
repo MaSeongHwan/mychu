@@ -1,0 +1,19 @@
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #0f1116;
+  color: #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 70px; /* 헤더 높이에 맞춰 조정 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 60px;
+  }
+}
