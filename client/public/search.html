@@ -89,7 +89,7 @@
                     contentItem.innerHTML = `
                         <div class="item-poster">
                             <img src="${item.poster_path || 'https://via.placeholder.com/200x300'}" 
-                                 alt="${item.asset_nm}" class="poster-image">
+                                 alt="${item.super_asset_nm}" class="poster-image">
                             <div class="item-overlay">
                                 <button class="play-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="item-info">
-                            <h3 class="item-title">${item.asset_nm}</h3>
+                            <h3 class="item-title">${item.super_asset_nm}</h3>
                             <div class="item-meta">
                                 <span class="item-genre">${item.genre || '장르 없음'}</span>
                                 ${item.rlse_year ? `<span class="item-year">${item.rlse_year}</span>` : ''}
