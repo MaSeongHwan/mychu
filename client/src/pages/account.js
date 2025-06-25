@@ -1,5 +1,5 @@
-const NAVER_CLIENT_ID = "처드야";
-const KAKAO_CLIENT_ID = "노션보고 바꿔줘 부탁해~";
+const NAVER_CLIENT_ID = "리액트 버전으로";
+const KAKAO_CLIENT_ID = "수정 필요";
 
 /* 기존 이메일 로그인*/
 document.querySelector('.account-btn.welllist')?.addEventListener('click', () => {

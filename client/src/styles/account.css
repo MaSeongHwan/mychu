@@ -1,18 +1,35 @@
-/* 전체 배경 및 기본 스타일 */
-body {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #000;
+  overflow-x: hidden;
+}
+
+body {
+  background: url('/client/public/images/login_image1.png') center/cover no-repeat fixed;
   color: #fff;
   font-family: 'Noto Sans KR', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
 }
 
-/* 로고 영역 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 17, 22, 0.7); /* 어두운 오버레이 */
+  z-index: -1;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* === 로고 === */
 .account-header {
   width: 100%;
   padding: 1rem 2rem;
@@ -26,7 +43,7 @@ body {
   object-fit: contain;
 }
 
-/* 중앙 계정 선택 UI */
+/* === 메인 컨테이너 === */
 .account-container {
   flex: 1;
   display: flex;
@@ -45,7 +62,7 @@ body {
   margin-bottom: 2.5rem;
 }
 
-/* 버튼 그룹 */
+/* === 버튼 그룹 === */
 .account-buttons {
   display: flex;
   flex-direction: column;
@@ -54,49 +71,49 @@ body {
   max-width: 400px;
 }
 
-/* 버튼 스타일 */
 .account-btn {
-  background-color: #111;
+  background-color: rgba(15, 17, 22, 0.3);
   border: 1px solid #333;
-  border-radius: 8px;
+  border-radius: 10px;
   color: #fff;
   font-size: clamp(1.1rem, 2vw, 1.25rem);
   font-weight: 500;
-  padding: 1.25rem 5rem;
-  border-radius: 10px;
-  text-align: left;
+  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center; /* 아이콘과 텍스트 모두 중앙 정렬 */
-  text-align: center;
+  justify-content: flex-start;
   gap: 0.75rem;
-  transition: background 0.2s;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-/* 호버 효과 */
 .account-btn:hover {
-  background-color: #1c1c1c;
+  background-color: #374151;
 }
 
+/* === 버튼 아이콘 (.logo-icon은 span/img 공통) === */
 .logo-icon {
   width: 24px;
   height: 24px;
   object-fit: contain;
   margin-right: 0.75rem;
+  vertical-align: middle;
 }
 
+/* === 플랫폼별 색상 강조 (선택) === */
 .account-btn.naver .logo-icon {
   color: #03c75a;
 }
+
 .account-btn.kakao .logo-icon {
   color: #fae100;
 }
+
 .account-btn.welllist .logo-icon {
   color: #10b981;
 }
 
-/* 하단 안내 문구 */
+/* === 하단 안내 문구 === */
 .account-footer {
   margin-top: 2rem;
   font-size: 0.95rem;
@@ -114,15 +131,16 @@ body {
   text-decoration: underline;
 }
 
-/* 반응형 미세 조정 */
+/* === 반응형 대응 (모바일) === */
 @media (max-width: 480px) {
   .account-btn {
     padding: 1rem;
+    font-size: 1rem;
   }
 
   .logo-icon {
-    width: 24px;
-    font-size: 1.1rem;
+    width: 20px;
+    height: 20px;
   }
 
   .account-footer {

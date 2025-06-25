@@ -188,7 +188,7 @@ async def read_search(request: Request):
 async def read_contents(request: Request):
     return templates.TemplateResponse("contents.html", {"request": request})
 
-@app.get("/account", response_class=HTMLResponse)
+@app.get("/account")
 async def read_contents(request: Request):
     return templates.TemplateResponse("account.html", {"request": request})
 
