@@ -3,86 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>검색 결과 - WellList</title>
-  <link rel="stylesheet" href="/src/styles/search.css">
-  
-  <!-- 검색 페이지 전용 스타일 -->
-  <style>
-    .main-content {
-      padding-top: 80px;
-      min-height: calc(100vh - 120px);
-    }
-    #search-results {
-      margin: 2rem 0;
-    }
-    .search-form {
-      margin-bottom: 2rem;
-    }
-    .search-input-wrapper {
-      position: relative;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .search-input-large {
-      width: 100%;
-      padding: 0.75rem 1rem 0.75rem 3rem;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background-color: rgba(255,255,255,0.1);
-      color: #fff;
-    }
-    .search-icon-large {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(255,255,255,0.6);
-    }
-    .search-prompt, .no-results, .loading-indicator, .error-message {
-      text-align: center;
-      padding: 3rem 0;
-      color: rgba(255,255,255,0.6);
-    }
-    .error-message {
-      color: #e74c3c;
-    }
-  </style>
-  
-  <script type="module">
-    import { loadHeader } from '/components/loadHeader.js';
-    document.addEventListener('DOMContentLoaded', () => {
-      loadHeader();
-    });
-  </script>
+    <title>검색 결과 - WellList</title>
+    <link rel="stylesheet" href="../src/styles/search.css">
 </head>
 <body>
-    <!-- Header는 loadHeader.js에 의해 자동으로 삽입됩니다 -->
+    <!-- 헤더 (상단바) -->
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
       <div class="container">
-            <section id="search-results">
-                <div class="section-header">
-                    <h2>검색 결과</h2>
+            <!-- 검색 결과 헤더 -->
+            <div class="search-header">
+                <div class="search-info">
+                    <h1 class="search-title">'검색어' 검색 결과</h1>
+                    <p class="search-count">총 <span class="result-count">10</span>개의 콘텐츠를 찾았습니다</p>
                 </div>
-                
-                <div class="search-form">
-                    <div class="search-input-wrapper">
-                        <svg class="search-icon-large" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <input type="text" id="q" class="search-input-large" placeholder="콘텐츠 검색..." autocomplete="off">
-                    </div>
-                </div>
-                
-                <div id="results-grid" class="content-grid">
-                    <!-- 결과는 자바스크립트로 동적 로드됩니다 -->
-                    <div class="search-prompt">
-                        <p>검색어를 입력하세요</p>
-                    </div>
-                </div>
-            </section>
+          </div>
 
             <!-- 검색 결과 그리드 -->
             <section class="search-results">

@@ -1,55 +1,30 @@
-# Python virtual environments
+# Python 관련
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# 가상환경 통째로 무시
 venv/
 .venv/
 env/
 ENV/
 
-# Python cache files
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+# Node.js 관련
+client-react/node_modules
+client-react/.env
+client-react/dist
+client-react/build
 
-# Node.js dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Version control
-.git/
-.gitignore
-
-# IDE and editor files
-.idea/
-.vscode/
+# 기타
+.DS_Store
 *.swp
 *.swo
-.DS_Store
-
-# Log files
 *.log
 
-# Local environment files
-.env
-.env.*
-!.env.example
-
-# Docker related
-.dockerignore
-Dockerfile*
-docker-compose*
-
-# Build output directories
-dist/
-build/
-*.egg-info/
-
-# Large model files
-server/core/recommender_assets/*.npy
-
-# 모델 관련 파일 및 디렉토리
+# 모델, 체크포인트
 *.npy
 *.npz
 data/

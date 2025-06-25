@@ -38,6 +38,18 @@ yarn-error.log*
 venv/
 .venv/
 node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Vite & React
+client-react/node_modules/
+client-react/dist/
+client-react/.vite/
+client-react/.env.local
+client-react/.env.development.local
+client-react/.env.test.local
+client-react/.env.production.local
 
 # 모델 파일
 server/core/recommender_assets/*.npy

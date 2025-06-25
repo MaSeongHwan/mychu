@@ -209,7 +209,18 @@
         </div>
         <div class="slider" id="recent-main-slider">
           <div class="error-message">콘텐츠를 불러오는데 실패했습니다.</div>
+        </div>      </section>
+
+      <!-- 4. React 기반 추천 슬라이더 (새로운 섹션) -->
+      <section class="section" id="react-slider-section">
+        <div class="section-header">
+          <h2>React 기반 추천 슬라이더</h2>
+          <div class="section-note">
+            <span>New!</span>
+          </div>
         </div>
+        <!-- React 슬라이더가 마운트될 요소 -->
+        <div id="react-slider-mount" data-title="리액트 기반 추천 슬라이더" data-url="/recommendation/top?n=10"></div>
       </section>
 
     </div>
@@ -226,8 +237,14 @@
 
   <!-- 공통 헤더 및 초기화 스크립트 -->
   <script type="module" src="/src/init.js"></script>
-
   <!-- 메인 페이지 전용 스크립트 -->
   <script type="module" src="/src/pages/main.js"></script>
+  
+  <!-- React 슬라이더 컴포넌트 로드 -->
+  <!-- 프로덕션 환경 -->
+  <script type="module" src="/react/slider.es.js"></script>
+  
+  <!-- 개발 환경 (로컬 개발 서버에서 작업 시) -->
+  <!-- <script type="module" src="http://localhost:5173/src/StandaloneSlider.jsx"></script> -->
 </body>
 </html>

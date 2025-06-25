@@ -17,8 +17,6 @@ from server.api.routes.log import router as log_router
 from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
 #from server.api.routes.adult_recommendation import router as adult_rec_router
 from server.api.routes.today_recommendation import router as today_rec_router
-# 감정 추천 라우터 
-from server.api.routes.emotion_recommendation import router as emotion_rec_router
 
 
 
@@ -37,7 +35,7 @@ router = APIRouter()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*", "http://localhost:5173", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -66,6 +64,14 @@ app.mount("/src", StaticFiles(directory=CLIENT_SRC_DIR), name="src")
 app.mount("/client", StaticFiles(directory=CLIENT_DIR), name="client")
 app.mount("/components", StaticFiles(directory="client/public/components"), name="components")
 
+# React 컴포넌트 서빙
+REACT_DIST_DIR = os.path.join(BASE_DIR, "client-react", "dist")
+if os.path.exists(REACT_DIST_DIR):
+    logger.info(f"React build directory found at: {REACT_DIST_DIR}")
+    app.mount("/react", StaticFiles(directory=REACT_DIST_DIR), name="react")
+else:
+    logger.warning(f"React build directory not found at: {REACT_DIST_DIR}")
+
 # 정적 파일 존재 여부 확인 및 로깅
 css_path = os.path.join(CLIENT_SRC_DIR, "styles", "mylist.css")
 if os.path.exists(css_path):
@@ -82,9 +88,6 @@ app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
 app.include_router(today_rec_router, prefix="",        tags=["recommendation"])
-# 감정 추천 라우터
-app.include_router(emotion_rec_router, prefix="", tags=["recommendation"])
-
 
 # 로거 설정
 logger = logging.getLogger("uvicorn")
@@ -140,12 +143,8 @@ async def initialize_recommender():
 
 # 페이지 라우트
 @app.get("/")
-async def read_account(request: Request):
+async def read_root(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
-
-@app.get("/")
-async def read_account(request: Request):
-    return templates.TemplateResponse("account.html", {"request": request})
 
 @app.get("/index")
 async def read_root(request: Request):

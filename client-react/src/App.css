@@ -1,0 +1,86 @@
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  background-color: #0f1116;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #2a2c35;
+}
+
+.app-header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mode-selector button {
+  background: #1f2937;
+  color: white;
+  border: 1px solid #374151;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-selector button:hover {
+  background: #374151;
+}
+
+.mode-selector button.active {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.app-content {
+  flex-grow: 1;
+  padding: 1rem 0;
+}
+
+.app-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.app-content p {
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+.full-app-mode,
+.single-slider-mode,
+.demo-mode {
+  padding: 1rem 0;
+}
+
+.app-footer {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid #2a2c35;
+  text-align: center;
+  color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
+  
+  .mode-selector {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
