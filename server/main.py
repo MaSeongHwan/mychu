@@ -17,6 +17,8 @@ from server.api.routes.log import router as log_router
 from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
 #from server.api.routes.adult_recommendation import router as adult_rec_router
 from server.api.routes.today_recommendation import router as today_rec_router
+# 감정 추천 라우터 
+from server.api.routes.emotion_recommendation import router as emotion_rec_router
 
 
 
@@ -80,6 +82,9 @@ app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
 app.include_router(today_rec_router, prefix="",        tags=["recommendation"])
+# 감정 추천 라우터
+app.include_router(emotion_rec_router, prefix="", tags=["recommendation"])
+
 
 # 로거 설정
 logger = logging.getLogger("uvicorn")
