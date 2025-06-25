@@ -96,4 +96,14 @@ loadHeader().then(async () => {
       }
     }
   });
+
+  // 헤더 검색 input에서 엔터 시 검색 결과 페이지로 이동
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const query = searchInput.value.trim();
+      if (query.length > 0) {
+        window.location.href = `/search?q=${encodeURIComponent(query)}`;
+      }
+    }
+  });
 });
