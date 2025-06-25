@@ -71,3 +71,35 @@ def recommend_by_emotion(db: Session, user_vector, top_k=10):
     dominant_emotion = emotion_keys[np.argmax(user_vector)]
 
     return recommended, dominant_emotion
+
+def get_dominant_emotion_from_recent_logs(db: Session, user_id: int, top_n: int = 5):
+    """
+    유저의 최근 시청 로그 중 감정 스코어가 가장 높은 감정을 dominant emotion으로 반환
+    """
+    from server.models.asset import AssetEmotion
+    from server.models.user import VodLog
+
+    emotion_keys = [
+        'emotion_anger', 'emotion_anticipation', 'emotion_disgust', 'emotion_fear',
+        'emotion_joy', 'emotion_negative', 'emotion_positive', 'emotion_sadness',
+        'emotion_surprise', 'emotion_trust'
+    ]
+
+    logs = (
+        db.query(*[getattr(AssetEmotion, key) for key in emotion_keys])
+        .join(VodLog, VodLog.asset_idx == AssetEmotion.idx)
+        .filter(VodLog.user_idx == user_id)
+        .order_by(VodLog.strt_dt.desc())
+        .limit(top_n)
+        .all()
+    )
+
+    if not logs:
+        return None
+
+    emotion_array = np.array(logs)
+    avg_vector = emotion_array.mean(axis=0)
+    dominant_idx = np.argmax(avg_vector)
+    dominant_emotion = emotion_keys[dominant_idx].replace("emotion_", "")
+    return dominant_emotion
+

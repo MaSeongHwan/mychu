@@ -36,10 +36,24 @@ def get_emotion_based_recommendation(
     if user_vector is None:
         raise HTTPException(status_code=404, detail="감정 추정 불가 (시청 로그 부족)")
 
-    # 추천 및 지배 감정
-    recommended_assets, dominant_emotion = recommend_by_emotion(db, user_vector, top_k)
-    emotion_message = get_emotion_message(dominant_emotion)
-    nickname = user.nick_name or "고객"
+    # # 추천 및 지배 감정
+    # recommended_assets, dominant_emotion = recommend_by_emotion(db, user_vector, top_k)
+    # emotion_message = get_emotion_message(dominant_emotion)
+    # nickname = user.nick_name or "고객"
+    # 추천
+# 추천
+    recommended_assets, _ = recommend_by_emotion(db, user_vector, top_k)
+
+    # 최근 로그 기반 감정 메시지
+    from server.core.services.emotion_utils import get_dominant_emotion_from_recent_logs
+    dominant_emotion = get_dominant_emotion_from_recent_logs(db, user_id)
+    if dominant_emotion:
+        emotion_message = get_emotion_message(dominant_emotion)
+    else:
+        emotion_message = "오늘의 추천 콘텐츠입니다."
+    nickname = user.nick_name or "고객"  # ✅ 이 줄 다시 추가!
+
+
 
     # 응답 포맷팅
     items = [
