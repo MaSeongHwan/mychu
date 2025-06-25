@@ -1,0 +1,76 @@
+/* 전역 스타일 */
+@import './variables.css';
+@import './reset.css';
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-light) 50%, var(--color-background-dark) 100%);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-secondary) 100%);
+}
+
+/* 공통 유틸리티 클래스 */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.hidden { display: none; }
+.visible { display: block; }
+
+.flex { display: flex; }
+.flex-center { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.grid { display: grid; }
+
+/* 애니메이션 유틸리티 */
+.fade-in {
+  animation: fadeIn var(--transition-base) ease;
+}
+
+.slide-up {
+  animation: slideUp var(--transition-base) ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}

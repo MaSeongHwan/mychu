@@ -1,0 +1,278 @@
+.landing-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 배경 격자 */
+.background-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="20" height="30" fill="%23333" x="0" y="0"/><rect width="20" height="30" fill="%23444" x="20" y="0"/><rect width="20" height="30" fill="%23333" x="40" y="0"/><rect width="20" height="30" fill="%23444" x="60" y="0"/><rect width="20" height="30" fill="%23333" x="80" y="0"/><rect width="20" height="30" fill="%23444" x="0" y="30"/><rect width="20" height="30" fill="%23333" x="20" y="30"/><rect width="20" height="30" fill="%23444" x="40" y="30"/><rect width="20" height="30" fill="%23333" x="60" y="30"/><rect width="20" height="30" fill="%23444" x="80" y="30"/><rect width="20" height="40" fill="%23333" x="0" y="60"/><rect width="20" height="40" fill="%23444" x="20" y="60"/><rect width="20" height="40" fill="%23333" x="40" y="60"/><rect width="20" height="40" fill="%23444" x="60" y="60"/><rect width="20" height="40" fill="%23333" x="80" y="60"/></svg>') repeat;
+  background-size: 400px 300px;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  z-index: 2;
+}
+
+/* 메인 콘텐츠 */
+.landing-content {
+  text-align: center;
+  z-index: 3;
+  position: relative;
+  padding: 2rem;
+}
+
+/* 브랜드 섹션 */
+.brand-section {
+  margin-bottom: 4rem;
+}
+
+.brand-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.heart-logo {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 4px 20px rgba(78, 205, 196, 0.4));
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(1.05); 
+  }
+}
+
+.brand-name {
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: white;
+  margin: 0;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* 액션 섹션 */
+.action-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.action-badge {
+  background: rgba(78, 205, 196, 0.15);
+  color: #4ecdc4;
+  padding: 0.7rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid rgba(78, 205, 196, 0.3);
+  backdrop-filter: blur(15px);
+  text-transform: none;
+  letter-spacing: 1px;
+}
+
+.start-button {
+  background: linear-gradient(135deg, #e6f72a 0%, #4ecdc4 100%);
+  color: #1a1a2e;
+  border: none;
+  padding: 1.2rem 4rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 25px rgba(78, 205, 196, 0.3);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.start-button:hover::before {
+  left: 100%;
+}
+
+.start-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(78, 205, 196, 0.5);
+  background: linear-gradient(135deg, #f0fb2f 0%, #52d4cc 100%);
+}
+
+.start-button:active {
+  transform: translateY(-1px);
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.signup-button {
+  background: transparent;
+  color: #4ecdc4;
+  border: 2px solid #4ecdc4;
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 1px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  margin-top: 1rem;
+}
+
+.signup-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.signup-button:hover::before {
+  left: 100%;
+}
+
+.signup-button:hover {
+  background: rgba(78, 205, 196, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.2);
+  border-color: #52d4cc;
+  color: #52d4cc;
+}
+
+.signup-button:active {
+  transform: translateY(0);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+  }
+  
+  .heart-logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .start-button {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+  }
+  
+  .signup-button {
+    padding: 0.9rem 2.5rem;
+    font-size: 1rem;
+  }
+  
+  .landing-content {
+    padding: 1.5rem;
+  }
+  
+  .brand-section {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-name {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .heart-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .start-button {
+    padding: 0.9rem 2.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .signup-button {
+    padding: 0.8rem 2rem;
+    font-size: 0.95rem;
+  }
+  
+  .action-badge {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .landing-content {
+    padding: 1rem;
+  }
+}
+
+/* 다크모드 대응 */
+@media (prefers-color-scheme: light) {
+  .grid-overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0.9) 100%
+    );
+  }
+  
+  .brand-name {
+    color: #1a1a2e;
+    text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8);
+  }
+}

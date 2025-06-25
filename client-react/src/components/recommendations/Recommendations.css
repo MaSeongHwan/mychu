@@ -1,0 +1,148 @@
+/* Recommendations 컴포넌트 스타일 */
+.recommendations-section {
+  padding: 2rem 0;
+  background: transparent;
+}
+
+.recommendations-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.recommendations-slider {
+  position: relative;
+  overflow-x: auto;
+  padding: 0 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.recommendations-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.card-container {
+  display: flex;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  width: max-content;
+}
+
+.product-card {
+  min-width: 200px;
+  max-width: 200px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+  border-color: #10b981;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+}
+
+.product-image {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.card-title {
+  padding: 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 로딩 및 에러 상태 */
+.recommendations-loading,
+.recommendations-error,
+.recommendations-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+.recommendations-error {
+  color: #ef4444;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .recommendations-section {
+    padding: 1.5rem 0;
+  }
+  
+  .recommendations-title {
+    font-size: 1.25rem;
+    padding: 0 1rem;
+  }
+  
+  .recommendations-slider {
+    padding: 0 1rem;
+  }
+  
+  .card-container {
+    gap: 1rem;
+  }
+  
+  .product-card {
+    min-width: 160px;
+    max-width: 160px;
+  }
+  
+  .product-image {
+    height: 240px;
+  }
+  
+  .card-title {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    min-width: 140px;
+    max-width: 140px;
+  }
+  
+  .product-image {
+    height: 210px;
+  }
+  
+  .card-title {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+}

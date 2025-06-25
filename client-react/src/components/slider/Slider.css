@@ -1,52 +1,73 @@
-/* Slider.css - React Slider Component Styles */
+/* Slider.css - React Slider Component Styles (HTML 버전과 일치) */
 
 .slider-section {
-  margin: 2rem 0;
+  padding: 2rem 0;
+  background: transparent;
 }
 
 .slider-title {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-weight: 600;
   color: #fff;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
 }
 
 .slider-container {
   position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
+  overflow-x: auto;
+  padding: 0 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.slider-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
+.slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+.card-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  width: max-content;
+}
+
+.product-card {
+  min-width: 200px;
+  max-width: 200px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 1rem;
+  overflow: hidden;
   cursor: pointer;
-  z-index: 2;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.slider-nav:hover {
-  background: rgba(0, 0, 0, 0.7);
+.product-card:hover {
+  transform: scale(1.05);
+  border-color: #10b981;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
 }
 
-.slider-nav:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+.product-image {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
 }
 
-.slider-nav.prev {
-  left: -20px;
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
 }
 
 .slider-nav.next {
@@ -99,6 +120,17 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card-genre,
@@ -145,15 +177,51 @@
   .content-card {
     flex: 0 0 calc(100% / 2); /* 2 cards per view */
   }
+  
+  .slider-section {
+    padding: 1.5rem 0;
+  }
+  
+  .slider-title {
+    font-size: 1.25rem;
+    padding: 0 1rem;
+  }
+  
+  .slider-container {
+    padding: 0 1rem;
+  }
+  
+  .card-container {
+    gap: 1rem;
+  }
+  
+  .product-card {
+    min-width: 160px;
+    max-width: 160px;
+  }
+  
+  .product-image {
+    height: 240px;
+  }
+  
+  .card-title {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .content-card {
-    flex: 0 0 100%; /* 1 card per view */
+  .product-card {
+    min-width: 140px;
+    max-width: 140px;
   }
   
-  .slider-nav {
-    height: 30px;
-    width: 30px;
+  .product-image {
+    height: 210px;
+  }
+  
+  .card-title {
+    padding: 0.5rem;
+    font-size: 0.7rem;
   }
 }

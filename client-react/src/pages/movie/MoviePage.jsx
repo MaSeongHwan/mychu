@@ -1,119 +1,145 @@
 import { useState, useEffect } from 'react';
+import Hero from '../../components/hero/Hero';
 import ContentSection from '../../components/content/ContentSection';
 import './MoviePage.css';
 
 /**
- * 영화 전용 페이지 컴포넌트
+ * 영화 전용 페이지 컴포넌트 - 메인 페이지와 동일한 UI 구조
  */
 const MoviePage = () => {
-  const [categories, setCategories] = useState([]);
-  const [genreMovies, setGenreMovies] = useState({});
+  const [heroData, setHeroData] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [recentMovies, setRecentMovies] = useState([]);
+  const [genreMovies, setGenreMovies] = useState([]);
+  const [userRecommendations, setUserRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userName, setUserName] = useState('사용자');
 
+  // 영화 데이터 로드
   useEffect(() => {
-    const fetchMovieData = async () => {
+    const loadMovieData = async () => {
       setLoading(true);
       try {
-        // 카테고리 및 장르 정보 가져오기
-        const genresResponse = await fetch('/api/movies/genres');
-        const genresData = await genresResponse.json();
+        // 영화 전용 샘플 데이터
+        const sampleMovieData = [
+          {
+            idx: '1',
+            asset_nm: '탑건: 매버릭',
+            genre: '액션',
+            poster_path: 'https://placehold.co/300x450?text=탑건+매버릭',
+            release_year: '2022',
+            rating: '4.8',
+            description: '전설적인 파일럿 매버릭이 돌아온다'
+          },
+          {
+            idx: '2',
+            asset_nm: '어벤져스: 엔드게임',
+            genre: '액션',
+            poster_path: 'https://placehold.co/300x450?text=어벤져스+엔드게임',
+            release_year: '2019',
+            rating: '4.9',
+            description: '마블 시네마틱 유니버스의 대서사시'
+          },
+          {
+            idx: '3',
+            asset_nm: '기생충',
+            genre: '스릴러',
+            poster_path: 'https://placehold.co/300x450?text=기생충',
+            release_year: '2019',
+            rating: '4.7',
+            description: '계급 사회의 모순을 그린 작품'
+          },
+          {
+            idx: '4',
+            asset_nm: '아바타: 물의 길',
+            genre: 'SF',
+            poster_path: 'https://placehold.co/300x450?text=아바타+물의+길',
+            release_year: '2022',
+            rating: '4.6',
+            description: '판도라에서 펼쳐지는 새로운 모험'
+          },
+          {
+            idx: '5',
+            asset_nm: '인터스텔라',
+            genre: 'SF',
+            poster_path: 'https://placehold.co/300x450?text=인터스텔라',
+            release_year: '2014',
+            rating: '4.8',
+            description: '우주를 향한 인류의 마지막 희망'
+          }
+        ];
         
-        setCategories(genresData.genres || []);
+        setHeroData(sampleMovieData.slice(0, 5));
+        setPopularMovies(sampleMovieData);
+        setRecentMovies(sampleMovieData);
+        setGenreMovies(sampleMovieData);
+        setUserRecommendations(sampleMovieData);
         
-        // 각 장르별 영화 가져오기
-        const genrePromises = genresData.genres.map(async (genre) => {
-          const response = await fetch(`/api/movies/genre/${genre.id}?limit=10`);
-          const data = await response.json();
-          return { genre: genre.name, movies: data.movies || [] };
-        });
-        
-        const genreResults = await Promise.all(genrePromises);
-        
-        // 장르별 영화 객체 생성
-        const genreMoviesObj = {};
-        genreResults.forEach(result => {
-          genreMoviesObj[result.genre] = result.movies;
-        });
-        
-        setGenreMovies(genreMoviesObj);
+        setLoading(false);
       } catch (err) {
-        console.error('영화 데이터 로드 중 오류:', err);
-        setError('영화 콘텐츠를 불러오는 중 오류가 발생했습니다.');
-      } finally {
+        console.error('영화 데이터 로드 오류:', err);
+        setError(err.message);
         setLoading(false);
       }
     };
     
-    fetchMovieData();
+    loadMovieData();
   }, []);
 
-  // 샘플 데이터 (API 실패 시 대체용)
-  const sampleMovies = [
-    {
-      idx: '1',
-      asset_nm: '샘플 영화 1',
-      genre: '액션',
-      poster_path: 'https://via.placeholder.com/300x450?text=Action+Movie+1',
-      rlse_year: '2023'
-    },
-    {
-      idx: '2',
-      asset_nm: '샘플 영화 2',
-      genre: '액션',
-      poster_path: 'https://via.placeholder.com/300x450?text=Action+Movie+2',
-      rlse_year: '2022'
-    },
-    {
-      idx: '3',
-      asset_nm: '샘플 영화 3',
-      genre: '액션',
-      poster_path: 'https://via.placeholder.com/300x450?text=Action+Movie+3',
-      rlse_year: '2024'
-    },
-    {
-      idx: '4',
-      asset_nm: '샘플 영화 4',
-      genre: '액션',
-      poster_path: 'https://via.placeholder.com/300x450?text=Action+Movie+4',
-      rlse_year: '2023'
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="movie-page">
+        <div className="loading-container">
+          <h2>영화를 불러오는 중...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="movie-page">
+        <div className="error-container">
+          <h2>오류가 발생했습니다</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="movie-page">
-      <div className="movie-header">
-        <h1>영화</h1>
-        <p>다양한 장르의 영화를 탐색해보세요</p>
-      </div>
-
-      <div className="movie-content">
-        {/* 인기 영화 */}
-        <ContentSection 
-          title="인기 영화"
-          items={genreMovies['인기'] || sampleMovies}
-          isLoading={loading}
-          error={error}
+      {/* 히어로 섹션 */}
+      {heroData && heroData.length > 0 && (
+        <Hero items={heroData} />
+      )}
+      
+      {/* 콘텐츠 섹션들 */}
+      <div className="content-sections">
+        <ContentSection
+          title={`${userName}님을 위한 영화 추천`}
+          items={userRecommendations}
+          id="user-movie-recommendations"
         />
         
-        {/* 최신 영화 */}
-        <ContentSection 
+        <ContentSection
+          title="오늘의 인기 영화"
+          items={popularMovies}
+          id="popular-movies"
+        />
+        
+        <ContentSection
           title="최신 영화"
-          items={genreMovies['최신'] || sampleMovies}
-          isLoading={loading}
-          error={error}
+          items={recentMovies}
+          id="recent-movies"
         />
         
-        {/* 각 장르별 영화 */}
-        {categories.map(category => (
-          <ContentSection 
-            key={category.id}
-            title={`${category.name} 영화`}
-            items={genreMovies[category.name] || sampleMovies}
-            isLoading={loading}
-            error={error}
-          />
-        ))}
+        <ContentSection
+          title="액션 영화"
+          items={genreMovies}
+          id="action-movies"
+        />
       </div>
     </div>
   );

@@ -1,37 +1,48 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-// 페이지 컴포넌트 가져오기
-import HomePage from './pages/home/HomePage';
+// 페이지 컴포넌트
+import LandingPage from './pages/home/LandingPage';
+import SignupPage from './pages/index/SignupPage';
+import LoginPage from './pages/login/LoginPage';
+import AccountSelectPage from './pages/account/AccountSelectPage';
+import HomePage from './pages/main/HomePage';
 import SearchPage from './pages/search/SearchPage';
 import MoviePage from './pages/movie/MoviePage';
 import DramaPage from './pages/drama/DramaPage';
+import AdultPage from './pages/adult/AdultPage';
 import MyListPage from './pages/mylist/MyListPage';
-import AccountPage from './pages/account/AccountPage';
+import SettingPage from './pages/setting/SettingPage';
 import ContentDetailsPage from './pages/contents/ContentDetailsPage';
 
 // 레이아웃 컴포넌트
 import MainLayout from './components/layout/MainLayout';
 
 /**
- * 애플리케이션 경로 정의
- * 레이아웃 구성요소와 함께 모든 경로를 정의
+ * React 애플리케이션 경로 정의
+ * 랜딩 페이지는 레이아웃 없이, 나머지는 기본 레이아웃 적용
  */
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* 메인 레이아웃이 적용된 경로 */}
+      {/* 레이아웃 없이 표시할 페이지 */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/account" element={<AccountSelectPage />} />
+
+      {/* 메인 레이아웃이 적용된 내부 페이지들 */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/main" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/movie" element={<MoviePage />} />
         <Route path="/drama" element={<DramaPage />} />
+        <Route path="/adult" element={<AdultPage />} />
         <Route path="/mylist" element={<MyListPage />} />
-        <Route path="/account" element={<AccountPage />} />
+        <Route path="/setting" element={<SettingPage />} />
         <Route path="/content/:id" element={<ContentDetailsPage />} />
       </Route>
-      
-      {/* 레이아웃이 없는 특수 경로 또는 리다이렉션 */}
-      <Route path="/login" element={<Navigate to="/" />} />
+
+      {/* 존재하지 않는 경로 처리 */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

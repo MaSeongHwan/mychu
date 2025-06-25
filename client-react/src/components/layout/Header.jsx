@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Search from '../search/Search';
 import './Header.css';
 
 /**
@@ -7,49 +9,15 @@ import './Header.css';
  */
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  // 검색어 변경 시 API 호출 및 결과 표시
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (!searchQuery.trim() || searchQuery.length < 2) {
-        setSearchResults([]);
-        setShowSuggestions(false);
-        return;
-      }
-
-      try {
-        // FastAPI 서버 엔드포인트 호출
-        const response = await fetch(`/search/autocomplete?q=${encodeURIComponent(searchQuery)}`);
-        if (response.ok) {
-          const data = await response.json();
-          setSearchResults(data.results || []);
-          setShowSuggestions(true);
-        }
-      } catch (error) {
-        console.error('검색 결과 로드 실패:', error);
-      }
-    };
-
-    // API 호출 지연 (디바운스)
-    const debounceTimer = setTimeout(fetchSearchResults, 300);
-    
-    return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
 
   // 사용자 메뉴 토글
   const toggleDropdown = () => {
     setDropdownOpen(prevState => !prevState);
   };
 
-  // 검색창 외부 클릭 시 결과 숨김
+  // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!e.target.closest('.search-container')) {
-        setShowSuggestions(false);
-      }
       if (!e.target.closest('.user-menu-container') && dropdownOpen) {
         setDropdownOpen(false);
       }
@@ -59,82 +27,24 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [dropdownOpen]);
 
-  // 검색 결과 항목 클릭 시 콘텐츠 페이지로 이동
-  const handleResultClick = (id) => {
-    window.location.href = `/contents?id=${id}`;
-  };
-
-  // 검색어 입력 시 실행
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  // 검색 폼 제출 시 검색 페이지로 이동
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
-    }
-  };
-
   return (
     <header className="header">
       <div className="container">
         <div className="header-content">
           <div className="header-left">
-            <a href="/main" className="logo-link">
+            <Link to="/main" className="logo-link">
               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-4rQcBsBRuYpHMLGMye6UjPhh3yUBKI.png" alt="WellList" className="logo-image" />
-            </a>
+            </Link>
             <nav className="main-nav">
-              <a href="/main" className="nav-link">홈</a>
-              <a href="/movie" className="nav-link">영화</a>
-              <a href="/drama" className="nav-link">드라마</a>
-              <a href="/adult" className="nav-link">성인관</a>
+              <Link to="/main" className="nav-link">홈</Link>
+              <Link to="/movie" className="nav-link">영화</Link>
+              <Link to="/drama" className="nav-link">드라마</Link>
+              <Link to="/adult" className="nav-link">성인관</Link>
             </nav>
           </div>
 
           <div className="header-right">
-            <form className="search-container" onSubmit={handleSearchSubmit}>
-              <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input 
-                type="text" 
-                placeholder="콘텐츠 검색..." 
-                className="search-input" 
-                value={searchQuery}
-                onChange={handleSearchChange}
-                autoComplete="off" 
-                autoCorrect="off" 
-                autoCapitalize="off" 
-                spellCheck="false"
-              />
-              
-              {showSuggestions && searchResults.length > 0 && (
-                <div className="search-suggestions">
-                  {searchResults.map(item => (
-                    <div 
-                      key={item.idx} 
-                      className="suggestion-item"
-                      onClick={() => handleResultClick(item.idx)}
-                    >
-                      {item.poster_path && (
-                        <img 
-                          src={item.poster_path} 
-                          alt={item.asset_nm || item.super_asset_nm} 
-                          onError={(e) => { e.target.src = 'https://via.placeholder.com/40x60?text=No+Image' }}
-                        />
-                      )}
-                      <div className="item-info">
-                        <div className="item-title">{item.asset_nm || item.super_asset_nm}</div>
-                        <div className="item-meta">{item.genre || ''} {item.rlse_year ? `(${item.rlse_year})` : ''}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </form>
+            <Search placeholder="콘텐츠 검색..." />
 
             <div className="user-menu-container">
               <button className="icon-button user-menu-button" onClick={toggleDropdown}>

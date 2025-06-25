@@ -1,6 +1,7 @@
 # Firebase 관련 설정 및 인증 파일
 server/config/bootcamp-19343-firebase-adminsdk-fbsvc-68deb04c7c.json
 client/src/firebase/config.js
+client-react/src/services/firebase_config.js
 
 # 환경 변수 파일
 .env

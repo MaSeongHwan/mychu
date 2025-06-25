@@ -1,138 +1,357 @@
 # VOD 추천 서비스 프론트엔드 (Vanilla JS)
 
-## 1. 디렉토리 구조
+## 1. 개선된 디렉토리 구조 (초심자 친화적)
+
+### 🎯 **구조 개선 목표**
+- **명확한 분리**: HTML, CSS, JS, 이미지를 명확히 분리
+- **직관적 이해**: 폴더명만 봐도 역할을 알 수 있도록
+- **재사용성**: 공통 컴포넌트를 쉽게 찾고 사용할 수 있도록
+- **확장성**: 새로운 로그인 API(네이버, 카카오) 추가 시 쉽게 확장
+
 ```
 client/
-├── public/              # 정적 파일
-│   ├── contents.html    # 컨텐츠 상세 페이지
-│   ├── index.html       # 랜딩 페이지
-│   ├── login.html       # 로그인/회원가입
-│   ├── main.html        # 메인 대시보드
-│   ├── mylist.html      # 찜 목록
-│   ├── rating.html      # 평점 페이지
-│   ├── search.html      # 검색 결과 페이지
-│   ├── adult.html       # 성인 콘텐츠 페이지
-│   ├── movie.html       # 영화 페이지
-│   ├── drama.html       # 드라마 페이지
-│   ├── components/      # 공통 UI 컴포넌트 (재사용 요소)
-│   │   ├── header.html  # 헤더 HTML 구조
-│   │   ├── header.css   # 헤더 스타일
-│   │   └── loadHeader.js # 헤더 로드 스크립트
-│   ├── images/          # 이미지 파일
-│   │   ├── login_image1.png # 로그인 페이지 이미지
-│   │   ├── logo.png     # 현재 사용 중인 로고 이미지
-│   │   ├── mypage_img.png # 마이페이지 이미지
-│   │   ├── search_img.png # 검색 아이콘
-│   │   └── welllist_backno.png # 대체 로고 이미지
-│   │   └── ...
-├── src/
-│   ├── api/            # API 통신 관련 파일
-│   │   ├── config.js   # API 엔드포인트 설정
-│   │   ├── rec_test.js # 기본 추천 API 호출
-│   │   ├── recommendation_test.js # 테스트 추천 API
-│   │   ├── requests.js # 통합 API 요청 함수
-│   │   ├── search.js   # 검색 API 관련
-│   │   └── ...
-│   ├── components/     # UI 컴포넌트
-│   │   ├── Dropdown.js # 드롭다운 메뉴 기능
-│   │   ├── MainHeroSlider.js # 메인 히어로 섹션 슬라이더
-│   │   ├── Recommendations.js # 추천 슬라이더 렌더링 (일반)
-│   │   ├── Search.js   # 검색 UI 컴포넌트
-│   │   ├── Slider.js   # 슬라이더 UI (재활용 가능)
-│   │   ├── UserMenu.js # 사용자 메뉴
-│   │   └── utils.js    # 유틸리티 함수
-│   ├── styles/         # CSS 파일
-│   │   ├── contents.css # 컨텐츠 상세 페이지 스타일
-│   │   ├── index.css
-│   │   ├── login.css
-│   │   ├── main.css
-│   │   └── mylist.css
-│   ├── firebase/       # Firebase 관련
-│   │   ├── auth.js     # 인증
-│   │   └── config.js   # Firebase 설정
-│   └── pages/          # 페이지별 로직
-│       ├── asset.js    # 콘텐츠 관련
-│       ├── main.js     # 메인 페이지 로직 (기존 마이페이지 관련 코드 제거)
-│       └── mylist.js   # 찜 목록
-└── package.json
+├── html/                    # 📄 모든 HTML 파일 (페이지별)
+│   ├── index.html          # 메인 홈페이지
+│   ├── login.html          # 로그인/회원가입 페이지
+│   ├── main.html           # 사용자 대시보드
+│   ├── contents.html       # 콘텐츠 상세 페이지
+│   ├── search.html         # 검색 결과 페이지
+│   ├── mylist.html         # 찜 목록 페이지
+│   ├── movie.html          # 영화 페이지
+│   ├── drama.html          # 드라마 페이지
+│   ├── adult.html          # 성인 콘텐츠 페이지
+│   └── rating.html         # 평점 페이지
+│
+├── css/                     # 🎨 모든 CSS 파일 (페이지별 + 공통)
+│   ├── common/             # 공통 스타일
+│   │   ├── reset.css       # CSS 초기화
+│   │   ├── variables.css   # CSS 변수 (색상, 크기 등)
+│   │   ├── layout.css      # 기본 레이아웃
+│   │   └── responsive.css  # 반응형 스타일
+│   ├── components/         # 컴포넌트별 스타일
+│   │   ├── header.css      # 헤더 스타일
+│   │   ├── footer.css      # 푸터 스타일
+│   │   ├── slider.css      # 슬라이더 스타일
+│   │   ├── card.css        # 콘텐츠 카드 스타일
+│   │   ├── button.css      # 버튼 스타일
+│   │   └── dropdown.css    # 드롭다운 스타일
+│   └── pages/              # 페이지별 스타일
+│       ├── index.css       # 메인 페이지
+│       ├── login.css       # 로그인 페이지
+│       ├── main.css        # 대시보드 페이지
+│       ├── contents.css    # 콘텐츠 상세 페이지
+│       ├── search.css      # 검색 페이지
+│       ├── mylist.css      # 찜 목록 페이지
+│       ├── movie.css       # 영화 페이지
+│       └── drama.css       # 드라마 페이지
+│
+├── js/                      # ⚡ 모든 JavaScript 파일
+│   ├── common/             # 공통 기능
+│   │   ├── init.js         # 페이지 초기화
+│   │   ├── utils.js        # 유틸리티 함수
+│   │   └── constants.js    # 상수 정의
+│   ├── components/         # UI 컴포넌트
+│   │   ├── header.js       # 헤더 컴포넌트
+│   │   ├── footer.js       # 푸터 컴포넌트
+│   │   ├── slider.js       # 슬라이더 컴포넌트
+│   │   ├── card.js         # 콘텐츠 카드 컴포넌트
+│   │   ├── dropdown.js     # 드롭다운 컴포넌트
+│   │   ├── search.js       # 검색 컴포넌트
+│   │   └── user-menu.js    # 사용자 메뉴 컴포넌트
+│   ├── pages/              # 페이지별 로직
+│   │   ├── index.js        # 메인 페이지 로직
+│   │   ├── login.js        # 로그인 페이지 로직
+│   │   ├── main.js         # 대시보드 로직
+│   │   ├── contents.js     # 콘텐츠 상세 로직
+│   │   ├── search.js       # 검색 페이지 로직
+│   │   ├── mylist.js       # 찜 목록 로직
+│   │   ├── movie.js        # 영화 페이지 로직
+│   │   └── drama.js        # 드라마 페이지 로직
+│   └── api/                # API 통신 (서버 API만)
+│       ├── config.js       # API 설정 (서버 URL 등)
+│       ├── content.js      # 콘텐츠 관련 API
+│       ├── recommendation.js # 추천 API
+│       ├── search.js       # 검색 API
+│       └── user.js         # 사용자 정보 API
+│
+├── auth/                    # 🔐 로그인/인증 전용 폴더
+│   ├── firebase/           # Firebase 인증
+│   │   ├── config.js       # Firebase 설정
+│   │   ├── auth.js         # Firebase 인증 로직
+│   │   └── user.js         # Firebase 사용자 관리
+│   ├── naver/             # 네이버 로그인 (향후 추가)
+│   │   ├── config.js       # 네이버 API 설정
+│   │   ├── auth.js         # 네이버 로그인 로직
+│   │   └── user.js         # 네이버 사용자 정보
+│   ├── kakao/             # 카카오 로그인 (향후 추가)
+│   │   ├── config.js       # 카카오 API 설정
+│   │   ├── auth.js         # 카카오 로그인 로직
+│   │   └── user.js         # 카카오 사용자 정보
+│   └── auth-manager.js     # 통합 인증 관리자
+│
+├── images/                  # 🖼️ 모든 이미지 파일
+│   ├── logos/              # 로고 이미지
+│   │   ├── logo.png        # 메인 로고
+│   │   ├── logo-white.png  # 흰색 로고
+│   │   └── favicon.ico     # 파비콘
+│   ├── icons/              # 아이콘 이미지
+│   │   ├── search.png      # 검색 아이콘
+│   │   ├── user.png        # 사용자 아이콘
+│   │   ├── heart.png       # 찜하기 아이콘
+│   │   └── play.png        # 재생 아이콘
+│   ├── backgrounds/        # 배경 이미지
+│   │   ├── main-bg.jpg     # 메인 배경
+│   │   └── login-bg.jpg    # 로그인 배경
+│   ├── placeholders/       # 플레이스홀더 이미지
+│   │   ├── no-image.png    # 이미지 없음
+│   │   └── loading.gif     # 로딩 이미지
+│   └── content/            # 콘텐츠 관련 이미지
+│       ├── posters/        # 포스터 이미지 (API에서 제공)
+│       └── thumbnails/     # 썸네일 이미지
+│
+├── shared/                  # 🔗 공통 컴포넌트 (HTML + CSS + JS 세트)
+│   ├── header/             # 헤더 컴포넌트
+│   │   ├── header.html     # 헤더 HTML 구조
+│   │   ├── header.css      # 헤더 전용 CSS
+│   │   └── header.js       # 헤더 로직
+│   ├── footer/             # 푸터 컴포넌트
+│   │   ├── footer.html     # 푸터 HTML 구조
+│   │   ├── footer.css      # 푸터 전용 CSS
+│   │   └── footer.js       # 푸터 로직
+│   ├── navigation/         # 네비게이션 컴포넌트
+│   │   ├── nav.html        # 네비게이션 HTML
+│   │   ├── nav.css         # 네비게이션 CSS
+│   │   └── nav.js          # 네비게이션 로직
+│   └── loader/             # 로딩 컴포넌트
+│       ├── loader.html     # 로딩 HTML
+│       ├── loader.css      # 로딩 CSS
+│       └── loader.js       # 로딩 로직
+│
+├── config/                  # ⚙️ 설정 파일
+│   ├── app.js              # 앱 전체 설정
+│   ├── routes.js           # 페이지 라우팅 설정
+│   └── environment.js      # 환경별 설정 (개발/운영)
+│
+└── package.json            # 프로젝트 설정
 ```
 
-## 2. 데이터베이스 연동
+## 2. 구조의 장점 및 사용법
 
-### 테이블 구조
+### 🎯 **이 구조의 장점**
 
-#### users 테이블
-```sql
-CREATE TABLE users (
-    sha2_hash VARCHAR(256) PRIMARY KEY,
-    age_avg FLOAT,
-    main_channels TEXT,
-    use_tms FLOAT,
-    cnt INTEGER
-);
+#### 1. **초심자 친화적**
+- 파일 타입별로 명확히 분리 (HTML, CSS, JS)
+- 폴더명만 봐도 무엇인지 바로 알 수 있음
+- 복잡한 중첩 구조 없음
+
+#### 2. **유지보수 용이**
+- 버그 발생시 해당 파일 타입 폴더에서 바로 찾을 수 있음
+- 새로운 페이지 추가시 각 폴더에 파일만 추가하면 됨
+- 로그인 API 변경시 `auth/` 폴더에서만 작업
+
+#### 3. **확장성**
+- 새로운 로그인 방식(네이버, 카카오) 추가가 매우 쉬움
+- 새로운 컴포넌트 추가시 일관된 패턴 적용
+
+### 📁 **폴더별 사용법**
+
+#### HTML 폴더 (`html/`)
+```
+모든 HTML 파일은 여기에만!
+├── index.html      ← 메인 홈페이지
+├── login.html      ← 로그인 페이지  
+└── main.html       ← 사용자 대시보드
 ```
 
-#### asset 테이블
-```sql
-CREATE TABLE asset (
-    full_asset_id VARCHAR(100) PRIMARY KEY,
-    asset_nm TEXT,
-    genre TEXT,
-    cleaned_smry TEXT
-);
+#### CSS 폴더 (`css/`)
+```
+모든 스타일은 여기에만!
+├── common/         ← 모든 페이지에서 쓰는 공통 CSS
+├── components/     ← 컴포넌트별 CSS (헤더, 푸터 등)
+└── pages/          ← 페이지별 CSS
 ```
 
-### 데이터 매핑
+#### JS 폴더 (`js/`)
+```
+모든 JavaScript는 여기에만!
+├── common/         ← 공통 기능
+├── components/     ← UI 컴포넌트 (슬라이더, 카드 등)
+├── pages/          ← 페이지별 로직
+└── api/            ← 서버 API 통신만
+```
 
-#### 컨텐츠 카드 컴포넌트
+#### 인증 폴더 (`auth/`)
+```
+로그인 관련은 모두 여기에!
+├── firebase/       ← Firebase 로그인
+├── naver/          ← 네이버 로그인 (향후)
+├── kakao/          ← 카카오 로그인 (향후)
+└── auth-manager.js ← 어떤 로그인을 쓸지 선택
+```
+
+## 3. 인증 시스템 설계
+
+### 🔐 **멀티 로그인 API 지원**
+
+#### 통합 인증 관리자 (`auth/auth-manager.js`)
 ```javascript
-function createContentCard(data) {
-  return {
-    id: data.full_asset_id,
-    title: data.asset_nm,
-    genre: data.genre,
-    description: data.cleaned_smry,
-    posterUrl: data.poster_path
-  };
+// 어떤 로그인 방식을 사용할지 선택하는 메인 파일
+import { FirebaseAuth } from './firebase/auth.js';
+import { NaverAuth } from './naver/auth.js';
+import { KakaoAuth } from './kakao/auth.js';
+
+export class AuthManager {
+  constructor() {
+    this.currentProvider = 'firebase'; // 기본값
+    this.providers = {
+      firebase: new FirebaseAuth(),
+      naver: new NaverAuth(),
+      kakao: new KakaoAuth()
+    };
+  }
+
+  // 로그인 방식 변경
+  setProvider(providerName) {
+    this.currentProvider = providerName;
+  }
+
+  // 로그인 (어떤 방식이든 동일한 인터페이스)
+  async login(credentials) {
+    const provider = this.providers[this.currentProvider];
+    return await provider.login(credentials);
+  }
+
+  // 로그아웃
+  async logout() {
+    const provider = this.providers[this.currentProvider];
+    return await provider.logout();
+  }
+
+  // 현재 사용자 정보
+  getCurrentUser() {
+    const provider = this.providers[this.currentProvider];
+    return provider.getCurrentUser();
+  }
+}
+
+// 전역에서 사용할 인증 매니저
+export const authManager = new AuthManager();
+```
+
+#### Firebase 인증 (`auth/firebase/auth.js`)
+```javascript
+import { firebaseConfig } from './config.js';
+
+export class FirebaseAuth {
+  constructor() {
+    // Firebase 초기화
+    this.initializeFirebase();
+  }
+
+  async login(credentials) {
+    // Firebase 로그인 로직
+    console.log('Firebase로 로그인 중...');
+    // 실제 Firebase 로그인 코드
+  }
+
+  async logout() {
+    // Firebase 로그아웃 로직
+  }
+
+  getCurrentUser() {
+    // Firebase 사용자 정보 반환
+  }
 }
 ```
 
-#### 사용자 프로필
+#### 네이버 로그인 (`auth/naver/auth.js`) - 향후 추가
 ```javascript
-function createUserProfile(data) {
-  return {
-    id: data.sha2_hash,
-    ageGroup: data.age_avg,
-    preferredChannels: data.main_channels,
-    watchTime: data.use_tms,
-    activityCount: data.cnt
-  };
+import { naverConfig } from './config.js';
+
+export class NaverAuth {
+  constructor() {
+    // 네이버 SDK 초기화
+    this.initializeNaver();
+  }
+
+  async login(credentials) {
+    console.log('네이버로 로그인 중...');
+    // 네이버 로그인 API 호출
+  }
+
+  async logout() {
+    // 네이버 로그아웃
+  }
+
+  getCurrentUser() {
+    // 네이버 사용자 정보
+  }
 }
 ```
 
-## 3. API 통신
-
-### API 구성
-- 프론트엔드에서는 `api/` 폴더에 API 요청 관련 로직 분리
-- `components/` 폴더에는 UI 렌더링 로직 분리
-- 별도의 폴더 구조로 관심사 분리 패턴 적용
-
-### API 엔드포인트 설정 (config.js)
+### 🔄 **로그인 방식 전환**
 ```javascript
-// API 설정
+// 로그인 페이지에서 사용자가 선택
+import { authManager } from '../auth/auth-manager.js';
+
+// Firebase 로그인 버튼 클릭시
+document.getElementById('firebase-login').addEventListener('click', () => {
+  authManager.setProvider('firebase');
+  authManager.login({ email, password });
+});
+
+// 네이버 로그인 버튼 클릭시 (향후)
+document.getElementById('naver-login').addEventListener('click', () => {
+  authManager.setProvider('naver');
+  authManager.login();
+});
+```
+
+## 4. API 통신 구조
+
+### 📡 **서버 API vs 로그인 API 분리**
+
+#### 서버 API (`js/api/`)
+```javascript
+// js/api/config.js - 서버 API 설정
 export const API_BASE_URL = 'http://127.0.0.1:8000';
-
-// 추천 시스템 엔드포인트 설정
 export const ENDPOINTS = {
-    recommendations: {
-        top: '/recommendation/top',
-        emotion: '/recommendation/emotion',
-        recent: '/recommendation/recent',
-        similar: '/recommendation/similar' // 유사 콘텐츠 추천 엔드포인트
-    },
-    assets: '/assets',
-    search: '/search',
-    advancedSearch: '/search/advanced'
+  recommendations: {
+    top: '/recommendation/top',
+    emotion: '/recommendation/emotion',
+    recent: '/recommendation/recent',
+    similar: '/recommendation/similar'
+  },
+  content: '/assets',
+  search: '/search'
+};
+
+// js/api/content.js - 콘텐츠 관련 API
+export async function getContentDetails(contentId) {
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.content}/${contentId}`);
+  return response.json();
+}
+
+// js/api/recommendation.js - 추천 API
+export async function getTopRecommendations(count = 10) {
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.recommendations.top}?n=${count}`);
+  return response.json();
+}
+```
+
+#### 로그인 API는 별도 (`auth/` 폴더)
+```javascript
+// auth/firebase/config.js - Firebase 설정만
+export const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-domain",
+  // ... Firebase 설정
+};
+
+// auth/naver/config.js - 네이버 설정만 (향후)
+export const naverConfig = {
+  clientId: "your-naver-client-id",
+  redirectUri: "your-redirect-uri"
 };
 ```
 

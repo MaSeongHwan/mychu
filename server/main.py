@@ -145,12 +145,12 @@ async def initialize_recommender():
 
 # 페이지 라우트
 @app.get("/")
+async def read_main(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/login")
 async def read_login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
-
-@app.get("/")
-async def read_account(request: Request):
-    return templates.TemplateResponse("account.html", {"request": request})
 
 @app.get("/index")
 async def read_index(request: Request):
