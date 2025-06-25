@@ -54,6 +54,7 @@ body {
   max-width: 400px;
 }
 
+/* 버튼 스타일 */
 .account-btn {
   background-color: #111;
   border: 1px solid #333;
@@ -61,7 +62,7 @@ body {
   color: #fff;
   font-size: clamp(1.1rem, 2vw, 1.25rem);
   font-weight: 500;
-  padding: 1.25rem 1.5rem;
+  padding: 1.25rem 5rem;
   border-radius: 10px;
   text-align: left;
   display: flex;
@@ -73,14 +74,16 @@ body {
   cursor: pointer;
 }
 
+/* 호버 효과 */
 .account-btn:hover {
   background-color: #1c1c1c;
 }
 
 .logo-icon {
-  font-size: 1.3rem;
-  width: 28px;
-  text-align: center;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 0.75rem;
 }
 
 .account-btn.naver .logo-icon {
