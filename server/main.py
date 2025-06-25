@@ -36,7 +36,7 @@ router = APIRouter()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://localhost:5173", "http://localhost:8000"],
+    allow_origins=["*", "http://localhost:5173", "http://localhost:8000", "http://localhost", "http://react:5173", "http://fastapi:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -195,6 +195,24 @@ async def read_contents(request: Request):
 @app.get("/contents_test")
 async def read_contents_test(request: Request):
     return templates.TemplateResponse("contents_test.html", {"request": request})
+
+# React 앱 라우팅을 위한 경로
+@app.get("/react/{full_path:path}", response_class=HTMLResponse)
+async def serve_react_app(request: Request, full_path: str = ""):
+    # React 빌드 디렉토리에서 index.html을 제공
+    REACT_DIST_DIR = os.path.join(BASE_DIR, "client-react", "dist")
+    index_path = os.path.join(REACT_DIST_DIR, "index.html")
+    
+    if os.path.exists(index_path):
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                html_content = f.read()
+            return HTMLResponse(content=html_content)
+        except Exception as e:
+            logger.error(f"Error serving React app: {str(e)}")
+            return JSONResponse(status_code=500, content={"error": "Failed to serve React app"})
+    else:
+        return JSONResponse(status_code=404, content={"error": "React build not found"})
 
 
 # 템플릿 및 정적 파일 디버깅용 라우터

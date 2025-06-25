@@ -1,0 +1,36 @@
+/* Home.css - 홈페이지 스타일 */
+
+/* 메인 콘텐츠 레이아웃 */
+.home-page {
+  min-height: 100vh;
+  background-color: #0f1116;
+  color: #fff;
+}
+
+.main-content {
+  padding: 2rem 0;
+}
+
+.container {
+  width: min(1400px, 90vw);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+/* 페이지 스페이싱 */
+.main-content {
+  margin-top: 1rem;
+}
+
+/* 반응형 설계 */
+@media screen and (max-width: 480px) {
+  .main-content {
+    padding: 1rem 0;
+  }
+}

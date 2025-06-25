@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 import Slider from './components/Slider';
 import './StandaloneSlider.css';
 
+// API 기본 URL
+const API_BASE_URL = window.location.hostname === 'localhost' ? '' : 'http://fastapi:8000';
+
 /**
  * 샘플 데이터 생성 함수
  * API 호출 실패시 대체 데이터로 사용
@@ -43,12 +46,42 @@ const StandaloneSlider = () => {
     const dataTitle = container.dataset.title || '';
     const dataUrl = container.dataset.url;
     const dataId = container.dataset.id;
+    const dataTest = container.dataset.test === 'true'; // 테스트 API 사용 여부
     
     // Set title from data attribute
     setTitle(dataTitle);
     
     const loadItems = async () => {
       try {
+        // If test API is requested
+        if (dataTest) {
+          try {
+            const testUrl = `${API_BASE_URL}/recommendation/test?n=10`;
+            console.log('테스트 API 호출:', testUrl);
+            const response = await fetch(testUrl);
+            if (!response.ok) {
+              throw new Error(`테스트 API 서버 에러: ${response.status}`);
+            }
+            const data = await response.json();
+            // 데이터 정규화
+            const normalizedItems = (data.items || []).map(item => ({
+              idx: item.idx || item.asset_idx || `temp-${Math.random().toString(36).substr(2, 9)}`,
+              asset_nm: item.asset_nm || item.super_asset_nm || '제목 없음',
+              genre: item.genre || '',
+              poster_path: item.poster_path && item.poster_path.startsWith('http') 
+                ? item.poster_path 
+                : `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Movie')}`,
+              release_year: item.release_year || item.rlse_year || null
+            }));
+            setItems(normalizedItems);
+            setLoading(false);
+            return;
+          } catch (testErr) {
+            console.error('테스트 API 호출 실패:', testErr);
+            // 실패 시 다른 방법으로 계속
+          }
+        }
+        
         // If items are provided directly
         if (dataItems) {
           try {

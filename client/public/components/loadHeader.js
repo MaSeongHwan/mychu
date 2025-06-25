@@ -92,7 +92,7 @@ loadHeader().then(async () => {
     if (item) {
       const contentId = item.dataset.id;
       if (contentId) {
-        window.location.href = `/contents.html?id=${contentId}`;
+        window.location.href = `/contents?id=${contentId}`;
       }
     }
   });

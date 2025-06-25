@@ -1,0 +1,292 @@
+/* Hero Component CSS */
+
+/* ========== 히어로/슬라이더 ========== */
+.hero {
+  position: relative;
+  min-height: 70vh;
+  margin-top: 4rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.hero-slider-view {
+  position: relative;
+  width: min(1400px, 90vw);
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.hero-slider-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  position: relative;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .hero-slide {
+    flex-direction: column;
+  }
+}
+
+.hero-poster {
+  flex: 0 0 auto;
+  margin-right: 3rem;
+  max-width: 300px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .hero-poster {
+    margin-right: 0;
+    margin-bottom: 2rem;
+    max-width: 220px;
+  }
+}
+
+.poster-container {
+  position: relative;
+  width: 100%;
+  padding-top: 150%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.poster-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s;
+  background-color: #1f2937;
+  background-size: cover;
+  background-position: center;
+}
+
+.poster-glow {
+  position: absolute;
+  bottom: -10%;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(15, 17, 22, 0), rgba(15, 17, 22, 0.8));
+  z-index: 1;
+}
+
+.hero-info {
+  flex: 1;
+  padding: 0 1rem;
+  max-width: 50%;
+}
+
+@media (max-width: 768px) {
+  .hero-info {
+    max-width: 90%;
+    text-align: center;
+    padding: 0;
+  }
+}
+
+.badge {
+  display: inline-block;
+  background: #3b82f6;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.hero-title {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #fff;
+}
+
+.content-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  color: #f59e0b;
+}
+
+.rating svg {
+  margin-right: 0.25rem;
+}
+
+.release-year {
+  color: #d1d5db;
+}
+
+.release-year:after {
+  content: "•";
+  margin-left: 1rem;
+}
+
+.genre {
+  color: #d1d5db;
+}
+
+.hero-description {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: #d1d5db;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .hero-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .hero-buttons {
+    justify-content: center;
+  }
+}
+
+.btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 7rem;
+  height: 2.5rem;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid #d1d5db;
+}
+
+.btn-outline:hover {
+  border-color: #fff;
+  transform: translateY(-1px);
+}
+
+.hero-slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.hero-slider-nav:hover {
+  opacity: 1;
+}
+
+.hero-slider-nav.prev {
+  left: 1rem;
+}
+
+.hero-slider-nav.next {
+  right: 1rem;
+}
+
+/* 로딩 및 에러 상태 */
+.hero-loading .loading-indicator,
+.hero-error .error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50vh;
+  color: #9ca3af;
+  font-size: 1.125rem;
+}
+
+/* 슬라이더 인디케이터 (페이지네이션) */
+.slider-indicators {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.indicator.active {
+  background: #3b82f6;
+  transform: scale(1.2);
+}

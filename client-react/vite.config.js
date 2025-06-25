@@ -10,6 +10,8 @@ export default defineConfig({
     port: 5173, // Vite 기본 포트
     strictPort: true,
     host: '0.0.0.0', // Enable access from any network interface
+    // React Router를 위한 History API Fallback 활성화
+    historyApiFallback: true,
     // FastAPI 백엔드 프록시 설정 (Docker 환경에서는 fastapi 서비스명 사용)
     proxy: {
       '/api': {

@@ -57,14 +57,31 @@ const SliderApp = () => {
   const [topItems, setTopItems] = useState([]);
   const [emotionItems, setEmotionItems] = useState([]);
   const [recentItems, setRecentItems] = useState([]);
+  const [testItems, setTestItems] = useState([]);  // 테스트 API 결과를 위한 상태 추가
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {    // Function to fetch recommendations from API
+  useEffect(() => {
+    // Function to fetch recommendations from API
     const fetchRecommendations = async () => {
       try {
         setLoading(true);
         
+        try {
+          // Fetch test recommendations
+          const testResponse = await fetch(`${API_BASE_URL}/recommendation/test?n=10`);
+          if (testResponse.ok) {
+            const testData = await testResponse.json();
+            setTestItems(normalizeItems(testData.items || []));
+          } else {
+            console.warn(`서버 에러 (test): ${testResponse.status} - 샘플 데이터 사용`);
+            setTestItems(SAMPLE_ITEMS);
+          }
+        } catch (testErr) {
+          console.warn('테스트 데이터 로드 실패:', testErr);
+          setTestItems(SAMPLE_ITEMS);
+        }
+
         try {
           // Fetch top recommendations
           const topResponse = await fetch(`${API_BASE_URL}/recommendation/top?n=10`);
@@ -121,6 +138,7 @@ const SliderApp = () => {
         setTopItems(SAMPLE_ITEMS);
         setEmotionItems(SAMPLE_ITEMS);
         setRecentItems(SAMPLE_ITEMS);
+        setTestItems(SAMPLE_ITEMS);
       } finally {
         setLoading(false);
       }
@@ -168,10 +186,17 @@ const SliderApp = () => {
   if (error) {
     return <div className="error-container">오류 발생: {error}</div>;
   }
-
   return (
     <div className="slider-app">
-      {itemsToShow.length > 0 && (
+      {testItems.length > 0 && (
+        <Slider 
+          items={testItems} 
+          title="테스트 추천 콘텐츠 (10개)" 
+          sliderId="test-slider" 
+        />
+      )}
+      
+      {topItems.length > 0 && (
         <Slider 
           items={itemsToShow} 
           title="오늘의 인기작 TOP 10" 
