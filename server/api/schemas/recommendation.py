@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class RecommendationItem(BaseModel):
     """
@@ -32,4 +32,5 @@ class RecommendationResponse(BaseModel):
     """
     Schema for the recommendation endpoint response
     """
-    items: list[RecommendationItem]
+    message: Optional[str] = None
+    items: List[RecommendationItem]

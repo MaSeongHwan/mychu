@@ -15,6 +15,7 @@ from server.api.routes.recommendation_test import router as rec_test_router
 from server.api.routes.recommendations import router as rec_router
 from server.api.routes.log import router as log_router
 from server.api.routes.recommendation_hybrid import router as rec_hybrid_router
+from server.api.routes.emotion_recommendation import router as emotion_rec_router
 #from server.api.routes.adult_recommendation import router as adult_rec_router
 from server.api.routes.today_recommendation import router as today_rec_router
 
@@ -86,6 +87,7 @@ app.include_router(log_router,        prefix="/logs",   tags=["logs"])
 app.include_router(search_router,     prefix="/search", tags=["search"])
 app.include_router(rec_test_router,   prefix="",        tags=["recommendation"])
 app.include_router(rec_hybrid_router, prefix="",        tags=["recommendation"])
+app.include_router(emotion_rec_router, prefix="",        tags=["emotion_recommendation"])
 app.include_router(rec_router,        prefix="",        tags=["recommendations"])
 app.include_router(today_rec_router, prefix="",        tags=["recommendation"])
 
@@ -143,7 +145,7 @@ async def initialize_recommender():
 
 # 페이지 라우트
 @app.get("/")
-async def read_root(request: Request):
+async def read_login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 @app.get("/")
@@ -151,7 +153,7 @@ async def read_account(request: Request):
     return templates.TemplateResponse("account.html", {"request": request})
 
 @app.get("/index")
-async def read_root(request: Request):
+async def read_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/main")

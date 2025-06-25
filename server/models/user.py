@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from .base import Base
 
+
 class User(Base):
     __tablename__ = "users"
     
@@ -41,8 +42,9 @@ class VodLog(Base):
     strt_dt = Column(TIMESTAMP, default=datetime.utcnow, nullable=False)
     use_tms = Column(Integer, default=0, nullable=False)
     feedback = Column(Integer, default=0, nullable=False)
-
+    
     user = relationship("User", back_populates="vod_logs")
+    asset = relationship("Asset")
 
 class MyList(Base):
     __tablename__ = "my_list"

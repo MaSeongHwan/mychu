@@ -1,46 +1,47 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import Optional, List
+import numpy as np
 
 from server.core.database import get_db
-from server.models.user import User, VodLog
-from server.models.asset import Asset, AssetEmotion
+from server.models.user import User
 from server.api.schemas.recommendation import RecommendationResponse, RecommendationItem
 from server.core.services.emotion_utils import get_user_emotion_vector, recommend_by_emotion
 from server.core.services.emotion_message_map import emotion_message_map
 
 router = APIRouter(
-    prefix="/recommendation",
+    prefix="/emotion",
     tags=["emotion_recommendation"]
 )
 
-# 감정 메시지 매핑 함수 0625
+# 감정 메시지 매핑
 def get_emotion_message(emotion: str) -> str:
     return emotion_message_map.get(emotion, "오늘의 추천 콘텐츠입니다.")
 
-@router.get("/emotion", response_model=RecommendationResponse)
+@router.get("/recommendation", response_model=RecommendationResponse)
 def get_emotion_based_recommendation(
     user_id: int = Query(..., description="유저 ID"),
+    top_k: int = Query(10, description="추천 콘텐츠 개수"),
     db: Session = Depends(get_db)
 ):
-    # 1. 유저 존재 여부 확인
+    """
+    감정 분석 + 콘텐츠 추천 통합 API
+    """
+    # 유저 확인
     user = db.query(User).filter(User.user_idx == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # 2. 유저의 최근 시청 로그 기반 감정 벡터 계산
+    # 감정 벡터 추정
     user_vector = get_user_emotion_vector(db, user_id)
     if user_vector is None:
         raise HTTPException(status_code=404, detail="감정 추정 불가 (시청 로그 부족)")
 
-    # 3. 감정 벡터 기반으로 추천
-    recommended_assets, dominant_emotion = recommend_by_emotion(db, user_vector)
-
-    # 4. 감정에 맞는 메시지 불러오기
+    # 추천 및 지배 감정
+    recommended_assets, dominant_emotion = recommend_by_emotion(db, user_vector, top_k)
     emotion_message = get_emotion_message(dominant_emotion)
     nickname = user.nick_name or "고객"
 
-    # 5. 추천 콘텐츠 포맷팅
+    # 응답 포맷팅
     items = [
         RecommendationItem(
             idx=a.idx,
@@ -65,7 +66,6 @@ def get_emotion_based_recommendation(
         ) for a in recommended_assets
     ]
 
-    # 6. 최종 응답
     return RecommendationResponse(
         message=f"{nickname}님, {emotion_message}",
         items=items
