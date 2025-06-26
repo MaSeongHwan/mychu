@@ -20,7 +20,7 @@ export const getTodayRecommendations = async (userId = 1, count = 10) => {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10초 타임아웃
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30초로 타임아웃 연장
 
     const response = await fetch(
       `${API_BASE_URL}/recommendation/today/personalized/${userId}?n=${count}`,

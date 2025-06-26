@@ -223,3 +223,60 @@ async def verify_adult_password(
     except Exception as e:
         logger.error(f"성인 인증 중 오류 발생: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error verifying password: {str(e)}")
+
+
+@router.get("/users/auth/me")
+async def get_current_user(authorization: Optional[str] = Header(None), db: Session = Depends(get_db)):
+    """
+    현재 사용자 정보를 가져오는 엔드포인트
+    Firebase 인증 토큰을 통해 사용자 정보 반환
+    """
+    try:
+        if not authorization or not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
+        
+        token = authorization.split(" ")[1]
+        
+        # Firebase 토큰 검증
+        try:
+            decoded_token = auth.verify_id_token(token)
+        except firebase_exceptions.FirebaseError as e:
+            logger.warning(f"Firebase 토큰 검증 실패: {str(e)}")
+            raise HTTPException(status_code=403, detail="Invalid Firebase token")
+        
+        firebase_uid = decoded_token.get('uid')
+        if not firebase_uid:
+            raise HTTPException(status_code=401, detail="Invalid token: missing UID")
+        
+        # 데이터베이스에서 사용자 정보 조회
+        user = db.query(UserModel).filter(UserModel.sha2_hash == firebase_uid).first()
+        
+        if not user:
+            # 사용자가 DB에 없으면 Firebase 정보로 기본 응답
+            return {
+                "uid": firebase_uid,
+                "email": decoded_token.get("email", ""),
+                "name": decoded_token.get("name", ""),
+                "provider": "firebase",
+                "user_idx": None,
+                "is_registered": False
+            }
+        
+        # DB에 사용자 정보가 있으면 상세 정보 반환
+        return {
+            "uid": firebase_uid,
+            "email": user.email or decoded_token.get("email", ""),
+            "name": user.nick_name or decoded_token.get("name", ""),
+            "provider": "firebase",
+            "user_idx": user.user_idx,
+            "is_registered": True,
+            "is_adult": user.is_adult,
+            "age_range": user.age_range,
+            "gender": user.gender
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"사용자 정보 조회 중 오류 발생: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting user info: {str(e)}")
