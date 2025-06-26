@@ -56,7 +56,7 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
     const itemId = item.id || item.idx || item.asset_idx;
     if (itemId) {
       console.log(`카드 클릭! 콘텐츠 ${itemId} 상세 페이지로 이동합니다.`);
-      navigate(`/contents/${itemId}`);
+      navigate(`/content/${itemId}`);
     } else {
       console.error('이동할 콘텐츠 ID가 없습니다!', item);
     }
