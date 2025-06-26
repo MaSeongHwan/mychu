@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import './SearchPage.css';
 
+const API_BASE_URL = 'http://127.0.0.1:8000';
+
 /**
  * 검색 결과 페이지 컴포넌트 - HTML/CSS를 React로 구현
  */
@@ -28,59 +30,50 @@ const SearchPage = () => {
     setError(null);
     
     try {
-      // 실제 API 호출 대신 샘플 데이터 사용
-      // const response = await fetch(`/search/?query=${encodeURIComponent(query)}&limit=20`);
-      // const data = await response.json();
+      console.log('검색 시작:', query);
       
-      // 샘플 검색 결과 데이터
-      const sampleResults = [
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
+      const response = await fetch(
+        `${API_BASE_URL}/search/?query=${encodeURIComponent(query)}&contentType=all&limit=50`,
         {
-          id: 1,
-          super_asset_nm: '기생충',
-          poster_path: '/client/public/images/poster1.jpg',
-          genre: '드라마',
-          rlse_year: '2019'
-        },
-        {
-          id: 2,
-          super_asset_nm: '오징어 게임',
-          poster_path: '/client/public/images/poster2.jpg',
-          genre: '스릴러',
-          rlse_year: '2021'
-        },
-        {
-          id: 3,
-          super_asset_nm: '킹덤',
-          poster_path: '/client/public/images/poster3.jpg',
-          genre: '공포',
-          rlse_year: '2019'
-        },
-        {
-          id: 4,
-          super_asset_nm: '더 글로리',
-          poster_path: '/client/public/images/poster4.jpg',
-          genre: '드라마',
-          rlse_year: '2022'
-        },
-        {
-          id: 5,
-          super_asset_nm: '이상한 변호사 우영우',
-          poster_path: '/client/public/images/poster5.jpg',
-          genre: '드라마',
-          rlse_year: '2022'
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
         }
-      ];
-
-      // 검색어가 포함된 결과만 필터링
-      const filteredResults = sampleResults.filter(item => 
-        item.super_asset_nm.toLowerCase().includes(query.toLowerCase()) ||
-        item.genre.toLowerCase().includes(query.toLowerCase())
       );
-
-      setSearchResults(filteredResults);
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`검색 API 오류: ${response.status} ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('검색 결과:', data);
+      
+      // API 응답 구조에 따라 결과 추출
+      const results = data.results || data.items || data || [];
+      
+      if (Array.isArray(results)) {
+        setSearchResults(results);
+      } else {
+        console.error('예상치 못한 API 응답 구조:', data);
+        setSearchResults([]);
+      }
+      
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
-      setError('검색 중 오류가 발생했습니다.');
+      
+      if (err.name === 'AbortError') {
+        setError('검색 시간이 초과되었습니다. 다시 시도해주세요.');
+      } else {
+        setError('검색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
+      
       setSearchResults([]);
     } finally {
       setLoading(false);
@@ -89,13 +82,21 @@ const SearchPage = () => {
 
   // 콘텐츠 아이템 클릭 핸들러
   const handleContentClick = (item) => {
-    navigate(`/content/${item.id}`);
+    const id = item.idx || item.asset_idx || item.id;
+    if (id) {
+      // 성인 콘텐츠 확인
+      if (item.is_adult === 'Y' || item.genre?.includes('성인')) {
+        navigate(`/adult?id=${id}`);
+      } else {
+        navigate(`/content/${id}`);
+      }
+    }
   };
 
   // 재생 버튼 클릭 핸들러
   const handlePlayClick = (e, item) => {
     e.stopPropagation();
-    alert(`${item.super_asset_nm} 재생을 시작합니다.`);
+    alert(`${item.super_asset_nm || item.asset_nm || '콘텐츠'} 재생을 시작합니다.`);
   };
 
   // 찜하기 버튼 클릭 핸들러
@@ -108,11 +109,11 @@ const SearchPage = () => {
     if (svg.getAttribute('fill') === 'currentColor') {
       svg.setAttribute('fill', 'none');
       button.style.color = '';
-      alert(`${item.super_asset_nm}을(를) 찜 목록에서 제거했습니다.`);
+      alert(`${item.super_asset_nm || item.asset_nm || '콘텐츠'}을(를) 찜 목록에서 제거했습니다.`);
     } else {
       svg.setAttribute('fill', 'currentColor');
       button.style.color = '#10b981';
-      alert(`${item.super_asset_nm}을(를) 찜 목록에 추가했습니다.`);
+      alert(`${item.super_asset_nm || item.asset_nm || '콘텐츠'}을(를) 찜 목록에 추가했습니다.`);
     }
   };
 
@@ -145,59 +146,69 @@ const SearchPage = () => {
               {error && (
                 <div className="error-message">
                   <p>{error}</p>
+                  <button onClick={() => performSearch(searchQuery)} className="retry-btn">
+                    다시 시도
+                  </button>
                 </div>
               )}
 
-              {!loading && !error && searchResults.length === 0 && (
+              {!loading && !error && searchResults.length === 0 && searchQuery && (
                 <div className="no-results">
                   <h3>검색 결과가 없습니다</h3>
                   <p>다른 검색어를 시도해보세요.</p>
                 </div>
               )}
 
-              {!loading && !error && searchResults.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="content-item"
-                  onClick={() => handleContentClick(item)}
-                >
-                  <div className="item-poster">
-                    <img 
-                      src={item.poster_path || 'https://via.placeholder.com/200x300'} 
-                      alt={item.super_asset_nm}
-                      className="poster-image"
-                      onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/200x300';
-                      }}
-                    />
-                    <div className="item-overlay">
-                      <button 
-                        className="play-btn"
-                        onClick={(e) => handlePlayClick(e, item)}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg>
-                      </button>
-                      <button 
-                        className="wishlist-btn"
-                        onClick={(e) => handleWishlistClick(e, item)}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                      </button>
+              {!loading && !error && searchResults.map((item, index) => {
+                const title = item.super_asset_nm || item.asset_nm || item.title || '제목 없음';
+                const posterPath = item.poster_path || 'https://via.placeholder.com/200x300';
+                const genre = item.genre || '장르 없음';
+                const year = item.rlse_year || item.release_year || '';
+                
+                return (
+                  <div 
+                    key={item.idx || item.asset_idx || item.id || index} 
+                    className="content-item"
+                    onClick={() => handleContentClick(item)}
+                  >
+                    <div className="item-poster">
+                      <img 
+                        src={posterPath} 
+                        alt={title}
+                        className="poster-image"
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/200x300';
+                        }}
+                      />
+                      <div className="item-overlay">
+                        <button 
+                          className="play-btn"
+                          onClick={(e) => handlePlayClick(e, item)}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                          </svg>
+                        </button>
+                        <button 
+                          className="wishlist-btn"
+                          onClick={(e) => handleWishlistClick(e, item)}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="item-info">
+                      <h3 className="item-title">{title}</h3>
+                      <div className="item-meta">
+                        <span className="item-genre">{genre}</span>
+                        {year && <span className="item-year">{year}</span>}
+                      </div>
                     </div>
                   </div>
-                  <div className="item-info">
-                    <h3 className="item-title">{item.super_asset_nm}</h3>
-                    <div className="item-meta">
-                      <span className="item-genre">{item.genre || '장르 없음'}</span>
-                      {item.rlse_year && <span className="item-year">{item.rlse_year}</span>}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         </div>
