@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Hero from '../../components/hero/Hero';
 import Slider from '../../components/slider/Slider';
+import GenreDropdown from '../../components/dropdown/GenreDropdown';
 import { initRecommendationsForMain, initRecommendationsForDrama } from '../../services/recommendationHelpers';
 import { getHeroContent } from '../../services/recommendationService';
 import './HomePage.css';
 
 /**
  * 메인 홈페이지 컴포넌트
- * 영화와 드라마로 구분된 추천 섹션으로 구성
  */
 const HomePage = () => {
+  const location = useLocation();
   const [heroData, setHeroData] = useState([]);
   const [movieRecommendations, setMovieRecommendations] = useState({
     topItems: [],
@@ -21,9 +23,12 @@ const HomePage = () => {
     emoItems: [],
     recentItems: []
   });
+  const [allContent, setAllContent] = useState([]);
+  const [filteredContent, setFilteredContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('사용자');
+  const [selectedGenre, setSelectedGenre] = useState('');
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -31,19 +36,30 @@ const HomePage = () => {
       try {
         // 병렬로 데이터 로드
         const [heroContent, movieData, dramaData] = await Promise.all([
-          // 히어로 콘텐츠 (전체 콘텐츠)
-          getHeroContent({ isMovie: null, limit: 5 }),
-          
-          // 영화 추천 데이터
+          getHeroContent(),
           initRecommendationsForMain(),
-          
-          // 드라마 추천 데이터
           initRecommendationsForDrama()
         ]);
+
+        console.log('Hero Content:', heroContent);
+        console.log('Movie Data:', movieData);
+        console.log('Drama Data:', dramaData);
 
         setHeroData(heroContent);
         setMovieRecommendations(movieData);
         setDramaRecommendations(dramaData);
+        
+        // 전체 콘텐츠 합치기 (필터링용)
+        const allItems = [
+          ...movieData.topItems,
+          ...movieData.emoItems,
+          ...movieData.recentItems,
+          ...dramaData.topItems,
+          ...dramaData.emoItems,
+          ...dramaData.recentItems
+        ];
+        setAllContent(allItems);
+        setFilteredContent(allItems);
 
       } catch (err) {
         console.error('데이터 로드 실패:', err);
@@ -55,6 +71,24 @@ const HomePage = () => {
 
     loadAllData();
   }, []);
+
+  // URL에서 장르 파라미터 읽기 및 필터링
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const genre = urlParams.get('genre') || '';
+    setSelectedGenre(genre);
+    
+    // 장르가 선택되었을 때 필터링
+    if (genre) {
+      const filtered = allContent.filter(item => 
+        item.genre && item.genre.toLowerCase().includes(genre.toLowerCase())
+      );
+      setFilteredContent(filtered);
+    } else {
+      // 장르가 선택되지 않았을 때는 모든 콘텐츠 표시
+      setFilteredContent(allContent);
+    }
+  }, [location.search, allContent]);
 
   if (loading) {
     return (
@@ -81,91 +115,115 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      {/* 장르 드롭다운 */}
+      <div className="genre-filter-section">
+        <GenreDropdown />
+      </div>
+
       {/* 히어로 섹션 */}
       {heroData && heroData.length > 0 && (
         <Hero items={heroData} />
       )}
 
-      {/* 메인 콘텐츠 영역 */}
-      <div className="main-content">
-        
-        {/* 영화 섹션 */}
-        <section className="content-category">
-          <div className="category-header">
-            <h2 className="category-title">🎬 영화</h2>
-            <p className="category-subtitle">최신 영화와 인기 영화를 만나보세요</p>
-          </div>
+      {/* 추천 콘텐츠 섹션 - 원본 main.html 구조 재현 */}
+      <main className="main-content">
+        <div className="container">
           
-          <div className="content-sections">
-            {movieRecommendations.topItems.length > 0 && (
-              <Slider
-                items={movieRecommendations.topItems}
-                title={`${userName}님을 위한 인기 영화 Top10`}
-                sliderId="movie-top-slider"
-              />
-            )}
+          {selectedGenre ? (
+            // 장르가 선택되었을 때: 필터된 결과만 표시
+            <section className="section" id="filtered-section">
+              <div className="section-header">
+                <h2>{selectedGenre} 콘텐츠</h2>
+                <div className="section-controls">
+                  <button className="control-btn prev-btn">
+                    <span className="icon icon-arrow-left"></span>
+                  </button>
+                  <button className="control-btn next-btn">
+                    <span className="icon icon-arrow-right"></span>
+                  </button>
+                </div>
+              </div>
+              <div className="slider">
+                <Slider 
+                  items={filteredContent}
+                  title={`${selectedGenre} 추천`}
+                  showTitle={false}
+                />
+              </div>
+            </section>
+          ) : (
+            // 장르가 선택되지 않았을 때: 원본 HTML 구조와 동일한 3개 섹션 표시
+            <>
+              {/* 1. 인기 콘텐츠 */}
+              <section className="section" id="top-section">
+                <div className="section-header">
+                  <h2>오늘의 인기 콘텐츠</h2>
+                  <div className="section-controls">
+                    <button className="control-btn prev-btn">
+                      <span className="icon icon-arrow-left"></span>
+                    </button>
+                    <button className="control-btn next-btn">
+                      <span className="icon icon-arrow-right"></span>
+                    </button>
+                  </div>
+                </div>
+                <div className="slider" id="popular-main-slider">
+                  <Slider 
+                    items={movieRecommendations.topItems.concat(dramaRecommendations.topItems)}
+                    title="오늘의 인기 콘텐츠"
+                    showTitle={false}
+                  />
+                </div>
+              </section>
 
-            {movieRecommendations.emoItems.length > 0 && (
-              <Slider
-                items={movieRecommendations.emoItems}
-                title="감정 기반 영화 추천"
-                sliderId="movie-emotion-slider"
-              />
-            )}
+              {/* 2. 감정 기반 or 장르 기반 추천 */}
+              <section className="section" id="genre-section">
+                <div className="section-header">
+                  <h2 id="genre-main-heading">{userName}님, 오늘은 기분 전환이 필요해 보여요</h2>
+                  <div className="section-controls">
+                    <button className="control-btn prev-btn">
+                      <span className="icon icon-arrow-left"></span>
+                    </button>
+                    <button className="control-btn next-btn">
+                      <span className="icon icon-arrow-right"></span>
+                    </button>
+                  </div>
+                </div>
+                <div className="slider" id="genre-main-slider">
+                  <Slider 
+                    items={movieRecommendations.emoItems.concat(dramaRecommendations.emoItems)}
+                    title="감정 기반 추천"
+                    showTitle={false}
+                  />
+                </div>
+              </section>
 
-            {movieRecommendations.recentItems.length > 0 && (
-              <Slider
-                items={movieRecommendations.recentItems}
-                title="최근 시청 기반 영화 추천"
-                sliderId="movie-recent-slider"
-              />
-            )}
-          </div>
-        </section>
+              {/* 3. 최신 콘텐츠 슬라이더 섹션 */}
+              <section className="section" id="recent-section">
+                <div className="section-header">
+                  <h2>따끈따끈한 신작, 지금 만나보세요</h2>
+                  <div className="section-controls">
+                    <button className="control-btn prev-btn">
+                      <span className="icon icon-arrow-left"></span>
+                    </button>
+                    <button className="control-btn next-btn">
+                      <span className="icon icon-arrow-right"></span>
+                    </button>
+                  </div>
+                </div>
+                <div className="slider" id="recent-main-slider">
+                  <Slider 
+                    items={movieRecommendations.recentItems.concat(dramaRecommendations.recentItems)}
+                    title="최신 콘텐츠"
+                    showTitle={false}
+                  />
+                </div>
+              </section>
+            </>
+          )}
 
-        {/* 드라마 섹션 */}
-        <section className="content-category">
-          <div className="category-header">
-            <h2 className="category-title">📺 드라마</h2>
-            <p className="category-subtitle">감동적인 드라마와 화제의 시리즈</p>
-          </div>
-          
-          <div className="content-sections">
-            {dramaRecommendations.topItems.length > 0 && (
-              <Slider
-                items={dramaRecommendations.topItems}
-                title={`${userName}님을 위한 인기 드라마 Top10`}
-                sliderId="drama-top-slider"
-              />
-            )}
-
-            {dramaRecommendations.emoItems.length > 0 && (
-              <Slider
-                items={dramaRecommendations.emoItems}
-                title="감정 기반 드라마 추천"
-                sliderId="drama-emotion-slider"
-              />
-            )}
-
-            {dramaRecommendations.recentItems.length > 0 && (
-              <Slider
-                items={dramaRecommendations.recentItems}
-                title="최근 시청 기반 드라마 추천"
-                sliderId="drama-recent-slider"
-              />
-            )}
-          </div>
-        </section>
-
-        {/* 빈 상태 처리 */}
-        {movieRecommendations.topItems.length === 0 && 
-         dramaRecommendations.topItems.length === 0 && (
-          <div className="empty-content">
-            <h3>표시할 추천 콘텐츠가 없습니다</h3>
-            <p>잠시 후 다시 시도해보세요.</p>
-          </div>
-        )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

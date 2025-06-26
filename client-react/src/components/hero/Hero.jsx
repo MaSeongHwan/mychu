@@ -33,27 +33,27 @@ const Hero = ({ items = [] }) => {
     const sampleData = [
       {
         idx: '1',
-        asset_nm: '더 배트맨',
-        genre: '액션',
-        poster_path: 'https://placehold.co/300x450?text=Batman',
+        asset_nm: '위험한 관계',
+        genre: '드라마',
+        poster_path: 'https://image.tmdb.org/t/p/w500/7d8bGBp1CWXfPXmXSbgYHvxsJUs.jpg',
         release_year: '2022',
         rating: '4.8',
-        description: '고담시의 어둠 속에서 정의를 실현하는 배트맨의 이야기'
+        description: '욕망과 진실한 사랑의 위험한 관계를 만나보세요'
       },
       {
         idx: '2',
-        asset_nm: '스파이더맨',
+        asset_nm: '스파이더맨: 노 웨이 홈',
         genre: '액션',
-        poster_path: 'https://placehold.co/300x450?text=Spider-Man',
+        poster_path: 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
         release_year: '2021',
         rating: '4.7',
-        description: '거미줄을 뿜는 슈퍼히어로의 모험이 시작됩니다'
+        description: '멀티버스가 열리면서 벌어지는 스파이더맨의 대모험'
       },
       {
         idx: '3',
         asset_nm: '인터스텔라',
         genre: 'SF',
-        poster_path: 'https://placehold.co/300x450?text=Interstellar',
+        poster_path: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
         release_year: '2014',
         rating: '4.9',
         description: '우주를 여행하며 인류의 미래를 구하는 감동적인 이야기'
@@ -62,19 +62,19 @@ const Hero = ({ items = [] }) => {
         idx: '4',
         asset_nm: '조커',
         genre: '스릴러',
-        poster_path: 'https://placehold.co/300x450?text=Joker',
+        poster_path: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg',
         release_year: '2019',
         rating: '4.6',
         description: '광기와 현실 사이에서 벌어지는 충격적인 변화'
       },
       {
         idx: '5',
-        asset_nm: '어벤져스',
+        asset_nm: '어벤져스: 엔드게임',
         genre: '액션',
-        poster_path: 'https://placehold.co/300x450?text=Avengers',
-        release_year: '2012',
+        poster_path: 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg',
+        release_year: '2019',
         rating: '4.8',
-        description: '지구를 구하기 위해 모인 슈퍼히어로들의 대서사시'
+        description: '지구를 구하기 위한 어벤져스의 마지막 전투'
       }
     ];
     return <Hero items={sampleData} />;
@@ -105,7 +105,7 @@ const Hero = ({ items = [] }) => {
                 <h2 className="hero-title">{item.asset_nm || '제목 없음'}</h2>
                 <div className="content-meta">
                   <div className="rating">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <svg className="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                     </svg>
                     <span>{item.rating || '4.8'}</span>
@@ -117,7 +117,12 @@ const Hero = ({ items = [] }) => {
                   {item.description || '흥미진진한 스토리와 뛰어난 연출로 많은 사랑을 받고 있는 작품입니다.'}
                 </p>
                 <div className="hero-buttons">
-                  <button className="btn btn-primary">재생</button>
+                  <button className="btn btn-primary">
+                    <svg className="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    재생
+                  </button>
                   <button className="btn btn-outline">찜하기</button>
                 </div>
               </div>

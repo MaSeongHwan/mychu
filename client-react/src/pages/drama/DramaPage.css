@@ -37,6 +37,16 @@
   max-width: 600px;
 }
 
+/* 장르 필터 섹션 */
+.genre-filter-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .content-sections {

@@ -1,4 +1,4 @@
-/* Hero Component CSS */
+/* Hero Component CSS - main.css의 hero 스타일 재현 */
 
 /* ========== 히어로/슬라이더 ========== */
 .hero {
@@ -9,12 +9,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 0;
+  padding: var(--section-padding, 3rem) 0;
 }
 
 .hero-slider-view {
   position: relative;
-  width: min(1400px, 90vw);
+  width: 100%;
   height: 100%;
   margin: 0 auto;
   overflow: hidden;
@@ -36,121 +36,123 @@
   background: none;
   position: relative;
   flex-direction: row;
+  gap: 3rem;
 }
 
 @media (max-width: 768px) {
   .hero-slide {
     flex-direction: column;
+    gap: 2rem;
   }
 }
 
 .hero-poster {
   flex: 0 0 auto;
-  margin-right: 3rem;
   max-width: 300px;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .hero-poster {
-    margin-right: 0;
-    margin-bottom: 2rem;
-    max-width: 220px;
-  }
 }
 
 .poster-container {
   position: relative;
   width: 100%;
   padding-top: 150%;
-  border-radius: 1rem;
-  overflow: hidden;
 }
 
 .poster-image {
   position: absolute;
-  top: 0;
+  top: 0; 
   left: 0;
-  width: 100%;
+  width: 100%; 
   height: 100%;
   object-fit: cover;
   border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
   transition: transform 0.3s;
-  background-color: #1f2937;
+  background-color: #0f1116;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png');
   background-size: cover;
   background-position: center;
 }
 
+.poster-image:hover { 
+  transform: scale(1.05); 
+}
+
 .poster-glow {
   position: absolute;
-  bottom: -10%;
-  left: 0;
-  width: 100%;
-  height: 40%;
-  background: linear-gradient(to bottom, rgba(15, 17, 22, 0), rgba(15, 17, 22, 0.8));
-  z-index: 1;
+  inset: -10px;
+  background: linear-gradient(135deg, rgba(16,185,129,0.3), rgba(45,27,105,0.3));
+  border-radius: 1.5rem;
+  filter: blur(20px);
+  z-index: -1;
+  opacity: 0.7;
 }
 
 .hero-info {
   flex: 1;
-  padding: 0 1rem;
-  max-width: 50%;
+  text-align: left;
+  max-width: 500px;
+  padding: 0 2rem;
 }
 
 @media (max-width: 768px) {
   .hero-info {
-    max-width: 90%;
     text-align: center;
-    padding: 0;
+    max-width: 90%;
+    padding: 0 1rem;
   }
 }
 
 .badge {
   display: inline-block;
-  background: #3b82f6;
+  background-color: #10b981;
   color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
 }
 
 .hero-title {
-  font-size: clamp(1.5rem, 5vw, 3rem);
-  margin-bottom: 1rem;
-  line-height: 1.2;
+  font-size: 3rem;
   font-weight: 700;
+  margin-bottom: 0.75rem;
   color: #fff;
 }
 
 .content-meta {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
+  justify-content: flex-start;
   gap: 1rem;
+  font-size: 0.875rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .content-meta {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 }
 
 .rating {
   display: flex;
   align-items: center;
-  color: #f59e0b;
+  gap: 0.25rem;
 }
 
-.rating svg {
-  margin-right: 0.25rem;
+.star-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #fbbf24;
 }
 
 .release-year {
   color: #d1d5db;
-}
-
-.release-year:after {
-  content: "•";
-  margin-left: 1rem;
 }
 
 .genre {
@@ -158,23 +160,16 @@
 }
 
 .hero-description {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
   color: #d1d5db;
+  margin-bottom: 1.5rem;
   font-size: 1rem;
-}
-
-@media (max-width: 640px) {
-  .hero-description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  line-height: 1.6;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
+  justify-content: flex-start;
 }
 
 @media (max-width: 768px) {
@@ -184,108 +179,125 @@
 }
 
 .btn {
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-width: 7rem;
-  height: 2.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+}
+
+.btn-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
 }
 
 .btn-primary {
-  background: #3b82f6;
-  color: white;
+  background-color: #fff;
+  color: #000;
   border: none;
 }
 
-.btn-primary:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
+.btn-primary:hover { 
+  background-color: #e5e7eb; 
 }
 
 .btn-outline {
-  background: transparent;
-  color: white;
-  border: 2px solid #d1d5db;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #4b5563;
 }
 
-.btn-outline:hover {
-  border-color: #fff;
-  transform: translateY(-1px);
+.btn-outline:hover { 
+  background-color: rgba(75,85,99,0.2); 
 }
 
 .hero-slider-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 3rem;
-  height: 3rem;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  z-index: 10;
-}
-
-.hero-slider-nav:hover {
-  opacity: 1;
-}
-
-.hero-slider-nav.prev {
-  left: 1rem;
-}
-
-.hero-slider-nav.next {
-  right: 1rem;
-}
-
-/* 로딩 및 에러 상태 */
-.hero-loading .loading-indicator,
-.hero-error .error-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 50vh;
-  color: #9ca3af;
-  font-size: 1.125rem;
-}
-
-/* 슬라이더 인디케이터 (페이지네이션) */
-.slider-indicators {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  z-index: 10;
-}
-
-.indicator {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
   transition: background 0.2s;
 }
 
-.indicator.active {
-  background: #3b82f6;
-  transform: scale(1.2);
+.hero-slider-nav:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.hero-slider-nav.prev { 
+  left: 16px; 
+}
+
+.hero-slider-nav.next { 
+  right: 16px; 
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 60vh;
+    margin-top: 2rem;
+    padding: 2rem 0;
+  }
+  
+  .hero-poster {
+    max-width: 240px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+  
+  .hero-slider-nav {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .hero-slider-nav.prev { 
+    left: 8px; 
+  }
+  
+  .hero-slider-nav.next { 
+    right: 8px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 50vh;
+    padding: 1rem 0;
+  }
+  
+  .hero-poster {
+    max-width: 150px;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+  }
 }
