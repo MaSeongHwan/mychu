@@ -1,219 +1,130 @@
-/* ========== 기본 리셋 ========== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* 상단 로고 (시작 페이지와 동일하게) */
+.account-logo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
+  cursor: pointer;
 }
 
-/* ========== 페이지 레이아웃 ========== */
-.account-select-page {
-  height: 100vh;
-  overflow-x: hidden;
-  background: url('/images/login_image1.png') center/cover no-repeat fixed;
-  color: #fff;
-  font-family: 'Noto Sans KR', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
+.account-logo img {
+  width: 140px;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+  transition: transform 0.2s ease;
 }
 
-.account-select-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-color: rgba(15, 17, 22, 0.7); /* 어두운 오버레이 */
-  z-index: -1;
+.account-logo:hover img {
+  transform: scale(1.03);
 }
 
-/* ========== 헤더 로고 ========== */
-.account-header {
-  width: 100%;
-  padding: 1rem 2rem;
+/* 뒷 배경 설정 */
+.background-overlay {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* ← 투명도 조절 (0~1) */
+  z-index: 0;
 }
 
-.account-logo {
-  height: 50px;
-  object-fit: contain;
-  transition: opacity 0.2s ease;
+.account-content {
+  position: relative;
+  z-index: 1; /* overlay보다 위에 나오도록 설정 */
 }
 
-.account-logo:hover {
-  opacity: 0.8;
-}
-
-/* ========== 메인 컨테이너 ========== */
-.account-container {
-  flex: 1;
+/* 메인 영역 */
+.account-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 3rem;
-  padding: 1rem;
+  min-height: 100vh;
+  gap: 2rem;
+  padding-top: 3rem;
   text-align: center;
 }
 
 .account-title {
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: 1.8rem;
   font-weight: bold;
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-  color: #fff;
+  line-height: 1.5;
 }
 
-/* ========== 버튼 그룹 ========== */
 .account-buttons {
+  max-width: 500px;
+  width: 100%;
+  gap: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  max-width: 400px;
 }
 
+/* 버튼 전체 구조*/
 .account-btn {
-  background-color: rgba(15, 17, 22, 0.3);
-  border: 1px solid #333;
-  border-radius: 10px;
-  color: #fff;
-  font-size: clamp(1.1rem, 2vw, 1.25rem);
-  font-weight: 500;
-  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.75rem;
+  position: relative;
+  height: 64px;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+
+  padding: 1.2rem 1.8rem 1.2rem 4.5rem;  /* 왼쪽 패딩 충분히 줘야 아이콘 공간 확보 */
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  backdrop-filter: blur(10px);
+  transition: background 0.2s ease;
+  overflow: visible; /* 혹시나 아이콘이 넘칠 경우 대비 */
+}
+
+/* 버튼 안 텍스트 (가운데 정렬) */
+.btn-label {
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* 버튼 안 아이콘*/
+.btn-icon {
+  position: absolute;
+  left: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+.account-btn img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .account-btn:hover {
-  background-color: #374151;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5); /* hover 시 더 어둡게 */
 }
 
-.account-btn:active {
-  transform: translateY(0);
+/* 하단 회원가입 링크 */
+.signup-text {
+  font-size: 1rem;
+  color: #ccc;
 }
 
-/* ========== 버튼 아이콘 ========== */
-.logo-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  margin-right: 0.75rem;
-  vertical-align: middle;
-  flex-shrink: 0;
-}
-
-/* ========== 플랫폼별 색상 강조 ========== */
-.account-btn.naver:hover {
-  border-color: #03c75a;
-  background-color: rgba(3, 199, 90, 0.1);
-}
-
-.account-btn.kakao:hover {
-  border-color: #fae100;
-  background-color: rgba(250, 225, 0, 0.1);
-}
-
-.account-btn.welllist:hover {
-  border-color: #10b981;
-  background-color: rgba(16, 185, 129, 0.1);
-}
-
-/* ========== 하단 안내 문구 ========== */
-.account-footer {
-  margin-top: 2rem;
-  font-size: 0.95rem;
-  color: #aaa;
-}
-
-.signup-link {
-  background: none;
-  border: none;
-  color: #10b981;
-  font-weight: 500;
-  margin-left: 0.3rem;
-  text-decoration: none;
+.signup-text span {
+  color: #1ac79d;
   cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  transition: color 0.2s ease;
+  margin-left: 0.4rem;
+  font-weight: 500;
 }
 
-.signup-link:hover {
+.signup-text span:hover {
   text-decoration: underline;
-  color: #059669;
-}
-
-/* ========== 반응형 대응 ========== */
-@media (max-width: 768px) {
-  .account-container {
-    padding: 1.5rem;
-  }
-  
-  .account-title {
-    margin-bottom: 2rem;
-  }
-  
-  .account-buttons {
-    max-width: 350px;
-  }
-}
-
-@media (max-width: 480px) {
-  .account-header {
-    padding: 1rem;
-  }
-  
-  .account-logo {
-    height: 40px;
-  }
-  
-  .account-container {
-    margin-top: 2rem;
-    padding: 1rem;
-  }
-  
-  .account-btn {
-    padding: 1rem;
-    font-size: 1rem;
-  }
-
-  .logo-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .account-footer {
-    font-size: 0.85rem;
-    margin-top: 1.5rem;
-  }
-  
-  .account-buttons {
-    max-width: 300px;
-  }
-}
-
-@media (max-width: 360px) {
-  .account-title {
-    font-size: 1.3rem;
-  }
-  
-  .account-btn {
-    padding: 0.875rem;
-    font-size: 0.95rem;
-  }
-  
-  .logo-icon {
-    width: 18px;
-    height: 18px;
-  }
 }
