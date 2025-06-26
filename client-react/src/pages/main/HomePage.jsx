@@ -4,15 +4,48 @@ import Hero from '../../components/hero/Hero';
 import Slider from '../../components/slider/Slider';
 import GenreDropdown from '../../components/dropdown/GenreDropdown';
 import { initRecommendationsForMain, initRecommendationsForDrama } from '../../services/recommendationHelpers';
-import { getHeroContent } from '../../services/recommendationService';
+import { getTodayRecommendations } from '../../services/todayRecommendationService';
+import { getCurrentUser } from '../../services/auth';
 import './HomePage.css';
+
+/**
+ * 현재 로그인된 사용자의 ID를 가져오는 함수
+ * 실제 로그인 시스템과 연동되어야 함
+ */
+const getCurrentUserId = () => {
+  try {
+    // 방법 1: Firebase Auth 사용자 정보에서 user_idx 추출
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      // 사용자 데이터에서 user_idx를 찾기
+      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+      if (userData.user_idx) {
+        console.log('localStorage에서 user_idx 발견:', userData.user_idx);
+        return userData.user_idx;
+      }
+    }
+    
+    // 방법 2: 세션 스토리지 확인
+    const sessionUserData = JSON.parse(sessionStorage.getItem('userData') || '{}');
+    if (sessionUserData.user_idx) {
+      console.log('sessionStorage에서 user_idx 발견:', sessionUserData.user_idx);
+      return sessionUserData.user_idx;
+    }
+    
+    // 방법 3: 임시로 하드코딩된 값 사용 (로그인된 사용자 ID: 541)
+    console.log('저장된 사용자 정보 없음, 하드코딩된 ID 사용: 541');
+    return 541;
+  } catch (error) {
+    console.error('사용자 ID 가져오기 실패:', error);
+    return 541; // 기본값
+  }
+};
 
 /**
  * 메인 홈페이지 컴포넌트
  */
 const HomePage = () => {
   const location = useLocation();
-  const [heroData, setHeroData] = useState([]);
   const [movieRecommendations, setMovieRecommendations] = useState({
     topItems: [],
     emoItems: [],
@@ -23,29 +56,44 @@ const HomePage = () => {
     emoItems: [],
     recentItems: []
   });
+  const [heroItems, setHeroItems] = useState([]);
   const [allContent, setAllContent] = useState([]);
   const [filteredContent, setFilteredContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [heroLoading, setHeroLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [heroError, setHeroError] = useState(null);
   const [userName, setUserName] = useState('사용자');
   const [selectedGenre, setSelectedGenre] = useState('');
 
   useEffect(() => {
     const loadAllData = async () => {
       setLoading(true);
+      setHeroLoading(true);
       try {
-        // 병렬로 데이터 로드
-        const [heroContent, movieData, dramaData] = await Promise.all([
-          getHeroContent(),
+        // 실제 로그인된 사용자 ID 가져오기
+        const userId = getCurrentUserId(); // 로그인된 사용자 ID (541)
+        console.log('HomePage - 현재 사용자 ID:', userId);
+        
+        // Hero 데이터와 다른 데이터 동시 로드
+        const [heroData, movieData, dramaData] = await Promise.all([
+          getTodayRecommendations(userId, 5),
           initRecommendationsForMain(),
           initRecommendationsForDrama()
         ]);
 
-        console.log('Hero Content:', heroContent);
+        console.log('Hero Data:', heroData);
         console.log('Movie Data:', movieData);
         console.log('Drama Data:', dramaData);
 
-        setHeroData(heroContent);
+        // Hero 데이터 설정
+        if (heroData && heroData.length > 0) {
+          setHeroItems(heroData);
+          setHeroError(null);
+        } else {
+          setHeroError('추천 데이터가 없습니다.');
+        }
+
         setMovieRecommendations(movieData);
         setDramaRecommendations(dramaData);
         
@@ -64,8 +112,10 @@ const HomePage = () => {
       } catch (err) {
         console.error('데이터 로드 실패:', err);
         setError(err.message);
+        setHeroError('추천 콘텐츠를 불러오는 중 문제가 발생했습니다.');
       } finally {
         setLoading(false);
+        setHeroLoading(false);
       }
     };
 
@@ -120,10 +170,12 @@ const HomePage = () => {
         <GenreDropdown />
       </div>
 
-      {/* 히어로 섹션 */}
-      {heroData && heroData.length > 0 && (
-        <Hero items={heroData} />
-      )}
+      {/* 히어로 섹션 - 오늘의 추천 API 사용 */}
+      <Hero 
+        items={heroItems}
+        loading={heroLoading}
+        error={heroError}
+      />
 
       {/* 추천 콘텐츠 섹션 - 원본 main.html 구조 재현 */}
       <main className="main-content">
@@ -147,6 +199,7 @@ const HomePage = () => {
                 <Slider 
                   items={filteredContent}
                   title={`${selectedGenre} 추천`}
+                  sliderId={`filtered-${selectedGenre}`}
                   showTitle={false}
                 />
               </div>
@@ -157,7 +210,6 @@ const HomePage = () => {
               {/* 1. 인기 콘텐츠 */}
               <section className="section" id="top-section">
                 <div className="section-header">
-                  <h2>오늘의 인기 콘텐츠</h2>
                   <div className="section-controls">
                     <button className="control-btn prev-btn">
                       <span className="icon icon-arrow-left"></span>
@@ -171,6 +223,7 @@ const HomePage = () => {
                   <Slider 
                     items={movieRecommendations.topItems.concat(dramaRecommendations.topItems)}
                     title="오늘의 인기 콘텐츠"
+                    sliderId="popular-main-slider"
                     showTitle={false}
                   />
                 </div>
@@ -179,7 +232,6 @@ const HomePage = () => {
               {/* 2. 감정 기반 or 장르 기반 추천 */}
               <section className="section" id="genre-section">
                 <div className="section-header">
-                  <h2 id="genre-main-heading">{userName}님, 오늘은 기분 전환이 필요해 보여요</h2>
                   <div className="section-controls">
                     <button className="control-btn prev-btn">
                       <span className="icon icon-arrow-left"></span>
@@ -192,7 +244,8 @@ const HomePage = () => {
                 <div className="slider" id="genre-main-slider">
                   <Slider 
                     items={movieRecommendations.emoItems.concat(dramaRecommendations.emoItems)}
-                    title="감정 기반 추천"
+                    title="{userName}님, 오늘은 기분 전환이 필요해 보여요"
+                    sliderId="genre-main-slider"
                     showTitle={false}
                   />
                 </div>
@@ -201,7 +254,6 @@ const HomePage = () => {
               {/* 3. 최신 콘텐츠 슬라이더 섹션 */}
               <section className="section" id="recent-section">
                 <div className="section-header">
-                  <h2>따끈따끈한 신작, 지금 만나보세요</h2>
                   <div className="section-controls">
                     <button className="control-btn prev-btn">
                       <span className="icon icon-arrow-left"></span>
@@ -214,7 +266,8 @@ const HomePage = () => {
                 <div className="slider" id="recent-main-slider">
                   <Slider 
                     items={movieRecommendations.recentItems.concat(dramaRecommendations.recentItems)}
-                    title="최신 콘텐츠"
+                    title="따끈따끈한 신작, 지금 만나보세요"
+                    sliderId="recent-main-slider"
                     showTitle={false}
                   />
                 </div>

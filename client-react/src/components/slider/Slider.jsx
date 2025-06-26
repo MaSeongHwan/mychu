@@ -56,7 +56,7 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
     const itemId = item.id || item.idx || item.asset_idx;
     if (itemId) {
       console.log(`카드 클릭! 콘텐츠 ${itemId} 상세 페이지로 이동합니다.`);
-      navigate(`/contents?id=${itemId}`);
+      navigate(`/contents/${itemId}`);
     } else {
       console.error('이동할 콘텐츠 ID가 없습니다!', item);
     }
@@ -87,11 +87,14 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
         <div className="card-container">
           {items.map((item, index) => {
             const itemId = item.id || item.idx || item.asset_idx || index;
+            // 콘텐츠의 고유 식별자와 슬라이더 구분을 위한 안전한 key 생성
+            const contentHash = item.asset_nm ? item.asset_nm.replace(/[^a-zA-Z0-9]/g, '') : '';
+            const uniqueKey = `slider-${sliderId}-${itemId}-${contentHash}-${index}`;
             const posterSrc = loadedImages[itemId] || item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image';
 
             return (
               <div
-                key={`${sliderId}-card-${itemId}`}
+                key={uniqueKey}
                 className="card product-card"
                 onClick={() => handleCardClick(item)}
               >
@@ -105,11 +108,6 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
                     }}
                   />
                 </div>
-                {item.asset_nm && (
-                  <div className="card-title">
-                    {item.asset_nm}
-                  </div>
-                )}
               </div>
             );
           })}

@@ -46,6 +46,55 @@
   }
 }
 
+/* ========== 로딩 및 에러 상태 ========== */
+.hero-loading,
+.hero-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  text-align: center;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--accent-color, #007bff);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hero-error .error-icon {
+  color: #ff6b6b;
+  margin-bottom: 0.5rem;
+}
+
+.retry-btn {
+  background: var(--accent-color, #007bff);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.retry-btn:hover {
+  background: var(--accent-color-hover, #0056b3);
+  transform: translateY(-1px);
+}
+
 .hero-poster {
   flex: 0 0 auto;
   max-width: 300px;
@@ -137,18 +186,6 @@
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.star-icon {
-  width: 1rem;
-  height: 1rem;
-  color: #fbbf24;
 }
 
 .release-year {
@@ -300,4 +337,21 @@
   .hero-description {
     font-size: 0.9rem;
   }
+}
+
+/* 로딩 및 에러 상태 */
+.hero-loading,
+.hero-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50vh;
+  color: #9ca3af;
+  font-size: 1.125rem;
+}
+
+.hero-loading p,
+.hero-error p {
+  margin: 0;
 }

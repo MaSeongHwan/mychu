@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmail } from '../../services/auth';
 import './LoginPage.css';
 
 /**
@@ -71,19 +72,15 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      // 실제 Firebase 인증 또는 API 호출
-      // 현재는 샘플 로직
-      console.log('로그인 시도:', formData);
+      // 실제 Firebase 인증 사용
+      console.log('로그인 시도:', formData.contact);
       
-      // 임시 로그인 로직 (실제 구현 시 교체)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const userData = await signInWithEmail(formData.contact, formData.password);
+      console.log('로그인 성공:', userData);
       
-      // 로그인 상태 저장
+      // 로그인 상태 저장 (signInWithEmail에서 이미 localStorage에 저장됨)
       if (formData.rememberMe) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userEmail', formData.contact);
-      } else {
-        sessionStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('rememberMe', 'true');
       }
       
       alert('로그인 성공! 메인 페이지로 이동합니다.');
@@ -91,7 +88,7 @@ const LoginPage = () => {
       
     } catch (error) {
       console.error('로그인 실패:', error);
-      setErrors({ password: '로그인에 실패했습니다. 다시 시도해주세요.' });
+      setErrors({ password: error.message || '로그인에 실패했습니다. 다시 시도해주세요.' });
     } finally {
       setIsLoading(false);
     }

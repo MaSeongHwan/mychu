@@ -117,7 +117,7 @@ const Search = ({ placeholder = '검색어를 입력하세요', showSuggestions 
       if (item.is_adult === 'Y' || item.genre?.includes('성인')) {
         navigate(`/adult?id=${id}`);
       } else {
-        navigate(`/content/${id}`);
+        navigate(`/contents/${id}`);
       }
     }
     setShowSuggestionsList(false);
@@ -155,7 +155,7 @@ const Search = ({ placeholder = '검색어를 입력하세요', showSuggestions 
             strokeLinejoin="round"
           >
             <circle cx="11" cy="11" r="8" />
-            <path d="21 21l-4.35-4.35" />
+            <path d="M21 21l-4.35-4.35" />
           </svg>
         </button>
       </div>

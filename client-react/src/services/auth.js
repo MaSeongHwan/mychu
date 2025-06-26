@@ -224,6 +224,16 @@ export async function signInWithEmail(email, password) {
         }
 
         console.log("최종 로그인 성공:", userData);
+        
+        // 로그인 성공 시 사용자 정보를 localStorage에 저장
+        try {
+            localStorage.setItem('userData', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
+            console.log('사용자 정보가 localStorage에 저장되었습니다:', userData);
+        } catch (storageError) {
+            console.error('localStorage 저장 실패:', storageError);
+        }
+        
         return userData;
     } catch (error) {
         console.error("로그인 실패:", error);

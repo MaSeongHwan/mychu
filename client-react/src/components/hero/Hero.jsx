@@ -2,12 +2,27 @@ import { useState, useEffect } from 'react';
 import './Hero.css';
 
 /**
- * 히어로 슬라이더 컴포넌트 - main.html 기반 구현
- * HTML의 hero 섹션을 React로 완전히 재현
+ * 히어로 슬라이더 컴포넌트 - props 기반 순수 컴포넌트
  */
-const Hero = ({ items = [] }) => {
+const Hero = ({ items = [], loading = false, error = null }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = items.length;
+  const heroItems = items || [];
+  const totalSlides = heroItems.length;
+
+  // 디버깅: 받은 데이터 확인
+  useEffect(() => {
+    console.log('=== Hero 컴포넌트 데이터 확인 ===');
+    console.log('전체 items:', heroItems);
+    heroItems.forEach((item, index) => {
+      console.log(`아이템 ${index}:`, {
+        idx: item.idx,
+        asset_nm: item.asset_nm,
+        genre: item.genre,
+        release_year: item.release_year,
+        description: item.description?.substring(0, 50) + '...'
+      });
+    });
+  }, [heroItems]);
 
   // 자동 슬라이드 (5초마다)
   useEffect(() => {
@@ -28,56 +43,49 @@ const Hero = ({ items = [] }) => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  if (!items || items.length === 0) {
-    // 기본 샘플 데이터 사용
-    const sampleData = [
-      {
-        idx: '1',
-        asset_nm: '위험한 관계',
-        genre: '드라마',
-        poster_path: 'https://image.tmdb.org/t/p/w500/7d8bGBp1CWXfPXmXSbgYHvxsJUs.jpg',
-        release_year: '2022',
-        rating: '4.8',
-        description: '욕망과 진실한 사랑의 위험한 관계를 만나보세요'
-      },
-      {
-        idx: '2',
-        asset_nm: '스파이더맨: 노 웨이 홈',
-        genre: '액션',
-        poster_path: 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-        release_year: '2021',
-        rating: '4.7',
-        description: '멀티버스가 열리면서 벌어지는 스파이더맨의 대모험'
-      },
-      {
-        idx: '3',
-        asset_nm: '인터스텔라',
-        genre: 'SF',
-        poster_path: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-        release_year: '2014',
-        rating: '4.9',
-        description: '우주를 여행하며 인류의 미래를 구하는 감동적인 이야기'
-      },
-      {
-        idx: '4',
-        asset_nm: '조커',
-        genre: '스릴러',
-        poster_path: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg',
-        release_year: '2019',
-        rating: '4.6',
-        description: '광기와 현실 사이에서 벌어지는 충격적인 변화'
-      },
-      {
-        idx: '5',
-        asset_nm: '어벤져스: 엔드게임',
-        genre: '액션',
-        poster_path: 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg',
-        release_year: '2019',
-        rating: '4.8',
-        description: '지구를 구하기 위한 어벤져스의 마지막 전투'
-      }
-    ];
-    return <Hero items={sampleData} />;
+  if (loading) {
+    return (
+      <section className="hero">
+        <div className="hero-slider-view">
+          <div className="hero-loading">
+            <div className="loading-spinner"></div>
+            <p>오늘의 추천을 불러오는 중...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="hero">
+        <div className="hero-slider-view">
+          <div className="hero-error">
+            <svg className="error-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <p>{error}</p>
+            <button className="retry-btn" onClick={() => window.location.reload()}>
+              다시 시도
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!heroItems || heroItems.length === 0) {
+    return (
+      <section className="hero">
+        <div className="hero-slider-view">
+          <div className="hero-error">
+            <p>추천 콘텐츠가 없습니다.</p>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -88,33 +96,38 @@ const Hero = ({ items = [] }) => {
           id="mainHeroSliderTrack"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {items.map((item, index) => (
+          {heroItems.map((item, index) => (
             <div key={item.idx || index} className="hero-slide hero-content">
               <div className="hero-poster">
                 <div className="poster-container">
                   <img 
                     className={`poster-image main-hero-poster-img-${index}`}
                     src={item.poster_path || 'https://placehold.co/300x450?text=No+Image'} 
-                    alt="포스터" 
+                    alt={`${item.asset_nm} 포스터`}
+                    loading="lazy"
+                    onError={(e) => {
+                      console.warn(`이미지 로드 실패: ${item.poster_path}`);
+                      e.target.src = 'https://placehold.co/300x450/333/fff?text=이미지\n없음';
+                    }}
+                    onLoad={(e) => {
+                      e.target.style.opacity = '1';
+                    }}
+                    style={{ opacity: '0', transition: 'opacity 0.3s ease-in-out' }}
                   />
                   <div className="poster-glow"></div>
                 </div>
               </div>
               <div className="hero-info">
                 <span className="badge">오늘의 추천</span>
-                <h2 className="hero-title">{item.asset_nm || '제목 없음'}</h2>
+                <h2 className="hero-title">{item.asset_nm}</h2>
                 <div className="content-meta">
-                  <div className="rating">
-                    <svg className="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <span>{item.rating || '4.8'}</span>
-                  </div>
-                  <span className="release-year">{item.release_year || '2024'}</span>
-                  <span className="genre">{item.genre || '드라마'}</span>
+                  <span className="release-year">{item.release_year}</span>
+                  <span className="genre">{item.genre}</span>
+                  <span className="debug-info" style={{color: '#ff0', fontSize: '12px', marginLeft: '10px'}}>
+                  </span>
                 </div>
                 <p className="hero-description">
-                  {item.description || '흥미진진한 스토리와 뛰어난 연출로 많은 사랑을 받고 있는 작품입니다.'}
+                  {item.description}
                 </p>
                 <div className="hero-buttons">
                   <button className="btn btn-primary">
