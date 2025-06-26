@@ -73,7 +73,8 @@ export const recommendationAPI = {
       emotion: '/recommendation/emotion', 
       recent: '/recommendation/recent',
       similar: '/recommendation/similar',
-      test: '/recommendation/test'
+      test: '/recommendation/test',
+      popular: '/recommendation/popular'
     };
     
     const endpoint = endpoints[type];
@@ -88,10 +89,12 @@ export const recommendationAPI = {
       if (options.is_movie !== undefined) params.append('is_movie', options.is_movie.toString());
       if (options.is_drama !== undefined) params.append('is_drama', options.is_drama.toString());
       if (options.is_adult !== undefined) params.append('is_adult', options.is_adult.toString());
+      if (options.is_main !== undefined) params.append('is_main', options.is_main.toString());
+      if (options.genre) params.append('genre', options.genre);
       if (options.user_id) params.append('user_id', options.user_id);
       
       if (CURRENT_ENV.enableLogging) {
-        console.log(`Fetching ${type} recommendations:`, endpoint);
+        console.log(`Fetching ${type} recommendations:`, endpoint + '?' + params.toString());
       }
       
       const data = await fetchAPI(`${endpoint}?${params.toString()}`);

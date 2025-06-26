@@ -354,3 +354,16 @@ export function initAuthStateListener(onUserDataChange) {
         }
     });
 }
+
+/**
+ * 현재 인증된 사용자의 ID 토큰을 가져옵니다.
+ * @returns {Promise<string>} Firebase ID 토큰
+ * @throws {Error} 로그인되지 않은 경우 에러 발생
+ */
+export async function getCurrentUserToken() {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error('로그인이 필요합니다');
+    }
+    return await user.getIdToken();
+}

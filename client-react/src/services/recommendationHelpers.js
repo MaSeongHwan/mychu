@@ -58,12 +58,14 @@ export async function initRecommendationsForMain() {
     recentItems: []
   };
 
-  // 인기 콘텐츠 추천 데이터 가져오기
+  // 인기 콘텐츠 추천 데이터 가져오기 - popular API 사용
   try {
-    const topData = await recommendationAPI.fetchRecommendations('test', 10, { 
+    console.log('인기 콘텐츠 추천 API 호출: /recommendation/popular?n=10&is_adult=false');
+    const topData = await recommendationAPI.fetchRecommendations('popular', 10, { 
       is_adult: false 
     });
     results.topItems = filterPosterPathOnly(topData);
+    console.log('인기 콘텐츠 데이터:', results.topItems);
   } catch (error) {
     console.error('인기 콘텐츠 추천 데이터 로드 실패:', error);
   }
@@ -81,8 +83,10 @@ export async function initRecommendationsForMain() {
 
   // 최근 시청 콘텐츠 슬라이더 초기화
   try {
-    const recentData = await recommendationAPI.fetchRecommendations('recent', 8);
+    console.log('최근 시청 콘텐츠 API 호출: /recommendation/recent?n=10');
+    const recentData = await recommendationAPI.fetchRecommendations('recent', 10);
     results.recentItems = filterPosterPathOnly(recentData);
+    console.log('최근 시청 콘텐츠 데이터:', results.recentItems);
   } catch (error) {
     console.error('최근 시청 콘텐츠 데이터 로드 실패:', error);
   }
@@ -103,14 +107,16 @@ export async function initRecommendationsForDrama() {
     recentItems: []
   };
 
-  // 인기 드라마 추천 데이터 가져오기
+  // 인기 드라마 추천 데이터 가져오기 - popular API 사용
   try {
-    const topData = await recommendationAPI.fetchRecommendations('test', 10, { 
+    console.log('인기 드라마 추천 API 호출: /recommendation/popular?n=10&is_adult=false&is_movie=false&is_drama=true');
+    const topData = await recommendationAPI.fetchRecommendations('popular', 10, { 
       is_adult: false, 
       is_movie: false, 
       is_drama: true 
     });
     results.topItems = filterPosterPathOnly(topData);
+    console.log('인기 드라마 데이터:', results.topItems);
   } catch (error) {
     console.error('인기 드라마 추천 데이터 로드 실패:', error);
   }

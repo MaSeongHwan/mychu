@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './PasswordModal.css';
+import { verifyAdultPassword } from '../../services/adultAuthService';
 
 /**
  * 성인 인증 비밀번호 모달 컴포넌트
@@ -8,23 +9,35 @@ const PasswordModal = ({ onSuccess, onCancel }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showError, setShowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 성인 인증 비밀번호 (실제 서비스에서는 서버에서 검증)
-  const ADULT_PASSWORD = '1234'; // 예시 비밀번호
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!password.trim()) {
       setError('비밀번호를 입력하세요');
       setShowError(true);
       return;
     }
 
-    if (password === ADULT_PASSWORD) {
-      onSuccess();
-    } else {
-      setError('비밀번호가 일치하지 않습니다.');
+    setIsLoading(true);
+    setShowError(false);
+
+    try {
+      const result = await verifyAdultPassword(password);
+      
+      if (result.success) {
+        onSuccess();
+      } else {
+        setError(result.message || '비밀번호가 일치하지 않습니다.');
+        setShowError(true);
+        setPassword('');
+      }
+    } catch (err) {
+      console.error('성인 인증 실패:', err);
+      setError(err.message || '인증 중 오류가 발생했습니다.');
       setShowError(true);
       setPassword('');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,8 +72,12 @@ const PasswordModal = ({ onSuccess, onCancel }) => {
           spellCheck="false"
           autoFocus
         />
-        <button className="password-submit" onClick={handleSubmit}>
-          확인
+        <button 
+          className="password-submit" 
+          onClick={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? '확인 중...' : '확인'}
         </button>
         {showError && (
           <p className={`password-error ${!password.trim() ? 'empty' : ''}`}>

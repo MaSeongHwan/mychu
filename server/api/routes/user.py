@@ -6,6 +6,7 @@ from server.core.database import get_db
 from server.core.firebase_auth import init_firebase
 from server.models.user import User as UserModel, UserLog, MyList
 from server.api.schemas.user import User as UserSchema, UserCreate, UserRegister
+from pydantic import BaseModel
 from firebase_admin import auth, exceptions as firebase_exceptions
 from datetime import datetime, date
 from typing import Optional
@@ -181,3 +182,44 @@ async def get_current_user(
     except Exception as e:
         logger.error(f"사용자 정보 조회 중 오류 발생: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error fetching user data: {str(e)}")
+
+# 성인 인증 비밀번호 검증용 스키마
+class AdultPasswordVerify(BaseModel):
+    password: str
+
+# ------------------------ 성인 인증 API ------------------------
+@router.post("/adult/verify-password")
+async def verify_adult_password(
+    request: AdultPasswordVerify,
+    token_data: dict = Depends(verify_firebase_token),
+    db: Session = Depends(get_db)
+):
+    """성인 인증 비밀번호를 검증합니다."""
+    try:
+        # JWT 토큰에서 UID 추출
+        firebase_uid = token_data.get('uid')
+        if not firebase_uid:
+            raise HTTPException(status_code=401, detail="Invalid token: missing UID")
+        
+        # 사용자 정보 조회
+        user = db.query(UserModel).filter(UserModel.sha2_hash == firebase_uid).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # 성인 여부 확인
+        if not user.is_adult:
+            raise HTTPException(status_code=403, detail="User is not an adult")
+        
+        # 비밀번호 검증
+        if user.sec_password != request.password:
+            logger.warning(f"성인 인증 비밀번호 불일치: 사용자={user.nick_name}")
+            return {"success": False, "message": "Invalid password"}
+        
+        logger.info(f"성인 인증 성공: 사용자={user.nick_name}")
+        return {"success": True, "message": "Password verified successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"성인 인증 중 오류 발생: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error verifying password: {str(e)}")

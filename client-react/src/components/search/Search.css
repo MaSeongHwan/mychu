@@ -7,7 +7,7 @@
 
 .search-input-container {
   position: relative;
-  display: flex;
+  display: flex; 
   align-items: center;
   background: rgba(55, 65, 81, 0.8);
   border: 1px solid #4b5563;
