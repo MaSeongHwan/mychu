@@ -62,28 +62,28 @@ const MyListPage = () => {
       idx: '101',
       asset_nm: '샘플 영화 1',
       genre: '액션',
-      poster_path: 'https://via.placeholder.com/300x450?text=Sample+1',
+      poster_path: 'https://picsum.photos/300/450',
       rlse_year: '2023'
     },
     {
       idx: '102',
       asset_nm: '샘플 드라마 1',
       genre: '로맨스',
-      poster_path: 'https://via.placeholder.com/300x450?text=Sample+2',
+      poster_path: 'https://picsum.photos/300/450',
       rlse_year: '2022'
     },
     {
       idx: '103',
       asset_nm: '샘플 영화 2',
       genre: '코미디',
-      poster_path: 'https://via.placeholder.com/300x450?text=Sample+3',
+      poster_path: 'https://picsum.photos/300/450',
       rlse_year: '2023'
     },
     {
       idx: '104',
       asset_nm: '샘플 드라마 2',
       genre: '스릴러',
-      poster_path: 'https://via.placeholder.com/300x450?text=Sample+4',
+      poster_path: 'https://picsum.photos/300/450',
       rlse_year: '2024'
     }
   ];
