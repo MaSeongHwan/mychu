@@ -39,7 +39,8 @@ const AppRoutes = () => {
         <Route path="/adult" element={<AdultPage />} />
         <Route path="/mylist" element={<MyListPage />} />
         <Route path="/setting" element={<SettingPage />} />
-        <Route path="/contents/:id" element={<ContentDetailsPage />} />
+        {/*<Route path="/contents/:id" element={<ContentDetailsPage />} />*/}
+        <Route path="/content/:id" element={<ContentDetailsPage />} />
       </Route>
 
       {/* 존재하지 않는 경로 처리 */}

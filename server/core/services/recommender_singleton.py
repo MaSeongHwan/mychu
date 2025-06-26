@@ -236,9 +236,9 @@ class RecommenderSingleton:
             import traceback
             logger.error(traceback.format_exc())
             return []
-
+recommender = RecommenderSingleton()
 # # # 싱글톤 인스턴스 생성
-# # recommender = RecommenderSingleton()
+# # 
 
 # import numpy as np
 # import os
