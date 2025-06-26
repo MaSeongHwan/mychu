@@ -17,7 +17,7 @@
 }
 
 .search-input-container:focus-within {
-  border-color: #10b981;
+  border-color: #4b5563;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
