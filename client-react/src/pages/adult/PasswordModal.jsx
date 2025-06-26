@@ -20,19 +20,23 @@ const PasswordModal = ({ onSuccess, onCancel }) => {
 
     setIsLoading(true);
     setShowError(false);
+    console.log('🔐 성인 인증 시도 - 입력된 비밀번호:', password);
 
     try {
       const result = await verifyAdultPassword(password);
+      console.log('🔐 성인 인증 응답:', result);
       
       if (result.success) {
+        console.log('✅ 성인 인증 성공');
         onSuccess();
       } else {
+        console.log('❌ 성인 인증 실패:', result.message);
         setError(result.message || '비밀번호가 일치하지 않습니다.');
         setShowError(true);
         setPassword('');
       }
     } catch (err) {
-      console.error('성인 인증 실패:', err);
+      console.error('💥 성인 인증 에러:', err);
       setError(err.message || '인증 중 오류가 발생했습니다.');
       setShowError(true);
       setPassword('');

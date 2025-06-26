@@ -1,6 +1,6 @@
-// 수정 후
-import { initializeApp }                  from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAnalytics  }                  from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+// Firebase npm 패키지 사용
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -11,7 +11,7 @@ import {
   EmailAuthProvider,
   fetchSignInMethodsForEmail,
   signInWithCredential
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+} from 'firebase/auth';
 
 // Firebase 설정 (환경변수 지원)
 import { getFirebaseConfig } from './firebase.js';

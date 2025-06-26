@@ -193,21 +193,18 @@ const HomePage = () => {
           {/* 1. Top 10 인기 콘텐츠 슬라이더 */}
           <SliderSection
             id="top10-slider"
-            title="Top 10 인기 콘텐츠"
             items={slidersData.popular}
           />
           
           {/* 2. 감정 슬라이더 */}
           <SliderSection
             id="emotion-slider"
-            title="감정 슬라이더"
             items={slidersData.emotion}
           />
           
           {/* 3. 최신 콘텐츠 슬라이더 */}
           <SliderSection
             id="recent-slider"
-            title="최신 콘텐츠 슬라이더"
             items={slidersData.recent}
           />
           

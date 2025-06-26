@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 // 페이지 컴포넌트
 import LandingPage from './pages/home/LandingPage';
+import TestPage from './test/TestPage';
 import SignupPage from './pages/index/SignupPage';
 import LoginPage from './pages/login/LoginPage';
 import AccountSelectPage from './pages/account/AccountSelectPage';
@@ -24,6 +25,9 @@ import MainLayout from './components/layout/MainLayout';
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* 테스트 페이지 */}
+      <Route path="/test" element={<TestPage />} />
+      
       {/* 레이아웃 없이 표시할 페이지 */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup" element={<SignupPage />} />

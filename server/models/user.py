@@ -15,7 +15,7 @@ class User(Base):
     is_adult = Column(Boolean, default=False)
     sec_password = Column(String, default="0000")
     nick_name = Column(String)
-
+    
     # Relationships
     logs = relationship("UserLog", back_populates="user")
     vod_logs = relationship("VodLog", back_populates="user")

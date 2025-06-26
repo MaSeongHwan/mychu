@@ -4,12 +4,16 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],  server: {
+  plugins: [react()],
+  optimizeDeps: {
+    include: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/analytics'],
+  },
+  server: {
     port: 5173,
     strictPort: true,
     host: '0.0.0.0',
     hmr: {
-      overlay: true, // Enable HMR overlay for better error visibility
+      overlay: true,
     },
     proxy: {
       '/api': {

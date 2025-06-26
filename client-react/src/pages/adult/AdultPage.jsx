@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Hero from '../../components/hero/Hero';
 import ContentSection from '../../components/content/ContentSection';
-import PasswordModal from './PasswordModal';
+import { useAdultContentGate } from '../../hooks/useAdultContentGate';
 import './AdultPage.css';
 
 /**
- * 성인관 페이지 컴포넌트 - HTML/CSS를 React로 구현
- * 비밀번호 인증 + 메인 페이지와 동일한 UI 구조
+ * 성인관 페이지 컴포넌트 - 성인 인증 게이트 적용
+ * 1. 미성년자: 접근 차단
+ * 2. 성인: 비밀번호 인증 후 접근
  */
 const AdultPage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(true);
+  const navigate = useNavigate();
   const [heroData, setHeroData] = useState([]);
   const [top10Content, setTop10Content] = useState([]);
   const [recommendedContent, setRecommendedContent] = useState([]);
@@ -18,12 +19,18 @@ const AdultPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 성인 인증 게이트 사용
+  const { isAdultVerified, AdultGateComponent } = useAdultContentGate(() => {
+    // 접근 거부 시 메인 페이지로 이동
+    navigate('/main');
+  });
+
   // 인증 성공 시 데이터 로드
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAdultVerified) {
       loadAdultContent();
     }
-  }, [isAuthenticated]);
+  }, [isAdultVerified]);
 
   const loadAdultContent = async () => {
     setLoading(true);
@@ -90,23 +97,9 @@ const AdultPage = () => {
     }
   };
 
-  const handlePasswordSuccess = () => {
-    setIsAuthenticated(true);
-    setShowPasswordModal(false);
-  };
-
-  const handlePasswordCancel = () => {
-    // 메인 페이지로 리다이렉트
-    window.location.href = '/main';
-  };
-
-  if (showPasswordModal) {
-    return (
-      <PasswordModal
-        onSuccess={handlePasswordSuccess}
-        onCancel={handlePasswordCancel}
-      />
-    );
+  // 성인 인증이 완료되지 않았으면 인증 게이트 표시
+  if (!isAdultVerified) {
+    return AdultGateComponent;
   }
 
   if (loading) {
@@ -142,7 +135,7 @@ const AdultPage = () => {
               <line x1="12" y1="9" x2="12" y2="13"></line>
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
-            <span className="notice-text">성인관에 입장하셨습니다. 19세 이상만 이용 가능한 콘텐츠입니다.</span>
+            <span className="notice-text">✅ 성인 인증 완료 - 19세 이상 전용 콘텐츠</span>
           </div>
         </div>
       </div>
