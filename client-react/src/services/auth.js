@@ -19,6 +19,13 @@ import { API_BASE_URL } from '../utils/apiConfig.js';
 
 // Firebase 초기화
 const firebaseConfig = getFirebaseConfig();
+console.log('🔥 Firebase 설정:', firebaseConfig);
+
+// Firebase 설정 유효성 검사
+if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'test-api-key') {
+  console.error('⚠️ Firebase API 키가 설정되지 않았거나 테스트 키입니다:', firebaseConfig.apiKey);
+}
+
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app);
