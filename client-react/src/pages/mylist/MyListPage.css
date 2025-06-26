@@ -27,7 +27,8 @@
 
 /* 그리드 레이아웃 */
 .mylist-grid {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
 }

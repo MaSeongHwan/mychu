@@ -17,7 +17,7 @@ const MyListPage = () => {
       
       try {
         // 사용자의 찜 목록 가져오기
-        const response = await fetch('/api/user/mylist');
+        const response = await fetch('http://localhost:8000/logs/user/541?limit=50&offset=0');
         
         if (!response.ok) {
           throw new Error('찜 목록을 가져오는데 실패했습니다.');
@@ -120,7 +120,12 @@ const MyListPage = () => {
               <div className="mylist-item" key={item.idx}>
                 <div className="mylist-poster">
                   <Link to={`/content/${item.idx}`}>
-                    <img src={item.poster_path} alt={item.asset_nm} />
+                    <img src={item.poster_path}
+                     alt={item.asset_nm}
+                     onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/300x450?text=No+Image';
+                    }}
+                     />
                   </Link>
                   <button 
                     className="remove-button"

@@ -168,8 +168,8 @@ async def read_drama(request: Request):
 async def read_movie(request: Request):
     return templates.TemplateResponse("movie.html", {"request": request})
 
-@app.get("/mylist")
-async def read_mylist(request: Request):
+@app.get("/api/user/mylist")
+async def get_my_list(request: Request):
     return templates.TemplateResponse("mylist.html", {"request": request})
 
 @app.get("/rating")
