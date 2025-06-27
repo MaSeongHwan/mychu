@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ContentSection.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 /**
  * 콘텐츠 슬라이더 섹션 컴포넌트
@@ -141,19 +142,20 @@ const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: e
                 <div 
                   key={item.idx || `item-${index}`} 
                   className="content-card"
-                  onClick={() => handleCardClick(item.idx)}
                 >
-                  <div className="card-poster">
-                    <img 
-                      src={item.poster_path 
-                        ? `http://localhost:8000/image-proxy?url=${encodeURIComponent(item.poster_path)}` 
-                        : `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
-                      alt={item.asset_nm || '포스터'}
-                      onError={(e) => {
-                        e.target.src = `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'No Image')}`;
-                      }}
-                    />
-                  </div>
+                  <Link to={`/content/${item.idx || item.asset_idx}`}>
+                    <div className="card-poster">
+                      <img 
+                        src={item.poster_path 
+                          ? `http://localhost:8000/image-proxy?url=${encodeURIComponent(item.poster_path)}` 
+                          : `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
+                        alt={item.asset_nm || '포스터'}
+                        onError={(e) => {
+                          e.target.src = `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'No Image')}`;
+                        }}
+                      />
+                    </div>
+                  </Link>
                   <div className="card-info">
                     <h3 className="card-title">{item.asset_nm || item.super_asset_nm || '제목 없음'}</h3>
                     <div className="card-meta">
