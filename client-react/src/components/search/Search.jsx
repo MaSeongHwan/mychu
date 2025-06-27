@@ -117,7 +117,7 @@ const Search = ({ placeholder = '검색어를 입력하세요', showSuggestions 
       if (item.is_adult === 'Y' || item.genre?.includes('성인')) {
         navigate(`/adult?id=${id}`);
       } else {
-        navigate(`/contents/${id}`);
+        navigate(`/content/${id}`);
       }
     }
     setShowSuggestionsList(false);

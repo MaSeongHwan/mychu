@@ -48,7 +48,9 @@ services:
       - ./client-react:/app
     environment:
       - NODE_ENV=development
-      - VITE_API_BASE_URL=http://fastapi:8000
+      - VITE_API_BASE_URL=http://localhost:8000
+      # - NODE_ENV=development
+      # - VITE_API_BASE_URL=http://fastapi:8000
     depends_on:
       - fastapi
     restart: unless-stopped

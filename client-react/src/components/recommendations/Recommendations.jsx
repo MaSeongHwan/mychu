@@ -60,7 +60,7 @@ const Recommendations = ({ type = 'top', limit = 10, title = '추천 콘텐츠',
     }
     
     console.log(`콘텐츠 ${contentId} 상세 페이지로 이동합니다.`);
-    navigate(`/contents?id=${contentId}`);
+    navigate(`/content/${contentId}`);
   };
 
   if (loading) {

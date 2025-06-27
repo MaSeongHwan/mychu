@@ -17,31 +17,34 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'http://fastapi:8000',
+        // target: process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'http://fastapi:8000',
+        // changeOrigin: true,
+        target: 'http://localhost:8000',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/recommendation': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/recommendations': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/search': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/assets': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/users': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/logs': {
-        target: 'http://fastapi:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     },

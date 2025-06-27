@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ContentDetailsPage.css';
 
 /**
@@ -8,6 +8,7 @@ import './ContentDetailsPage.css';
  */
 const ContentDetailsPage = () => {
   const { id } = useParams(); // URL에서 콘텐츠 ID 가져오기
+  const navigate = useNavigate();
   const [content, setContent] = useState(null);
   const [relatedContent, setRelatedContent] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,21 +19,37 @@ const ContentDetailsPage = () => {
       setLoading(true);
       setError(null);
       
+      console.log(`콘텐츠 ID ${id}에 대한 상세 정보를 가져오는 중...`);
+      
       try {
-        // 콘텐츠 상세 정보 API 호출
-        const contentResponse = await fetch(`/api/content/${id}`);
+        // 콘텐츠 상세 정보 API 호출 - 올바른 엔드포인트 사용
+        // const apiUrl = `/assets/${id}`;
+        // console.log(`API 호출 URL: ${apiUrl}`);
+        
+        // const contentResponse = await fetch(apiUrl);
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
+        const apiUrl = API_BASE_URL
+          ? `${API_BASE_URL}/assets/${id}`
+          : `/assets/${id}`; // 로컬 개발 시 프록시 사용
+
+        console.log(`API 호출 URL: ${apiUrl}`);
+
+        const contentResponse = await fetch(apiUrl);
+        console.log(`API 응답 상태: ${contentResponse.status}`);
         
         if (!contentResponse.ok) {
           throw new Error(`API 오류: ${contentResponse.status}`);
         }
         
         const contentData = await contentResponse.json();
+        console.log('받은 콘텐츠 데이터:', contentData);
         setContent(contentData);
         
-        // 관련 콘텐츠 API 호출
-        const relatedResponse = await fetch(`/api/content/${id}/related`);
-        const relatedData = await relatedResponse.json();
-        setRelatedContent(relatedData.items || []);
+        // 관련 콘텐츠 API 호출 - 임시로 비활성화
+        // const relatedResponse = await fetch(`/api/content/${id}/related`);
+        // const relatedData = await relatedResponse.json();
+        // setRelatedContent(relatedData.items || []);
         
       } catch (err) {
         console.error('콘텐츠 로드 중 오류:', err);
@@ -61,7 +78,12 @@ const ContentDetailsPage = () => {
   };
 
   // 콘텐츠가 없고 로딩 중이 아닌 경우 샘플 데이터 사용
-  const displayContent = !loading && !content ? sampleContent : content;
+  const displayContent = content || sampleContent;
+
+  // 콘텐츠 클릭 핸들러
+  const handleContentClick = (contentId) => {
+    navigate(`/content/${contentId}`);
+  };
 
   if (loading) {
     return (
@@ -72,7 +94,7 @@ const ContentDetailsPage = () => {
     );
   }
 
-  if (error && !displayContent) {
+  if (error && !content) {
     return (
       <div className="content-details-error">
         <h2>오류 발생</h2>
@@ -150,7 +172,12 @@ const ContentDetailsPage = () => {
         
         <div className="related-content-grid">
           {(relatedContent.length > 0 ? relatedContent : Array(4).fill(sampleContent)).map((item, idx) => (
-            <div className="related-content-item" key={item.idx || `sample-${idx}`}>
+            <div 
+              className="related-content-item" 
+              key={item.idx || `sample-${idx}`}
+              onClick={() => handleContentClick(item.idx || `sample-${idx}`)}
+              style={{ cursor: 'pointer' }}
+            >
               <img 
                 src={item.poster_path || `https://via.placeholder.com/200x300?text=Related+${idx}`}
                 alt={item.asset_nm || `관련 콘텐츠 ${idx}`}

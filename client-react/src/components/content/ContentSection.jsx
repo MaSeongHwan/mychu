@@ -97,8 +97,7 @@ const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: e
 
   // 콘텐츠 상세 페이지로 이동
   const handleCardClick = (idx) => {
-    //window.location.href = `/contents?id=${idx}`;
-    window.location.href = `/contents/${idx}`;
+    window.location.href = `/content/${idx}`;
   };
 
   return (
