@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Hero from '../../components/hero/Hero';
 import Slider from '../../components/slider/Slider';
+import GenreDropdown from '../../components/dropdown/GenreDropdown';
 import { getTodayRecommendations } from '../../services/todayRecommendationService';
 import { getPopularContent, getEmotionContent, getRecentContent } from '../../services/recommendationService';
 import { getCurrentUser } from '../../services/auth';
@@ -70,6 +72,7 @@ const getCurrentUserId = () => {
  * 메인 홈페이지 컴포넌트 - 단순화된 3개 슬라이더 구조
  */
 const HomePage = () => {
+  const location = useLocation();
   // 상태 단순화
   const [heroData, setHeroData] = useState([]);
   const [slidersData, setSlidersData] = useState({
@@ -80,73 +83,60 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [heroError, setHeroError] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState('');
 
   useEffect(() => {
     loadMainPageData();
-  }, []); // 빈 의존성 배열로 한 번만 실행
+  }, []);
 
-  const loadMainPageData = async () => {
+  // URL에서 장르 파라미터 읽기 및 API 재요청
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const genre = urlParams.get('genre') || '';
+    setSelectedGenre(genre);
+    if (genre) {
+      loadMainPageData(genre);
+    } else {
+      loadMainPageData();
+    }
+    // eslint-disable-next-line
+  }, [location.search]);
+
+  const loadMainPageData = async (genreParam = '') => {
     try {
       setLoading(true);
       setError(null);
       setHeroError(null);
-      
       const userId = getCurrentUserId();
-      console.log('메인 페이지 데이터 로드 시작 - 사용자 ID:', userId);
-      
       // Hero 데이터 로드 (개별 에러 처리)
-      console.log('Hero 데이터 로드 중...');
       let heroResult = [];
       try {
         heroResult = await getTodayRecommendations(userId, 5);
-        console.log('Hero 데이터 로드 성공:', heroResult?.length || 0, '개');
       } catch (err) {
-        console.error('Hero 데이터 로드 실패:', err);
         setHeroError('Hero 콘텐츠를 불러올 수 없습니다.');
-        heroResult = []; // 실패 시 빈 배열
+        heroResult = [];
       }
-      
-      console.log('슬라이더 데이터 로드 중...');
+      // 슬라이더 데이터 로드 (genre 적용)
       const [popularResult, emotionResult, recentResult] = await Promise.all([
-        getPopularContent({ limit: 10, isAdult: false }).catch(err => {
-          console.error('인기 콘텐츠 로드 실패:', err);
-          return [];
-        }),
-        getEmotionContent({ limit: 10, isAdult: false }).catch(err => {
-          console.error('감정 콘텐츠 로드 실패:', err);
-          return [];
-        }),
-        getRecentContent({ limit: 10, isAdult: false }).catch(err => {
-          console.error('최신 콘텐츠 로드 실패:', err);
-          return [];
-        })
+        getPopularContent({ limit: 10, is_adult: false, genre: genreParam || undefined }).catch(() => []),
+        getEmotionContent({ limit: 10, is_adult: false, genre: genreParam || undefined }).catch(() => []),
+        getRecentContent({ limit: 10, is_adult: false, genre: genreParam || undefined }).catch(() => [])
       ]);
-
-      console.log('데이터 로드 완료:', {
-        hero: heroResult?.length || 0,
-        popular: popularResult?.length || 0,
-        emotion: emotionResult?.length || 0,
-        recent: recentResult?.length || 0
-      });
-
       // Hero 데이터 설정
       if (heroResult && heroResult.length > 0) {
         setHeroData(heroResult);
         setHeroError(null);
       } else {
         setHeroError('추천 데이터가 없습니다.');
-        console.warn('Hero 데이터가 없습니다. Fallback 데이터를 사용합니다.');
       }
-
       // 슬라이더 데이터 설정
-      setSlidersData({
+      const newSlidersData = {
         popular: popularResult || [],
         emotion: emotionResult || [],
         recent: recentResult || []
-      });
-      
+      };
+      setSlidersData(newSlidersData);
     } catch (err) {
-      console.error('메인 페이지 데이터 로드 실패:', err);
       setError('데이터를 불러오는 중 문제가 발생했습니다.');
       setHeroError('추천 콘텐츠를 불러오는 중 문제가 발생했습니다.');
     } finally {
@@ -179,6 +169,11 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      {/* 장르 드롭다운 */}
+      <div className="genre-filter-section">
+        <GenreDropdown />
+      </div>
+
       {/* Hero 섹션 */}
       <Hero 
         items={heroData}
@@ -189,25 +184,22 @@ const HomePage = () => {
       {/* 메인 콘텐츠 - 3개의 슬라이더 */}
       <main className="main-content">
         <div className="container">
-          
-          {/* 1. Top 10 인기 콘텐츠 슬라이더 */}
+          {/* 항상 3개의 슬라이더를 렌더링 */}
           <SliderSection
             id="top10-slider"
+            title={`Top 10 인기 콘텐츠${selectedGenre ? ` (${selectedGenre})` : ''}`}
             items={slidersData.popular}
           />
-          
-          {/* 2. 감정 슬라이더 */}
           <SliderSection
             id="emotion-slider"
+            title={`감정 콘텐츠${selectedGenre ? ` (${selectedGenre})` : ''}`}
             items={slidersData.emotion}
           />
-          
-          {/* 3. 최신 콘텐츠 슬라이더 */}
           <SliderSection
             id="recent-slider"
+            title={`최신 콘텐츠${selectedGenre ? ` (${selectedGenre})` : ''}`}
             items={slidersData.recent}
           />
-          
         </div>
       </main>
     </div>
