@@ -35,59 +35,27 @@ const AdultPage = () => {
   const loadAdultContent = async () => {
     setLoading(true);
     try {
-      // 성인 콘텐츠 샘플 데이터
-      const sampleAdultData = [
-        {
-          idx: '1',
-          asset_nm: 'Top1 성인물',
-          genre: '19+',
-          poster_path: 'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
-          release_year: '2023',
-          rating: '4.8',
-          description: '성인 전용 콘텐츠입니다'
-        },
-        {
-          idx: '2',
-          asset_nm: 'Top2 성인물',
-          genre: '19+',
-          poster_path: 'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
-          release_year: '2023',
-          rating: '4.7',
-          description: '성인 전용 콘텐츠입니다'
-        },
-        {
-          idx: '3',
-          asset_nm: 'Top3 성인물',
-          genre: '19+',
-          poster_path: 'https://postfiles.pstatic.net/MjAyNTA2MThfMjc5/MDAxNzUwMjE2MjQ5NzIz.U4zTW_VWUKcBzHiIdVcxKVWcIsZg04JadVrlxbB-aqkg._Sa7J8N-1-cD8G4kWBSl2zqD_pREvUteYClYBhf4_cg.PNG/200.png?type=w773',
-          release_year: '2023',
-          rating: '4.6',
-          description: '성인 전용 콘텐츠입니다'
-        },
-        {
-          idx: '4',
-          asset_nm: '추천 성인물1',
-          genre: '19+',
-          poster_path: 'https://postfiles.pstatic.net/MjAyNTA2MThfODQg/MDAxNzUwMjE2MjQ5ODA0.-PxedGvLKzmDaTYGYx61lEpIFJ5N6wINuO3FCopjtIIg.eusuqu161SSZioPOpAwtNHLKh9r_ZsFBZgZXbxi36EIg.PNG/180.png?type=w773',
-          release_year: '2022',
-          rating: '4.5',
-          description: '성인 전용 콘텐츠입니다'
-        },
-        {
-          idx: '5',
-          asset_nm: '최신 성인물1',
-          genre: '19+',
-          poster_path: 'https://postfiles.pstatic.net/MjAyNTA2MThfOTIg/MDAxNzUwMjE2MjQ5NzQx.uMZ7SZaof0QEtnQ_f27rwrEC9agWbuWBtrjwICpmHIMg.kvvgDxGaBgimAicX5UkFl2zqD_pREvUteYClYBhf4_cg.PNG/190.png?type=w773',
-          release_year: '2024',
-          rating: '4.4',
-          description: '성인 전용 콘텐츠입니다'
-        }
-      ];
+      //1. top10 콘텐츠
+      const top10Res = await fetch('http://127.0.0.1:8000/recommendation/recent?n=10&is_adult=true&is_main=true&is_movie=false&is_drama=true');
+      if (!top10Res.ok) throw new Error('top10 응답 실패');
+      const top10Json = await top10Res.json();
+      setTop10Content(top10Json.items);
+      setHeroData(top10Json.items.slice(0, 3));
+      
 
-      setHeroData(sampleAdultData.slice(0, 3));
-      setTop10Content(sampleAdultData);
-      setRecommendedContent(sampleAdultData);
-      setLatestContent(sampleAdultData);
+      // 2. 추천 콘텐츠
+      // const recommendedRes = await fetch('http://127.0.0.1:8000/recommendation/personal?n=10&is_adult=true');
+      // if (!recommendedRes.ok) throw new Error('추천 응답 실패');
+      // const recommendedJson = await recommendedRes.json();
+      // setRecommendedContent(recommendedJson.items);
+
+      // 3. 최신 작품
+      const latestRes = await fetch('http://127.0.0.1:8000/recommendation/recent?n=20&is_adult=true&is_main=false&is_movie=false&is_drama=true');
+      if (!latestRes.ok) throw new Error('최신작 응답 실패');
+      const latestJson = await latestRes.json();
+      setLatestContent(latestJson.items);
+
+     
       
       setLoading(false);
     } catch (err) {
