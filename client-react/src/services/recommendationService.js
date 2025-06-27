@@ -288,7 +288,7 @@ export const getEmotionContent = async (options = { is_movie: null, is_drama: nu
     
     // 백엔드 연결 실패 시 감정 기반 샘플 데이터 반환
     let fallbackData = [
-      { idx: 26114, asset_nm: '어바웃 타임', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/BMS/TVSeason/2023/C9901_C99000000042-Vertical_LogoY_WOriginal.jpg', genre: '로맨스', release_year: '2013' },
+      { idx: 15765, asset_nm: '노트북', poster_path: ' https://image.wavve.com/v1/thumbnails/480_720_20_80/movieImg/MovieGroup/2023/GMV_CD01_WR0000011336-Vertical_LogoY_RTC.jpg', genre: '로맨스', release_year: '2013' },
       { idx: 59226, asset_nm: '라라랜드', poster_path: 'https://i.namu.wiki/i/78uTXq-Jd3ME_MYXtiyOo-qBPjwpiNF9qs1ko9YvE1BmaVagE9-h95a5Xuh0jVt6WX9sY8seQLZlU2GidF7Gcg.webp', genre: '로맨스', release_year: '2016' },
       { idx: 22087, asset_nm: '러브액츄얼리', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/meta/image/202405/1714713162866926870.jpg', genre: '로맨스', release_year: '2003' },
       { idx: 153127, asset_nm: '포레스트 검프', poster_path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVdHu72V-1sIR4NsXxJ5wn6V7habcNxFbWIw&s', genre: '드라마', release_year: '1994' },
