@@ -22,7 +22,8 @@ def get_similar_contents_hybrid_filtered(
     content_names,
     is_main_map,
     is_adult_map,
-    top_n=10
+    top_n=10,
+    include_adult=False
 ):
     """
     Get similar content based on hybrid vectors using KNN
@@ -44,10 +45,9 @@ def get_similar_contents_hybrid_filtered(
         # Validate target_idx is in range
         if target_idx < 0 or target_idx >= len(hybrid_vectors):
             logger.error(f"Target index {target_idx} out of range (0-{len(hybrid_vectors)-1})")
-            return []
-            
-        # Make sure we don't request more neighbors than we have vectors
-        n_neighbors = min(len(hybrid_vectors), max(top_n * 5, 20))
+            return []        # Make sure we don't request more neighbors than we have vectors
+        # 필터링으로 많은 결과가 제외될 수 있으므로 더 많은 이웃을 가져옴
+        n_neighbors = min(len(hybrid_vectors), max(top_n * 20, 100))
         logger.info(f"Using n_neighbors={n_neighbors} for KNN")
         
         knn = NearestNeighbors(n_neighbors=n_neighbors, metric='cosine')
@@ -70,10 +70,14 @@ def get_similar_contents_hybrid_filtered(
             # Apply filters based on is_main and is_adult
             # Default to False for is_main and 1 for is_adult if not in maps
             is_main = is_main_map.get(asset_id, False)
-            is_not_adult = is_adult_map.get(asset_id, 1) == 0
-            
-            # Skip items that don't match our filters
-            if not (is_main and is_not_adult):
+            is_not_adult = is_adult_map.get(asset_id, 1) == 0            # Skip items that don't match our filters
+            if not is_main:
+                logger.debug(f"Skipping asset {asset_id}: not a main asset")
+                continue
+                
+            # Apply adult filter only if include_adult is False
+            if not include_adult and not is_not_adult:
+                logger.debug(f"Skipping asset {asset_id}: adult content")
                 continue
                 
             # Add to results
@@ -83,13 +87,20 @@ def get_similar_contents_hybrid_filtered(
                 "content_nm": content_names.get(idx, f"Content {idx}"),
                 "similarity": round(1 - dist, 4)
             })
-            
-            # Stop when we reach top_n
+              # Stop when we reach top_n
             if len(results) >= top_n:
                 logger.info(f"Reached top_n={top_n} results, stopping")
                 break
         
         logger.info(f"Found {len(results)} similar contents after filtering")
+          # 필터링 후 결과가 요청한 top_n보다 적을 경우 로그 기록
+        if len(results) == 0:
+            logger.warning(f"No results found after filtering for target_idx={target_idx}")
+            logger.warning("Check the filters and make sure there are enough candidates")
+        elif len(results) < top_n:
+            logger.warning(f"Warning: Only found {len(results)} results after filtering, less than requested top_n={top_n}")
+            logger.warning("Consider expanding the search criteria or relaxing filters")
+        
         return results
         
     except Exception as e:

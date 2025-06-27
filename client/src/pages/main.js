@@ -17,27 +17,35 @@ async function fetchRecommendationsForMainPage() {
   
   try {
     // 세 가지 요청을 병렬로 실행
-    const [popularPromise, emotionPromise, recentPromise] = await Promise.all([
+    const [popularResponse, emotionResponse, recentResponse] = await Promise.all([
       // 인기 콘텐츠
-      fetch(`${API_BASE_URL}/recommendation/popular?n=${options.n}&is_adult=${options.is_adult}`)
-        .then(res => res.ok ? res.json() : { items: [] })
-        .then(data => data.items || []),
+      fetch(`${API_BASE_URL}/recommendation/popular?n=${options.n}&is_adult=${options.is_adult}`),
       
       // 감정 기반 (코미디 장르로 필터링)
-      fetch(`${API_BASE_URL}/recommendation/test?n=${options.n}&is_main=true&genre=코미디`)
-        .then(res => res.ok ? res.json() : { items: [] })
-        .then(data => data.items || []),
+      fetch(`${API_BASE_URL}/recommendation/test?n=${options.n}&is_main=true&genre=코미디`),
       
       // 최근 시청
       fetch(`${API_BASE_URL}/recommendation/recent?n=${options.n}`)
-        .then(res => res.ok ? res.json() : { items: [] })
-        .then(data => data.items || [])
     ]);
     
+    // 각 응답 데이터 처리 및 통합 필드 추가
+    const popularData = await popularResponse.json();
+    const emotionData = await emotionResponse.json();
+    const recentData = await recentResponse.json();
+    
+    // 데이터 후처리 함수
+    const processItems = (items) => {
+      return (items || []).map(item => ({
+        ...item,
+        id: item.idx || item.asset_idx,  // 둘 중 하나가 있는 경우 사용
+        asset_idx: item.idx || item.asset_idx  // 둘 중 하나가 있는 경우 사용
+      }));
+    };
+    
     return {
-      popular: popularPromise,
-      emotion: emotionPromise,
-      recent: recentPromise
+      popular: processItems(popularData.items),
+      emotion: processItems(emotionData.items),
+      recent: processItems(recentData.items)
     };
     
   } catch (error) {
@@ -89,16 +97,21 @@ function initMainPageSliders() {
       
       // 각 슬라이더에 데이터 적용
       if (data.popular && data.popular.length > 0) {
+        console.log('인기 콘텐츠 첫 번째 항목:', JSON.stringify(data.popular[0]));
         renderSlider(document.getElementById('popular-main-slider'), data.popular);
       }
       
       if (data.emotion && data.emotion.length > 0) {
+        console.log('감정 기반 콘텐츠 첫 번째 항목:', JSON.stringify(data.emotion[0]));
         renderSlider(document.getElementById('genre-main-slider'), data.emotion);
       }
       
       if (data.recent && data.recent.length > 0) {
+        console.log('최근 시청 콘텐츠 첫 번째 항목:', JSON.stringify(data.recent[0]));
         renderSlider(document.getElementById('recent-main-slider'), data.recent);
       }
+    }).catch(error => {
+      console.error('백업 직접 호출 방식 실패:', error);
     });
   }
   

@@ -1,0 +1,114 @@
+.user-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  padding: 0;
+}
+
+.user-menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  background-color: #141414;
+  border: 1px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-header {
+  padding: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.user-greeting {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e5e5;
+}
+
+.menu-items {
+  padding: 8px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: #e5e5e5;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.menu-item svg {
+  margin-right: 12px;
+}
+
+.menu-divider {
+  height: 1px;
+  background-color: #333;
+  margin: 4px 0;
+}
+
+.logout-button {
+  color: #e50914;
+}
+
+.logout-button:hover {
+  background-color: rgba(229, 9, 20, 0.1);
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+  .user-menu-dropdown {
+    width: 200px;
+  }
+  
+  .menu-item {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

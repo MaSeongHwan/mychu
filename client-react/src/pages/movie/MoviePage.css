@@ -1,0 +1,75 @@
+.movie-page {
+  padding-bottom: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, rgba(15, 17, 22, 0.5), rgba(15, 17, 22, 1));
+}
+
+.content-sections {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  gap: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+}
+
+.loading-container h2,
+.error-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.error-container p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  max-width: 600px;
+}
+
+/* 장르 필터 섹션 */
+.genre-filter-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .content-sections {
+    padding: 0 0.5rem;
+    gap: 2rem;
+  }
+  
+  .loading-container h2,
+  .error-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .error-container p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-sections {
+    gap: 1.5rem;
+  }
+  
+  .movie-page {
+    padding-bottom: 1rem;
+  }
+}

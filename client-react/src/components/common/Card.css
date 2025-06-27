@@ -1,0 +1,33 @@
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-color: rgba(78, 205, 196, 0.5);
+}
+
+.card--default {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.card--primary {
+  background: rgba(78, 205, 196, 0.1);
+  border-color: rgba(78, 205, 196, 0.3);
+}
+
+.card--content {
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card--content:hover {
+  transform: scale(1.05);
+}

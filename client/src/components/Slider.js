@@ -1,3 +1,4 @@
+// contents 슬라이더 컴포넌트
 // 슬라이더 렌더링 관련 기능
 export async function renderSlider(slider, items) {
   slider.innerHTML = '';

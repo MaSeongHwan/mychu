@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .base import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -14,7 +15,7 @@ class User(Base):
     is_adult = Column(Boolean, default=False)
     sec_password = Column(String, default="0000")
     nick_name = Column(String)
-
+    
     # Relationships
     logs = relationship("UserLog", back_populates="user")
     vod_logs = relationship("VodLog", back_populates="user")
@@ -41,8 +42,9 @@ class VodLog(Base):
     strt_dt = Column(TIMESTAMP, default=datetime.utcnow, nullable=False)
     use_tms = Column(Integer, default=0, nullable=False)
     feedback = Column(Integer, default=0, nullable=False)
-
+    
     user = relationship("User", back_populates="vod_logs")
+    asset = relationship("Asset")
 
 class MyList(Base):
     __tablename__ = "my_list"
@@ -51,7 +53,8 @@ class MyList(Base):
     asset_idx = Column(Integer, ForeignKey("assets.idx"), primary_key=True)
     action = Column(Boolean, nullable=False)
     time_stamp = Column(TIMESTAMP, nullable=False)
-
+    score = Column(Float, nullable=True)
+    
     user = relationship("User", back_populates="my_list")
 
 class RecList(Base):
