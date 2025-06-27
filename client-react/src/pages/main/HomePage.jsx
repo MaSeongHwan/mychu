@@ -184,12 +184,13 @@ const HomePage = () => {
       {/* 메인 콘텐츠 - 3개의 슬라이더 */}
       <main className="main-content">
         <div className="container">
-          {/* 항상 3개의 슬라이더를 렌더링 */}
+          {/* Top 10 인기 콘텐츠 슬라이더는 한 번만 렌더링 */}
           <SliderSection
             id="top10-slider"
             title={`Top 10 인기 콘텐츠${selectedGenre ? ` (${selectedGenre})` : ''}`}
             items={slidersData.popular}
           />
+          {/* 감정, 최신 슬라이더는 그대로 */}
           <SliderSection
             id="emotion-slider"
             title={`감정 콘텐츠${selectedGenre ? ` (${selectedGenre})` : ''}`}

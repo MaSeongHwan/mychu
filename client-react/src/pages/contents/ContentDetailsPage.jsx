@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ContentDetailsPage.css';
 
+const userIdx = 541; // 실제 로그인 유저 정보로 대체
+
 /**
  * 콘텐츠 상세 페이지 컴포넌트
  */
@@ -11,29 +13,27 @@ const ContentDetailsPage = () => {
   const [relatedContent, setRelatedContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isWish, setIsWish] = useState(false);
+  const [wishLoading, setWishLoading] = useState(false);
 
   useEffect(() => {
     const fetchContentDetails = async () => {
       setLoading(true);
       setError(null);
-      
       try {
         // FastAPI 상세 정보 API 호출
         const contentResponse = await fetch(`http://localhost:8000/assets/${id}`);
-        
         if (!contentResponse.ok) {
           throw new Error(`API 오류: ${contentResponse.status}`);
         }
-        
         const contentData = await contentResponse.json();
-        // FastAPI 응답 필드 매핑
         const mappedContent = {
           idx: contentData.idx,
           id: contentData.idx,
           asset_nm: contentData.asset_nm || contentData.super_asset_nm || '제목 없음',
           genre: contentData.genre || '',
           release_year: contentData.rlse_year ? String(contentData.rlse_year).substring(0, 4) : '',
-          director: contentData.director || '', // 없으면 빈값
+          director: contentData.director || '',
           actors: contentData.actr_disp ? contentData.actr_disp.split(',') : [],
           synopsis: contentData.smry || '',
           runtime: contentData.asset_time ? Math.round(contentData.asset_time / 60) : '',
@@ -42,9 +42,7 @@ const ContentDetailsPage = () => {
           rating: contentData.rating || '',
         };
         setContent(mappedContent);
-        // 관련 콘텐츠는 일단 비워둠 (추후 필요시 추가)
         setRelatedContent([]);
-        
       } catch (err) {
         console.error('콘텐츠 로드 중 오류:', err);
         setError('콘텐츠 정보를 불러오는 중 오류가 발생했습니다.');
@@ -52,9 +50,45 @@ const ContentDetailsPage = () => {
         setLoading(false);
       }
     };
-    
     fetchContentDetails();
-  }, [id]); // ID가 변경될 때마다 다시 로드
+  }, [id]);
+
+  // 진입 시 찜 상태 확인
+  useEffect(() => {
+    async function fetchWish() {
+      try {
+        const res = await fetch(`http://localhost:8000/logs/mylist/${userIdx}`);
+        const data = await res.json();
+        setIsWish(data.mylist.includes(Number(id)));
+      } catch (e) {}
+    }
+    fetchWish();
+  }, [id]);
+
+  // 찜/찜 해제 핸들러
+  const handleWish = async () => {
+    setWishLoading(true);
+    try {
+      const assetIdNum = Number(id);
+      console.log('찜하기 요청 user_idx:', userIdx, 'asset_idx:', assetIdNum);
+      if (isWish) {
+        await fetch('http://localhost:8000/logs/mylist/', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_idx: userIdx, asset_idx: assetIdNum })
+        });
+        setIsWish(false);
+      } else {
+        await fetch('http://localhost:8000/logs/mylist/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_idx: userIdx, asset_idx: assetIdNum })
+        });
+        setIsWish(true);
+      }
+    } catch (e) {}
+    setWishLoading(false);
+  };
 
   // 샘플 콘텐츠 데이터 (API 로드 실패 시 사용)
   const sampleContent = {
@@ -148,8 +182,8 @@ const ContentDetailsPage = () => {
             <button className="play-button">
               <i className="play-icon">▶</i> 재생
             </button>
-            <button className="add-list-button">
-              <i className="add-icon">+</i> 찜하기
+            <button className="add-list-button" onClick={handleWish} disabled={wishLoading}>
+              <i className="add-icon">{isWish ? '✔' : '+'}</i> {isWish ? '찜 해제' : '찜하기'}
             </button>
           </div>
         </div>
@@ -161,7 +195,7 @@ const ContentDetailsPage = () => {
         
         <div className="related-content-grid">
           {(relatedContent.length > 0 ? relatedContent : Array(4).fill(sampleContent)).map((item, idx) => (
-            <div className="related-content-item" key={item.idx || `sample-${idx}`}>
+            <div className="related-content-item" key={`${item.idx || 'sample'}-${idx}`}>
               <img 
                 src={item.poster_path || `https://via.placeholder.com/200x300?text=Related+${idx}`}
                 alt={item.asset_nm || `관련 콘텐츠 ${idx}`}

@@ -40,7 +40,7 @@ router = APIRouter()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://localhost:5173", "http://localhost:8000", "http://localhost", "http://react:5173", "http://fastapi:8000"],
+    allow_origins=["http://localhost:5173", "http://localhost:8000", "http://localhost", "http://react:5173", "http://fastapi:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
