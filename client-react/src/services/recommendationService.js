@@ -288,16 +288,16 @@ export const getEmotionContent = async (options = { is_movie: null, is_drama: nu
     
     // 백엔드 연결 실패 시 감정 기반 샘플 데이터 반환
     let fallbackData = [
-      { idx: 'emo1', asset_nm: '어바웃 타임', poster_path: 'https://image.tmdb.org/t/p/w500/cD3bsNzJuKqczUBrfMsIJcTgHEj.jpg', genre: '로맨스', release_year: '2013' },
-      { idx: 'emo2', asset_nm: '라라랜드', poster_path: 'https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg', genre: '로맨스', release_year: '2016' },
-      { idx: 'emo3', asset_nm: '러브액츄얼리', poster_path: 'https://image.tmdb.org/t/p/w500/1ODdWLpyOnIVl0l67GrdaFDlJGf.jpg', genre: '로맨스', release_year: '2003' },
-      { idx: 'emo4', asset_nm: '포레스트 검프', poster_path: 'https://image.tmdb.org/t/p/w500/saHP97rTPS5eLmrLQEcANmKrsFl.jpg', genre: '드라마', release_year: '1994' },
-      { idx: 'emo5', asset_nm: '업', poster_path: 'https://image.tmdb.org/t/p/w500/BaWg43qgkTxT4zJmS8qOdFCjKm.jpg', genre: '애니메이션', release_year: '2009' },
-      { idx: 'emo6', asset_nm: '리틀 포레스트', poster_path: 'https://image.tmdb.org/t/p/w500/8D5RudJVE1cJSPqJMYQ9n7YrSJW.jpg', genre: '드라마', release_year: '2018' },
-      { idx: 'emo7', asset_nm: '천공의 성 라퓨타', poster_path: 'https://image.tmdb.org/t/p/w500/npTzVQPELVGHEQIG4hHxKqOoEbT.jpg', genre: '애니메이션', release_year: '1986' },
-      { idx: 'emo8', asset_nm: '미드나이트 인 파리', poster_path: 'https://image.tmdb.org/t/p/w500/4EXPM1a27NdJH8BLKUkE9CZnqM7.jpg', genre: '코미디', release_year: '2011' },
-      { idx: 'emo9', asset_nm: '지브리 영화들', poster_path: 'https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg', genre: '애니메이션', release_year: '2001' },
-      { idx: 'emo10', asset_nm: '캐스트 어웨이', poster_path: 'https://image.tmdb.org/t/p/w500/8nBNqAESsLOV0nW7LKEcF2QBFF4.jpg', genre: '드라마', release_year: '2000' }
+      { idx: 26114, asset_nm: '어바웃 타임', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/BMS/TVSeason/2023/C9901_C99000000042-Vertical_LogoY_WOriginal.jpg', genre: '로맨스', release_year: '2013' },
+      { idx: 59226, asset_nm: '라라랜드', poster_path: 'https://i.namu.wiki/i/78uTXq-Jd3ME_MYXtiyOo-qBPjwpiNF9qs1ko9YvE1BmaVagE9-h95a5Xuh0jVt6WX9sY8seQLZlU2GidF7Gcg.webp', genre: '로맨스', release_year: '2016' },
+      { idx: 22087, asset_nm: '러브액츄얼리', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/meta/image/202405/1714713162866926870.jpg', genre: '로맨스', release_year: '2003' },
+      { idx: 153127, asset_nm: '포레스트 검프', poster_path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVdHu72V-1sIR4NsXxJ5wn6V7habcNxFbWIw&s', genre: '드라마', release_year: '1994' },
+      { idx: 29810, asset_nm: '업', poster_path: ' https://image.wavve.com/v1/thumbnails/480_720_20_80/movieImg/MovieGroup/2022/GMV_CA01_DY0000011265-Vertical_LogoY.jpg', genre: '애니메이션', release_year: '2009' },
+      { idx: 86168, asset_nm: '리틀 포레스트', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/201908/20190805/d28a944c3eb196fd105c3bc8ecd091ee.jpg', genre: '드라마', release_year: '2018' },
+      { idx: 187973, asset_nm: '천공의 성 라퓨타', poster_path: ' https://image.wavve.com/v1/thumbnails/480_720_20_80/movieImg/MovieGroup/2022/GMV_CR01_DN0000011315-Vertical_LogoY.jpg', genre: '애니메이션', release_year: '1986' },
+      { idx: 142129, asset_nm: '미드나잇인파리', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/meta/image/202503/1742283130595879407.jpg ', genre: '로맨스', release_year: '2011' },
+      { idx: 187342, asset_nm: '이웃집 토토로', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/movieImg/MovieGroup/2022/GMV_CR01_DN0000011313-Vertical_LogoY.jpg', genre: '애니메이션', release_year: '2001' },
+      { idx: 12179, asset_nm: '캐스트어웨이', poster_path: 'https://image.wavve.com/v1/thumbnails/480_720_20_80/movieImg/MovieGroup/2022/GMV_CQ01_PT0000011137-Vertical_LogoY.jpg', genre: '로맨스', release_year: '2000' }
     ];
     
     // 장르 필터링 적용
