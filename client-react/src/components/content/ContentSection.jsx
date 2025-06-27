@@ -145,7 +145,9 @@ const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: e
                 >
                   <div className="card-poster">
                     <img 
-                      src={item.poster_path || `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
+                      src={item.poster_path 
+                        ? `http://localhost:8000/image-proxy?url=${encodeURIComponent(item.poster_path)}` 
+                        : `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'Poster')}`} 
                       alt={item.asset_nm || '포스터'}
                       onError={(e) => {
                         e.target.src = `https://via.placeholder.com/300x450?text=${encodeURIComponent(item.asset_nm || 'No Image')}`;

@@ -44,10 +44,10 @@ const AdultPage = () => {
       
 
       // 2. 추천 콘텐츠
-      // const recommendedRes = await fetch('http://127.0.0.1:8000/recommendation/personal?n=10&is_adult=true');
-      // if (!recommendedRes.ok) throw new Error('추천 응답 실패');
-      // const recommendedJson = await recommendedRes.json();
-      // setRecommendedContent(recommendedJson.items);
+      const recommendedRes = await fetch('http://127.0.0.1:8000/recommendation/test?n=10&is_adult=true&is_main=true&is_movie=false&is_drama=false');
+      if (!recommendedRes.ok) throw new Error('추천 응답 실패');
+      const recommendedJson = await recommendedRes.json();
+      setRecommendedContent(recommendedJson.items);
 
       // 3. 최신 작품
       const latestRes = await fetch('http://127.0.0.1:8000/recommendation/recent?n=20&is_adult=true&is_main=false&is_movie=false&is_drama=true');
