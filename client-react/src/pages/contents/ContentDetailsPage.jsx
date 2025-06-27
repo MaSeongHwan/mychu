@@ -4,7 +4,6 @@ import './ContentDetailsPage.css';
 
 /**
  * 콘텐츠 상세 페이지 컴포넌트
- * 영화, 드라마 등 개별 콘텐츠의 상세 정보 표시
  */
 const ContentDetailsPage = () => {
   const { id } = useParams(); // URL에서 콘텐츠 ID 가져오기
@@ -19,20 +18,32 @@ const ContentDetailsPage = () => {
       setError(null);
       
       try {
-        // 콘텐츠 상세 정보 API 호출
-        const contentResponse = await fetch(`/api/content/${id}`);
+        // FastAPI 상세 정보 API 호출
+        const contentResponse = await fetch(`http://localhost:8000/assets/${id}`);
         
         if (!contentResponse.ok) {
           throw new Error(`API 오류: ${contentResponse.status}`);
         }
         
         const contentData = await contentResponse.json();
-        setContent(contentData);
-        
-        // 관련 콘텐츠 API 호출
-        const relatedResponse = await fetch(`/api/content/${id}/related`);
-        const relatedData = await relatedResponse.json();
-        setRelatedContent(relatedData.items || []);
+        // FastAPI 응답 필드 매핑
+        const mappedContent = {
+          idx: contentData.idx,
+          id: contentData.idx,
+          asset_nm: contentData.asset_nm || contentData.super_asset_nm || '제목 없음',
+          genre: contentData.genre || '',
+          release_year: contentData.rlse_year ? String(contentData.rlse_year).substring(0, 4) : '',
+          director: contentData.director || '', // 없으면 빈값
+          actors: contentData.actr_disp ? contentData.actr_disp.split(',') : [],
+          synopsis: contentData.smry || '',
+          runtime: contentData.asset_time ? Math.round(contentData.asset_time / 60) : '',
+          poster_path: contentData.poster_path || `https://via.placeholder.com/300x450?text=Content+${id}`,
+          backdrop_path: contentData.poster_path || `https://via.placeholder.com/1920x1080?text=Content+${id}+Background`,
+          rating: contentData.rating || '',
+        };
+        setContent(mappedContent);
+        // 관련 콘텐츠는 일단 비워둠 (추후 필요시 추가)
+        setRelatedContent([]);
         
       } catch (err) {
         console.error('콘텐츠 로드 중 오류:', err);
@@ -107,7 +118,7 @@ const ContentDetailsPage = () => {
           <h1>{displayContent?.asset_nm}</h1>
           
           <div className="content-meta">
-            <span>{displayContent?.release_date?.substring(0, 4)}</span>
+            <span>{displayContent?.release_year}</span>
             <span className="meta-divider">•</span>
             <span>{displayContent?.genre}</span>
             <span className="meta-divider">•</span>
