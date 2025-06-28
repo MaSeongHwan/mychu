@@ -122,7 +122,7 @@ const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: e
             <span className="icon icon-arrow-right">▶</span>
           </button>
         </div>
-      </div>
+        </div>
       
       <div className="content-slider">
         {loading ? (

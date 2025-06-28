@@ -109,9 +109,11 @@ const AdultPage = () => {
       </div>
 
       {/* 히어로 섹션 */}
-      {heroData && heroData.length > 0 && (
-        <Hero items={heroData} />
-      )}
+      {/*
+        {heroData && heroData.length > 0 && (
+        //<Hero items={heroData} />
+      //)}
+      */}
       
       {/* 콘텐츠 섹션들 */}
       <div className="content-sections">
