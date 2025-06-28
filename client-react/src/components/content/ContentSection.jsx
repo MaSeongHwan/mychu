@@ -158,10 +158,13 @@ const ContentSection = ({ title, endpoint, id, items: initialItems, isLoading: e
                   </Link>
                   <div className="card-info">
                     <h3 className="card-title">{item.asset_nm || item.super_asset_nm || '제목 없음'}</h3>
-                    <div className="card-meta">
-                      {item.genre && <span className="card-genre">{item.genre}</span>}
-                      {item.rlse_year && <span className="card-year">{item.rlse_year}</span>}
-                    </div>
+
+                    {!window.location.pathname.includes('/adult') && (
+                      <div className="card-meta">
+                        {item.genre && <span className="card-genre">{item.genre}</span>}
+                        {item.rlse_year && <span className="card-year">{item.rlse_year}</span>}
+                      </div>
+                    )}
                   </div>
                 </div>
               );

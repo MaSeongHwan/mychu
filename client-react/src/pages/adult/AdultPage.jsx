@@ -18,6 +18,9 @@ const AdultPage = () => {
   const [latestContent, setLatestContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+ //const [showNotice, setShowNotice] = useState(true);  // ⬅️ 추가
+  const [noticeVisible, setNoticeVisible] = useState(true);
+  const [noticeRemoved, setNoticeRemoved] = useState(false);
 
   // 성인 인증 게이트 사용
   const { isAdultVerified, AdultGateComponent } = useAdultContentGate(() => {
@@ -64,6 +67,20 @@ const AdultPage = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setNoticeVisible(false); // 먼저 페이드아웃 시작
+    }, 4000); // 4초 후 사라지는 애니메이션 시작
+  
+    const timer2 = setTimeout(() => {
+      setNoticeRemoved(true); // 완전히 제거
+    }, 5500); // 0.5초 애니메이션 시간 후 제거
+  
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   // 성인 인증이 완료되지 않았으면 인증 게이트 표시
   if (!isAdultVerified) {
@@ -94,7 +111,8 @@ const AdultPage = () => {
   return (
     <div className="adult-page">
       {/* 성인관 안내 문구 */}
-      <div className="adult-notice">
+    {!noticeRemoved && (
+      <div className= {`adult-notice ${!noticeVisible ? 'hide' : ''}`}>
         <div className="container">
           <div className="notice-content">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
@@ -107,6 +125,7 @@ const AdultPage = () => {
           </div>
         </div>
       </div>
+    )}
 
       {/* 히어로 섹션 */}
       {/*
