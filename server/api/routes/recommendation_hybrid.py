@@ -70,8 +70,11 @@ async def get_similar_content(
         start_time = time.time()
         logger.info(f"Processing recommendation for asset_idx={asset_idx}, top_n={top_n}")
         
-        # 현재 콘텐츠 정보 가져오기 - super_asset_nm을 확인하기 위해 모든 필요 필드 조회
-        target_asset = db.query(Asset).filter(Asset.idx == asset_idx).first()
+        # 현재 콘텐츠 정보 가져오기 - is_main==True인 값을 가져오기
+        target_asset = db.query(Asset).filter(
+            Asset.idx == asset_idx,
+            Asset.is_main == True
+        ).first()
         
         if not target_asset:
             logger.warning(f"Asset with ID {asset_idx} not found in database")
