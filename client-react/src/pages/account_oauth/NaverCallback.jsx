@@ -10,19 +10,15 @@ const NaverCallback = () => {
     const state = searchParams.get('state');
 
     if (code && state) {
-      console.log('✅ 네이버 로그인 성공: code =', code);
-      // TODO: 서버에 code 전송 → 사용자 인증 처리
-      // fetch('/api/naver/login', { method: 'POST', body: JSON.stringify({ code, state }) })
-
-      alert('네이버 로그인 성공 (예시)');
+      // 서버 연동 없이 바로 메인으로 이동
       navigate('/main');
     } else {
-      alert('네이버 로그인 실패');
+      // 실패 시 account 페이지로 이동
       navigate('/account');
     }
   }, [searchParams, navigate]);
 
-  return <div style={{ color: 'white', padding: '2rem' }}>네이버 로그인 처리 중...</div>;
+  return null;
 };
 
 export default NaverCallback;
