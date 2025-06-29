@@ -204,7 +204,7 @@ const MyListPage = () => {
       <div className={`tab-content${activeTab === 'watch-history' ? ' active' : ''}`} id="watch-history">
         {activeTab === 'watch-history' && (
           <>
-            {renderPagination()}
+            {/* {renderPagination()} */}
             <div className="content-section">
               <div className="content-grid grid-view">
                 {watchHistoryLoading ? (
