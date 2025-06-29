@@ -199,13 +199,6 @@ const SearchPage = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="item-info">
-                      <h3 className="item-title">{title}</h3>
-                      <div className="item-meta">
-                        <span className="item-genre">{genre}</span>
-                        {year && <span className="item-year">{String(year).slice(0, 4)}</span>}
-                      </div>
-                    </div>
                   </div>
                 );
               })}
