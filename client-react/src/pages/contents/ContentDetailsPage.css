@@ -69,13 +69,6 @@
   margin: 0 0.5rem;
 }
 
-.content-rating {
-  background-color: rgba(255, 215, 0, 0.2);
-  color: #ffd700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
 /* 줄거리 */
 .content-synopsis {
   margin-bottom: 1.5rem;
@@ -92,14 +85,10 @@
   font-size: 1rem;
 }
 
-/* 감독 및 출연 정보 */
+/* 출연 정보 */
 .content-people {
   display: flex;
   margin-bottom: 2rem;
-}
-
-.content-director {
-  margin-right: 2rem;
 }
 
 .content-people h3 {
@@ -247,12 +236,156 @@
     flex-direction: column;
   }
   
-  .content-director {
-    margin-right: 0;
-    margin-bottom: 1rem;
-  }
-  
   .related-content-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* 시리즈 전용 레이아웃 */
+.series-mode {
+  background: #181818;
+  min-height: 100vh;
+}
+
+.series-header {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1rem 2rem;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.series-poster {
+  flex: 0 0 260px;
+}
+
+.series-poster img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.series-info {
+  flex: 1;
+  color: #fff;
+}
+
+.series-info h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+
+.series-meta {
+  display: flex;
+  align-items: center;
+  color: #c0c0c0;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.series-actors {
+  margin-bottom: 1.5rem;
+  color: #c0c0c0;
+  font-size: 1rem;
+}
+
+.episode-list-section {
+  max-width: 900px;
+  margin: 0 auto 3rem auto;
+  background: #111;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+}
+
+.episode-list-section h2 {
+  color: #fff;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.episode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.episode-item {
+  display: flex;
+  align-items: center;
+  background: #181818;
+  border-radius: 8px;
+  padding: 1.2rem 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #222;
+  transition: background 0.2s;
+}
+
+.episode-item:hover {
+  background: #232323;
+}
+
+.episode-no {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #bdbdbd;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.episode-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.episode-title {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.episode-summary {
+  font-size: 0.98rem;
+  color: #bdbdbd;
+  margin-top: 0.2rem;
+}
+
+.episode-play {
+  margin-left: 1.5rem;
+  background: #e50914;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.6rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s;
+}
+
+.episode-play:hover {
+  background: #b0060f;
+}
+
+@media (max-width: 900px) {
+  .series-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-top: 2rem;
+  }
+  .series-poster {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+  .episode-list-section {
+    padding: 1.2rem 0.5rem;
   }
 }

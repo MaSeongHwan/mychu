@@ -73,7 +73,6 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
   if (!items || items.length === 0) {
     return (
       <div className="slider-section">
-        {title && <h2 className="slider-title">{title}</h2>}
         <div className="slider-empty">표시할 콘텐츠가 없습니다.</div>
       </div>
     );
@@ -81,8 +80,6 @@ const Slider = ({ items = [], title = '', sliderId = 'react-slider', showNavigat
 
   return (
     <div className="slider-section" id={sliderId}>
-      {title && <h2 className="slider-title">{title}</h2>}
-
       <div className="slider-container">
         <div className="card-container">
           {items.map((item, index) => {
