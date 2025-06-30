@@ -6,7 +6,8 @@ export const ENDPOINTS = {
     recommendations: {
         top: '/recommendation/top',
         emotion: '/recommendation/emotion',
-        recent: '/recommendation/recent'
+        recent: '/recommendation/recent',
+        similar: '/recommendation/similar' // 유사 콘텐츠 추천 엔드포인트 추가
     },
     assets: '/assets',
     search: '/search',

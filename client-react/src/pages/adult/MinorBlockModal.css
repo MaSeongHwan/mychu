@@ -1,0 +1,174 @@
+/* 미성년자 접근 차단 모달 스타일 */
+.minor-block-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+}
+
+.minor-block-container {
+  background: #1a1a1a;
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  border: 2px solid #ff4444;
+  box-shadow: 0 20px 60px rgba(255, 68, 68, 0.3);
+  animation: slideInScale 0.4s ease-out;
+}
+
+@keyframes slideInScale {
+  0% {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.warning-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.minor-block-title {
+  color: #ff4444;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 10px rgba(255, 68, 68, 0.5);
+}
+
+.minor-block-message {
+  margin-bottom: 2.5rem;
+}
+
+.main-message {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.sub-message {
+  color: #ff6666;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.minor-block-actions {
+  margin-bottom: 2rem;
+}
+
+.go-back-button {
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(255, 68, 68, 0.4);
+  text-transform: none;
+}
+
+.go-back-button:hover {
+  background: linear-gradient(135deg, #ff6666, #ff0000);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 68, 68, 0.6);
+}
+
+.go-back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 15px rgba(255, 68, 68, 0.4);
+}
+
+.legal-notice {
+  border-top: 1px solid #333;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.legal-notice p {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .minor-block-container {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+  
+  .warning-icon {
+    font-size: 3rem;
+  }
+  
+  .minor-block-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .main-message {
+    font-size: 1.1rem;
+  }
+  
+  .sub-message {
+    font-size: 1rem;
+  }
+  
+  .go-back-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .minor-block-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .warning-icon {
+    font-size: 2.5rem;
+  }
+  
+  .minor-block-title {
+    font-size: 1.3rem;
+  }
+  
+  .main-message {
+    font-size: 1rem;
+  }
+  
+  .sub-message {
+    font-size: 0.9rem;
+  }
+}

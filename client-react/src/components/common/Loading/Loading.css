@@ -1,0 +1,51 @@
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.loading__spinner {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loading__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e6f72a 0%, #4ecdc4 100%);
+  animation: loading-bounce 1.4s ease-in-out infinite both;
+}
+
+.loading__dot:nth-child(1) { animation-delay: -0.32s; }
+.loading__dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes loading-bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+    opacity: 0.5;
+  } 
+  40% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.loading__text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* 크기 변형 */
+.loading--small .loading__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.loading--large .loading__dot {
+  width: 16px;
+  height: 16px;
+}

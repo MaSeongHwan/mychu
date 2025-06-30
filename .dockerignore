@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# 가상환경
+venv/
+.venv/
+env/
+ENV/
+
+# Node.js
+**/node_modules
+**/.env
+**/dist
+**/build
+
+# 머신러닝 / 모델
+*.npy
+*.npz
+data/
+checkpoints/
+outputs/
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.iml
+
+# Vim/Swap
+*.swp
+*.swo
+
+# 로그
+*.log

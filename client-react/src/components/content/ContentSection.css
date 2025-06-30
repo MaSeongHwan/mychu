@@ -1,0 +1,156 @@
+/* ContentSection Component Styles */
+
+.content-section {
+  margin: 3rem 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: #fff;
+}
+
+.section-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.control-btn {
+  background: transparent;
+  color: #fff;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.3s ease-out;
+  width: 100%;
+}
+
+.content-card {
+  flex: 0 0 calc(100% / 5); /* 기본 5개 카드 표시 */
+  padding: 0 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.content-card:hover {
+  transform: translateY(-0.5rem);
+}
+
+@media (max-width: 1200px) {
+  .content-card {
+    flex: 0 0 calc(100% / 4); /* 중간 크기 화면에서 4개 표시 */
+  }
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    flex: 0 0 calc(100% / 3); /* 작은 화면에서 3개 표시 */
+  }
+}
+
+@media (max-width: 480px) {
+  .content-card {
+    flex: 0 0 calc(100% / 2); /* 모바일에서 2개 표시 */
+  }
+}
+
+.card-poster {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 2/3;
+  background-color: #2a2c35;
+}
+
+.card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.content-card:hover .card-poster img {
+  transform: scale(1.05);
+}
+
+.card-info {
+  padding: 0.75rem 0.25rem 0.5rem;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.card-genre, .card-year {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.loading-indicator, .error-message, .empty-message {
+  padding: 3rem 1rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.error-message {
+  color: #ef4444;
+}

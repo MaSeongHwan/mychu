@@ -60,60 +60,94 @@ export async function fetchRecentRecs(limit = 10) {
 }
 
 /**
- * 슬라이더에 콘텐츠를 렌더링하는 함수
- * @param {HTMLElement} container - 슬라이더 컨테이너 요소
- * @param {Array} items - 렌더링할 콘텐츠 항목 배열
+ * 추천 카드 슬라이더 컴포넌트 렌더링
+ * @param {HTMLElement} container - 슬라이더를 렌더링할 컨테이너 요소
+ * @param {Array} items - 추천 콘텐츠 아이템 배열
  */
 export function renderSlider(container, items) {
-  if (!container) {
-    console.error('슬라이더 컨테이너를 찾을 수 없습니다.');
+  if (!container || !items || !items.length) {
+    console.warn('렌더링을 위한 컨테이너나 데이터가 없습니다.');
     return;
   }
+  
+  console.log('슬라이더 렌더링 시작:', items.length, '개 항목');
+  console.log('첫 번째 항목 상세 정보:', JSON.stringify(items[0]));
 
-  // 기존 에러 메시지 숨기기
-  const errorMessage = container.querySelector('.error-message');
-  if (errorMessage) {
-    errorMessage.style.display = 'none';
-  }
-
-  // 항목이 없으면 에러 메시지 표시
-  if (!items || items.length === 0) {
-    if (errorMessage) {
-      errorMessage.style.display = 'block';
-      errorMessage.textContent = '추천 콘텐츠가 없습니다.';
-    }
-    return;
-  }
-
-  // 카드 컨테이너 생성
   const cardContainer = document.createElement('div');
   cardContainer.className = 'card-container';
-  
-  // 각 항목에 대해 카드 생성
+  cardContainer.style.display = 'flex';
+  cardContainer.style.gap = '24px';
+  cardContainer.style.transition = 'transform 0.3s ease';
+  cardContainer.style.width = 'max-content';
+    // 각 항목에 대해 카드 생성
   items.forEach(item => {
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card product-card';
+    card.style.minWidth = '200px';
+    card.style.maxWidth = '200px';
+    card.style.padding = '0';
+    card.style.display = 'flex';
+    card.style.flexDirection = 'column';
+    card.style.alignItems = 'center';
+    card.style.justifyContent = 'center';
+    card.style.background = '#1f2937';
+    card.style.border = '1px solid #374151';
+    card.style.borderRadius = '1rem';
+    card.style.overflow = 'hidden';
+    card.style.boxSizing = 'border-box';
+    card.style.cursor = 'pointer';  // 클릭 가능함을 나타내는 커서 스타일 추가
+    card.style.position = 'relative'; // 링크 오버레이를 위한 포지션 설정
     
-    // asset_idx가 있으면 dataset에 추가
-    if (item.asset_idx) {
-      card.dataset.id = item.asset_idx;
+    // 고유 ID를 dataset에 추가 (상세 페이지 이동에 필요)
+    const contentId = item.id || item.idx || item.asset_idx;
+    if (contentId) {
+      card.dataset.id = contentId;
     }
 
-    // 이미지만 추가 (poster_path만 사용)
+    // 이미지 컨테이너
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'product-image';
+    imgDiv.style.width = '100%';
+    imgDiv.style.height = '300px';
+    imgDiv.style.aspectRatio = '2/3';
+
+    // 이미지만 추가
     const img = document.createElement('img');
     img.src = item.poster_path || 'https://via.placeholder.com/300x450?text=No+Image';
     img.alt = 'Poster';
     img.loading = 'lazy';
-    card.appendChild(img);
-
-    // 포스터 이미지를 클릭하면 상세페이지로 이동
-    if (item.asset_idx) {
-      card.addEventListener('click', (event) => {
-        // 내부 버튼 클릭 시 상세페이지 이동 막기
-        if (event.target.closest('.btn')) return;
-        window.location.href = `/contents?id=${item.asset_idx}`;
-      });
-    }
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+      imgDiv.appendChild(img);
+    card.appendChild(imgDiv);
+    
+    // 필수 디버깅 정보
+    console.log(`카드 생성: contentId=${contentId}, item.id=${item.id}, item.idx=${item.idx}, item.asset_idx=${item.asset_idx}`);
+      // ===== 직접 <a> 태그 생성 및 추가 =====
+    // 완전히 새로운 접근법: 순수 HTML 기반 태그 생성  
+    const contentsLink = document.createElement('a');
+    contentsLink.href = `/contents?id=${contentId}`;
+    contentsLink.style.position = 'absolute';
+    contentsLink.style.top = '0';
+    contentsLink.style.left = '0'; 
+    contentsLink.style.width = '100%';
+    contentsLink.style.height = '100%';
+    contentsLink.style.zIndex = '100';
+    card.appendChild(contentsLink);
+    
+    // 디버그를 위한 클릭 이벤트 (링크가 실패할 경우를 대비)
+    card.addEventListener('click', function(event) {
+      const targetId = contentId || item.id || item.idx || item.asset_idx;
+      console.log(`🔗 카드 클릭! 콘텐츠 ${targetId} 상세 페이지로 이동합니다.`);
+      // 명시적으로 이동 (링크가 동작하지 않을 경우 백업)
+      if (!targetId) {
+        console.error('이동할 콘텐츠 ID가 없습니다!');
+        return;
+      }
+      // 기본 링크 동작을 우선하되, 문제 시 직접 이동
+      window.location = `/contents?id=${targetId}`;
+    });
 
     cardContainer.appendChild(card);
   });
@@ -122,8 +156,8 @@ export function renderSlider(container, items) {
   container.innerHTML = '';
   container.appendChild(cardContainer);
   
-  // 필요하다면 슬라이더 네비게이션 이벤트 등록
-  setupSliderNavigation(container);
+  // 슬라이더 콘텐츠가 로드되었음을 알리는 커스텀 이벤트 발생
+  document.dispatchEvent(new CustomEvent('sliderContentLoaded'));
 }
 
 /**

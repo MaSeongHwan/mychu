@@ -207,4 +207,27 @@ ul { list-style: none; }
   border-radius: 0.25rem;
   display: inline-block;
 }
+
+/* ========== 검색 결과 없음 ========== */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #1f2937;
+  border-radius: 0.75rem;
+  border: 1px solid #374151;
+}
+
+.no-results h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #e5e7eb;
+}
+
+.no-results p {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
   

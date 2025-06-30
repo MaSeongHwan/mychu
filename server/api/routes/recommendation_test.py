@@ -108,6 +108,9 @@ def get_popular_recommendations(
         query = query.filter(Asset.is_movie == is_movie)
     if is_drama:
         query = query.filter(Asset.is_drama == is_drama)
+        
+    # ✅ c_rate 필터 추가
+    query = query.filter(Score.c_rate > 0.3)
 
     # 장르 필터링 - test 엔드포인트와 동일한 방식 사용
     if genre:
@@ -122,7 +125,7 @@ def get_popular_recommendations(
 
     # 추가: 일단 이미지 없는거 제외
     query = query.filter(~Asset.poster_path.ilike("%upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg%"))
-
+    
     # 결과 변환
     items = []
     for r in rows:

@@ -1,0 +1,263 @@
+/* Homepage Component CSS - main.css 기반 */
+
+/* ========== 루트 변수 ========== */
+:root {
+  --base-font-size: 16px;
+  --scale-ratio: 1;
+  --container-width: min(1280px, 90vw);
+  --header-height: 4rem;
+  --section-padding: clamp(2rem, 5vw, 4rem);
+}
+
+.home-page {
+  padding-bottom: 2rem;
+  min-height: 100vh;
+  background: #0f1116;
+  color: #fff;
+}
+
+.container {
+  width: min(1400px, 90vw);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ========== 메인 콘텐츠/카드/섹션 ========== */
+.main-content {
+  padding: 2rem 0;
+  background-color: #0f1116;
+  min-height: 100vh;
+}
+
+/* 슬라이더 섹션 통합 스타일 - 간격 조정 */
+.slider-section {
+  margin: 4rem 0;
+  padding: 0;
+}
+
+.slider-section:first-child {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+/* 슬라이더별 개별 스타일 */
+#top10-slider-section .section-title {
+  color: #ffd700; /* 금색 - Top 10 강조 */
+}
+
+#emotion-slider-section .section-title {
+  color: #ff6b6b; /* 감정 - 따뜻한 빨강 */
+}
+
+#recent-slider-section .section-title {
+  color: #4ecdc4; /* 최신 - 청록색 */
+}
+
+.section-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.control-btn:hover { 
+  background: rgba(255,255,255,0.2); 
+}
+
+/* 슬라이더 컨테이너 - 테두리 제거하고 깔끔하게 */
+.slider-container {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: 280px;
+  transition: none;
+}
+
+.slider-container:hover {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* 슬라이더별 개별 컨테이너 스타일 제거 */
+#top10-slider-section .slider-container,
+#emotion-slider-section .slider-container,
+#recent-slider-section .slider-container {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+#top10-slider-section .slider-container:hover,
+#emotion-slider-section .slider-container:hover,
+#recent-slider-section .slider-container:hover {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* 아이콘 */
+.icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon-arrow-left { 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'%3E%3C/polyline%3E%3C/svg%3E"); 
+}
+
+.icon-arrow-right { 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E"); 
+}
+
+/* 로딩 및 에러 상태 */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+}
+
+.loading-container h2,
+.error-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.error-container p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  max-width: 600px;
+}
+
+.error-container button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.error-container button:hover {
+  background: #2563eb;
+}
+
+/* 콘텐츠 없음 상태 */
+.no-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.no-content p {
+  margin: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .slider-section {
+    margin: 2rem 0;
+    padding: 0 0.5rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+  
+  .slider-container {
+    padding: 0;
+    min-height: 240px;
+  }
+  
+  .main-content {
+    padding: 1rem 0;
+  }
+  
+  .loading-container h2,
+  .error-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .error-container p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-section {
+    margin: 1.5rem 0;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+  }
+  
+  .slider-container {
+    padding: 0;
+    min-height: 200px;
+  }
+  
+  .home-page {
+    padding-bottom: 1rem;
+  }
+  
+  .control-btn {
+    width: 36px;
+    height: 36px;
+  }
+}

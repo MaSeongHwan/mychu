@@ -537,6 +537,38 @@ ul { list-style: none; }
   .content-card { page-break-inside: avoid; }
 }
 
+/* ========== React 슬라이더 섹션 ========== */
+#react-slider-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#react-slider-section .section-note {
+  display: flex;
+  align-items: center;
+}
+
+#react-slider-section .section-note span {
+  font-size: 0.8rem;
+  background: linear-gradient(45deg, #ff4b91, #ff6b6b);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 1rem;
+  color: white;
+  font-weight: bold;
+}
+
+#react-slider-mount {
+  margin: 1rem 0;
+  min-height: 300px;
+}
+
+/* React 컴포넌트와의 스타일 통합을 위한 오버라이드 */
+.slider-section {
+  margin: 1rem 0 !important;
+}
+
 .password-input-container {
   position: relative;
   display: flex;
